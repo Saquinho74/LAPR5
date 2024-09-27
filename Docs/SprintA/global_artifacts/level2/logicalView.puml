@@ -1,0 +1,41 @@
+﻿@startuml
+'https://plantuml.com/component-diagram
+
+
+'    UI -down- [<<System>>\nHospital]
+'  API -down- [<<System>>\nHospital]
+  
+ component [<<System>>\nHospital]{
+ 
+ Component [Front end]
+ Component [Back end\nData Management]
+ 
+ Component [Planning]
+ }
+ 
+ API -down- [Back end\nData Management]
+    UI -down- [Front end]
+    [Back end\nData Management]-down-[Planning]
+
+
+title "Logical View (Level 2) of CentralNurse System"
+
+component CentralNurse<<C4 System>>{
+    component "Browser App" <<C4 Container>> as front
+    component "Master Data Records (MDR)"<<C4 Container>> as mdr
+    component "MDR Data Base (SQL Server)"<<C4 Container>> as mdrdb
+    
+     front -(0- mdr : REST API
+     mdr -(0- mdrdb : "JDBC"
+     
+     
+     port " " as publicApiPort
+     publicApiPort -- mdr
+     publicApiPort -down-0  
+     
+}
+
+
+
+
+@enduml
