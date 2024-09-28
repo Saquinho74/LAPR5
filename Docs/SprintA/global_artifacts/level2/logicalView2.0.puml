@@ -5,8 +5,8 @@ title "Logical View (Level 2) of CentralNurse System"
 
 component CentralNurse<<C4 System>>{
     component "Browser App" <<C4 Container>> as front
-    component "Master Data Records (MDR)" <<C4 Container>> as mdr
-    component "MDR" <<C4 Container>> as mdrdb
+    component "Mango DB" <<C4 Container>> as mango
+    component "MDR" <<C4 Container>> as mdr
     component "MDP" <<C4 Container>> as mdp
     component "Prolog" <<C4 Container>> as prolog
     component "SQL Server" <<C4 Container>> as sqlserver
@@ -14,7 +14,11 @@ component CentralNurse<<C4 System>>{
      mdr -(0- sqlserver
      mdr -(0- prolog
      front -(0-  mdr
-     
+     front -(0-  mdp
+
+     mdp -(0-  mango
+     mdp -(0-  mdr
+     front -(0-  prolog
      
 
 }
