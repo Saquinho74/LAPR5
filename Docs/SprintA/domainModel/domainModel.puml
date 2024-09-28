@@ -1,0 +1,144 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+hide methods
+
+
+rectangle User #aabbcc{
+
+   class SystemUser <<Aggregate Root>><<Entity>>{}
+   class Email <<Value Object>>
+   class Username <<Value Object>>
+   class Role<<Value Object>>{}
+
+   
+}
+
+rectangle patient #bbaacc{
+    class Patient <<Aggregate Root>><<Entity>>{}
+    class PatientID <<Identity>><<Value Object>>{}
+    class DateOfBirth <<Value Object>>
+    class Gender <<Value Object>>
+    class MedicalRecordNumber <<Value Object>>
+    class ContactInformation <<Value Object>>
+    class AllergiesMedicalConditions <<Value Object>>
+    class EmergencyContact <<Value Object>>
+    class AppointmentHistory <<Value Object>>
+    
+
+    Patient "1" --left> "1" DateOfBirth
+    Patient "1" --right> "1" Gender
+    Patient "1" --> "1" MedicalRecordNumber
+    Patient "1" ---> "1" ContactInformation
+    Patient "1" ---> "1" AllergiesMedicalConditions
+    Patient "1" ---> "1" EmergencyContact
+    Patient "1" --> "1" AppointmentHistory
+    Patient "1" --> "1" PatientID
+    
+    }
+
+rectangle staff #bbccaa{
+    class Staff <<Aggregate Root>><<Entity>>{}
+    class StaffID <<Identity>><<Value Object>>
+    class LicenseNumber <<Value Object>>
+    class Specialization <<Value Object>>
+    class ContactInformation <<Value Object>>
+    class AvailabilitySlots <<Value Object>>
+    
+    Staff "1" --> "1" LicenseNumber
+    Staff "1" ---> "1" Specialization
+    Staff "1" ---> "1" ContactInformation
+    Staff "1" ---> "1" AvailabilitySlots
+    Staff "1" --> "1" StaffID
+    }
+    
+    
+rectangle SharedObjects{
+    class FirstName <<Value Object>>
+    class LastName <<Value Object>>
+    class FullName <<Value Object>>
+    }
+    
+rectangle operationRequest #bbccaa{
+    class OperationRequestID <<Value Object>>
+    class OperationRequest <<Aggregate Root>> <<Entity>> 
+    class DeadlineDate <<Value Object>>
+    class Priority <<Value Object>>
+    
+    
+    OperationRequest "1" --> "1" DeadlineDate
+    OperationRequest "1" --> "1" Priority
+    
+    }
+    
+    
+rectangle operationType #bbccaa{
+    class OperationType <<Aggregate Root>> <<Entity>> 
+    class OperationTypeID <<Value Object>>
+    class Name <<Value Object>>
+    class RequiredStaffBySpecialization <<Value Object>>
+    class EstimatedDuration <<Value Object>>
+    
+    OperationType "1" --> "1" OperationTypeID
+    OperationType "1" --> "1" Name
+    OperationType "1" --> "1" RequiredStaffBySpecialization
+    OperationType "1" --> "1" EstimatedDuration
+    }
+
+
+rectangle appointment #bbccaa{
+class Appointment <<Aggregate Root>> <<Entity>>
+class AppointmentId <<Identity>> <<Value Object>>
+    class RequestID <<Value Object>>
+    class DateAndTime <<Value Object>>
+    class Status <<Value Object>>
+    
+    Appointment "1" --> "1" AppointmentId
+    Appointment "1" --> "1" DateAndTime
+    Appointment "1" --> "1" Status
+    }
+    
+    rectangle surgeyRoom #bbccaa{
+    class SurgeyRoom <<Aggregate Root>> <<Entity>>
+class RoomID <<Identity>> <<Value Object>>
+    class Type <<Value Object>>
+    class Capacity <<Value Object>>
+    class AssignedEquipment <<Value Object>>
+    class CurrentStatus <<Value Object>>
+    class MaintenanceSlots <<Value Object>>
+    
+    SurgeyRoom "1" --> "1" RoomID
+    SurgeyRoom "1" --> "1" Type
+    SurgeyRoom "1" --> "1" Capacity
+    SurgeyRoom "1" --> "1" AssignedEquipment
+    SurgeyRoom "1" --> "1" CurrentStatus
+    SurgeyRoom "1" --> "1" MaintenanceSlots
+    }
+    
+           Patient "1" --|> "1" SystemUser
+           Staff "1" --|> "1" SystemUser
+           
+           SystemUser "1" --> "1" FirstName: has
+           SystemUser "1" --> "1" LastName: has
+           SystemUser "1" --> "1" Role: has
+           
+           SystemUser "1" --> "1" Email
+           SystemUser "1" --> "1" Username
+           
+               OperationRequest "1" --> "1" OperationTypeID
+               
+                   Appointment "1" --> "1" OperationRequestID
+           OperationRequest "1" --> "1" OperationRequestID
+               OperationRequest "1" --> "1" PatientID    
+               OperationRequest "1" --> "1" DoctorID
+               
+                   Appointment "1" --> "1" RoomID
+
+
+
+
+
+    
+    
+    
+@enduml
