@@ -1,0 +1,22 @@
+﻿@startuml
+'https://plantuml.com/component-diagram
+
+title "Logical View (Level 2) of CentralNurse System"
+
+component CentralNurse<<C4 System>>{
+    component "Browser App" <<C4 Container>> as front
+    component "Master Data Records (MDR)" <<C4 Container>> as mdr
+    component "MDR" <<C4 Container>> as mdrdb
+    component "MDP" <<C4 Container>> as mdp
+    component "Prolog" <<C4 Container>> as prolog
+    component "SQL Server" <<C4 Container>> as sqlserver
+
+     mdr -(0- sqlserver
+     mdr -(0- prolog
+     front -(0-  mdr
+     
+     
+
+}
+
+@enduml
