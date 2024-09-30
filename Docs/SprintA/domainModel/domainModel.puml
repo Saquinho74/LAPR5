@@ -115,8 +115,8 @@ class RoomID <<Identity>> <<Value Object>>
     SurgeyRoom "1" --> "1" MaintenanceSlots
     }
     
-           Patient "1" --|> "1" SystemUser
-           Staff "1" --|> "1" SystemUser
+           Patient "1" ---|> "1" SystemUser
+           Staff "1" ---|> "1" SystemUser
            
            SystemUser "1" --> "1" FirstName: has
            SystemUser "1" --> "1" LastName: has
@@ -127,10 +127,10 @@ class RoomID <<Identity>> <<Value Object>>
            
                OperationRequest "1" --> "1" OperationTypeID
                
-                   Appointment "1" --> "1" OperationRequestID
-           OperationRequest "1" --> "1" OperationRequestID
-               OperationRequest "1" --> "1" PatientID    
-               OperationRequest "1" --> "1" DoctorID
+                   Appointment "1" ---> "1" OperationRequestID
+           OperationRequest "1" -> "1" OperationRequestID
+               OperationRequest "1" --> "1" PatientID
+               OperationRequest "1" ---> "1" StaffID
                
                    Appointment "1" --> "1" RoomID
 
