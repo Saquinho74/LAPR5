@@ -3,7 +3,7 @@
 title "Logical View (Level 1) of SARM"
 
 
-  UI -up- [<<System>>\nSARM] 
-  API -down- [<<System>>\nSARM] 
+  IAM_API -up- [<<System>>\nSARM] 
+  Web_UI -down- [<<System>>\nSARM] 
 
 @enduml
