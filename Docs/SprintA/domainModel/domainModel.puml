@@ -124,6 +124,7 @@ class RoomID <<Identity>> <<Value Object>>
            
            SystemUser "1" --> "1" Email
            SystemUser "1" --> "1" Username
+           SystemUser "1" --> "1" FullName
            
                OperationRequest "1" --> "1" OperationTypeID
                
