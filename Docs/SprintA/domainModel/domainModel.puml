@@ -4,7 +4,7 @@
 hide methods
 
 
-rectangle User #aabbcc{
+rectangle user #aabbcc{
 
    class SystemUser <<Aggregate Root>><<Entity>>{}
    class Email <<Value Object>>
@@ -37,7 +37,7 @@ rectangle patient #bbaacc{
     
     }
 
-rectangle staff #bbccaa{
+rectangle staff #bbddcc{
     class Staff <<Aggregate Root>><<Entity>>{}
     class StaffID <<Identity>><<Value Object>>
     class LicenseNumber <<Value Object>>
@@ -53,13 +53,13 @@ rectangle staff #bbccaa{
     }
     
     
-rectangle SharedObjects{
+rectangle sharedObjects{
     class FirstName <<Value Object>>
     class LastName <<Value Object>>
     class FullName <<Value Object>>
     }
     
-rectangle operationRequest #bbccaa{
+rectangle operationRequest #aaaaaa{
     class OperationRequestID <<Value Object>>
     class OperationRequest <<Aggregate Root>> <<Entity>> 
     class DeadlineDate <<Value Object>>
@@ -72,7 +72,7 @@ rectangle operationRequest #bbccaa{
     }
     
     
-rectangle operationType #bbccaa{
+rectangle operationType #bbccdd{
     class OperationType <<Aggregate Root>> <<Entity>> 
     class OperationTypeID <<Value Object>>
     class Name <<Value Object>>
@@ -86,7 +86,7 @@ rectangle operationType #bbccaa{
     }
 
 
-rectangle appointment #bbccaa{
+rectangle appointment #ccccaa{
 class Appointment <<Aggregate Root>> <<Entity>>
 class AppointmentId <<Identity>> <<Value Object>>
     class RequestID <<Value Object>>
@@ -96,9 +96,10 @@ class AppointmentId <<Identity>> <<Value Object>>
     Appointment "1" --> "1" AppointmentId
     Appointment "1" --> "1" DateAndTime
     Appointment "1" --> "1" Status
+    Appointment "1" --> "1" RequestID
     }
     
-    rectangle surgeyRoom #bbccaa{
+    rectangle surgeyRoom #ddaadd{
     class SurgeyRoom <<Aggregate Root>> <<Entity>>
 class RoomID <<Identity>> <<Value Object>>
     class Type <<Value Object>>
