@@ -95,4 +95,146 @@ rectangle Patients #bbaacc{
 }
 
 
+rectangle Staffs #bbddcc{
+    class Staff <<Aggregate Root>><<Entity>>
+    class StaffId <<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class LicenseNumber<<Value Object>><<Unique>>{
+        - licence : String
+    }
+    class Specialization <<Value Object>>{
+        - name : String
+        '' Could be an enum or even another aggregate to harmonise with Required Staff by Specialization
+    }
+    class AvailabilitySlot<<Value Object>>{
+        - date : Date
+        - startTime : Time
+        - endTime : Time
+        + overlaps(slot : AvailabilitySlot) : boolean
+    }
+
+    Staff "1" *--> "1" LicenseNumber : license
+    Staff "1" *---> "1" Specialization : specialization
+    Staff "1" *--> "1" StaffId : id
+    Staff "1" --> "*" AvailabilitySlot : slots
+    '' Slots should be stored in Map for efficient storage and fetching
+}
+
+rectangle Requests #aaaaaa{
+    class OperationRequestId<<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class OperationRequest<<Aggregate Root>><<Entity>>
+    class DeadlineDate<<Value Object>>{
+        - date : Date
+    }
+    class Priority<<Value Object>><<Comparable>>{
+        - level : Integer
+    }
+
+
+    OperationRequest "1" *--> "1" DeadlineDate : deadline
+    OperationRequest "1" *--> "1" Priority : priority
+    OperationRequest "1" *--> "1" OperationRequestId : id
+
+}
+
+
+rectangle OperationTypes #bbccdd{
+    class OperationType<<Aggregate Root>> <<Entity>>
+    class OperationTypeId <<Value Object>>
+    class OperationalTypeName <<Value Object>>{
+        - name : String
+    }
+    class RequiredStaffEntry<<Value Object>>{
+        - speciality : String
+        - requiredStaff : Integer
+    }
+    class EstimatedDuration<<Value Object>>{
+        - durationInMinutes : Integer
+    }
+
+    OperationType "1" *--> "1" OperationTypeId : id
+    OperationType "1" *--> "1" OperationalTypeName : name
+    OperationType "1" --> "1.." RequiredStaffEntry : specializationRequirement
+    OperationType "1" *--> "1" EstimatedDuration : duration
+}
+
+
+rectangle Appointments #ccccaa{
+    class Appointment <<Aggregate Root>> <<Entity>>
+    class AppointmentId <<Identity>> <<Value Object>>
+    class Schedule<<Value Object>>{
+        - date : Date
+        - time : Time
+    }
+    enum Status <<Value Object>>{
+        SCHEDULED
+        COMPLETED
+        CANCELED
+    }
+    enum AppointmentType<<Value Object>><<Enumerable>>{
+        APPOINTMENT
+        SURGERY
+        MEETING
+    }
+
+    Appointment "1" *--> "1" AppointmentId : id
+    Appointment "1" *--> "1" Schedule : dateTime
+    Appointment "1" *--> "1" Status : status
+    Appointment "1" *--> "1" AppointmentType : type
+}
+
+rectangle Rooms #ddaadd{
+    class SurgeryRoom<<Aggregate Root>><<Entity>>
+    class RoomId<<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class Type<<Value Object>>{
+        - name : String
+        '' Could be an enum... In fact, many Value Objects with only name as attribute can be an enum
+    }
+    class Capacity<<Value Object>>{
+        - maxParticipants : Integer
+    }
+    class AssignedEquipment<<Value Object>>{
+        - name : String
+    }
+    enum CurrentStatus<<Value Object>><<Enumerable>>{
+        AVAILABLE
+        OCCUPIED
+        MAINTENANCE
+    }
+    class MaintenanceSlot<<Value Object>>{
+        - date : Date
+        - startTime : Time
+        - endTime : Time
+    }
+
+    SurgeryRoom "1" *--> "1" RoomId : id
+    SurgeryRoom "1" *--> "1" Type : type
+    SurgeryRoom "1" *--> "1" Capacity : capacity
+    SurgeryRoom "1" --> "*" AssignedEquipment : equipment
+    SurgeryRoom "1" *--> "1" CurrentStatus : status
+    SurgeryRoom "1" --> "*" MaintenanceSlot : maintenance
+}
+
+Profile "1" *--> "1" Credential : credentials
+
+OperationRequest "1" o--> "1" OperationType
+
+Appointment "1" o--> "1" OperationRequest : request
+Appointment "1" o--> "1..*" Staff : bookedStaff
+OperationRequest "1" o-> "1" Patient : patient
+OperationRequest "1" o---> "1" Staff : doctor
+
+Appointment "1" o--> "1" SurgeryRoom : room
+Medical "1" o--> "*"Appointment : history
+
+
+Patient --|> Profile
+Staff --|> Profile
+
+
 @enduml
