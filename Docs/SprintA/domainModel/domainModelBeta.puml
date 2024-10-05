@@ -1,0 +1,98 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+left to right direction
+
+hide <<Entity>> methods
+hide <<Aggregate Root>> methods
+hide <<Entity>> fields
+hide <<Aggregate Root>> fields
+hide enum methods
+
+
+rectangle Profiles #cfaaab{
+
+    class Profile<<Aggregate Root>><<Entity>>
+    class OperationalTypeName<<Value Object>>{
+        - firstName : String
+        - lastName : String
+        + fullName() : String
+    }
+    class PhoneNumber<<Identity>><<Value Object>>{
+            - countryCode : String
+            - number : String
+        }
+
+    Profile"1" *--> "1"OperationalTypeName : name
+    Profile "1" *--> "1" PhoneNumber
+
+}
+
+
+rectangle Credentials #aabbcc{
+
+   class Credential <<Aggregate Root>><<Entity>>{}
+   class CredentialId<<Identity>><<Value Object>>{
+    - id : UUID
+   }
+   class Email <<Value Object>><<Unique>>{
+    - emailAddress : String
+   }
+   class Username<<Value Object>><<Unique>>{
+    - username : String
+   }
+   enum Role<<Value Object>>{
+    ADMIN
+    DOCTOR
+    NURSE
+    GENERAL_STAFF
+    PATIENT
+    UNKNOWN
+   }
+
+
+   Credential"1" *-->"1"Role : autzRole
+   Credential"1" *-->"1"Username : username
+   Credential"1" *--> "1"CredentialId : userId
+   Credential"1" *-->"1"Email : email
+
+
+}
+
+rectangle Patients #bbaacc{
+    class Patient <<Aggregate Root>><<Entity>>{}
+    class PatientId <<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class Medical <<Entity>>{}
+    class Personal<<Entity>>
+    class DateOfBirth <<Value Object>>{
+        - date : Date
+    }
+    enum Gender <<Value Object>>{
+        MALE
+        FEMALE
+        OTHER
+    }
+    class MedicalRecordNumber<<Identity>><<Value Object>>{
+        - roomNumber : String
+    }
+    class Allergy<<Value Object>>{
+        - name : String
+    }
+
+    Patient "1" *-up-> "1"Medical : medicalInfo
+    Patient "1" *--> "1" PatientId : id
+    Patient "1" *--> "1" Personal : personalInfo
+    Personal "1" *-> "1" Gender : gender
+    Personal "1" *---> "1" DateOfBirth : dateOfBirth
+    Medical "1" *--> "1" MedicalRecordNumber : id
+    Medical "1" --> "*" Allergy : allergies
+    Medical "1" *--> "1" PhoneNumber : emergency
+    '' Last connection should be a no no for maintenance reasons, however, the creation of another class with the EXACT
+    '' same functionality and business role is also a nightmare for maintenance. Therefore, breaking DDD rules for maintenance's sake
+
+}
+
+
+@enduml
