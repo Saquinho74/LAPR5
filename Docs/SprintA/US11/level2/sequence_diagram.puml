@@ -1,0 +1,64 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Database" as db
+
+activate admin
+admin -> front: Search patient profiles by attributes
+
+activate front
+front -> back: Forward search request
+
+activate back
+back -> db: Query patient profiles by attributes
+activate db
+db --> back: Return search results
+deactivate db
+
+back --> front: Return search results
+front --> admin: Display search results
+
+admin -> front: Select patient profile from list
+front -> back: Forward selection
+
+back -> db: Retrieve patient profile details
+activate db
+db --> back: Return patient profile details
+deactivate db
+
+back --> front: Return patient profile details
+front --> admin: Display patient profile details
+
+admin -> front: Edit or delete patient profile
+front -> back: Forward edit or delete request
+
+alt Edit profile
+  back -> db: Update patient profile
+  activate db
+  db --> back: Profile updated
+  deactivate db
+else Delete profile
+  back -> db: Delete patient profile
+  activate db
+  db --> back: Profile deleted
+  deactivate db
+end
+
+back -> db: Log changes for audit and compliance
+activate db
+db --> back: Changes logged
+deactivate db
+
+back --> front: Profile updated or deleted successfully
+deactivate back
+front --> admin: Profile updated or deleted successfully
+
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
