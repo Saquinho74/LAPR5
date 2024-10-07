@@ -1,0 +1,61 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Controller" as ctrl
+participant "Service" as svc
+participant "DTO" as dto
+participant "<<External IAM>>\nProvider" as iam
+
+activate pa
+pa -> front: Request login
+
+activate front
+front -> iam: Redirect to IAM for authentication
+
+activate iam
+iam --> pa: Display login page
+
+pa -> iam: Provide credentials
+
+iam -> iam: Authenticate credentials
+
+alt Successful authentication
+  iam --> front: Redirect with valid session token
+  deactivate iam
+  front -> back: Validate session token
+  activate back
+  back -> ctrl: Forward request with session token
+
+  activate ctrl
+  ctrl -> svc: Validate session token
+
+  activate svc
+  svc -> dto: Create session DTO
+  activate dto
+  dto --> svc: Session DTO created
+deactivate dto
+
+  svc --> ctrl: Valid session
+  deactivate svc
+  ctrl --> back: Valid session
+  deactivate ctrl
+  back --> front: Valid session
+    deactivate back
+  front --> pa: Redirect to healthcare system with valid session
+  pa -> front: Access appointments, medical records, and other features
+else Authentication failed
+  iam --> pa: Display error message
+end
+
+deactivate dto
+deactivate svc
+deactivate ctrl
+deactivate back
+deactivate front
+deactivate pa
+
+@enduml
