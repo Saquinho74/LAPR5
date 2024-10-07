@@ -1,0 +1,43 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "Database" as db
+participant "Email Service" as email
+
+activate admin
+admin -> sys: Search for patient profile
+
+activate sys
+sys -> db: Query patient profile
+activate db
+db --> sys: Return patient profile
+deactivate db
+
+sys --> admin: Display patient profile
+
+admin -> sys: Update patient profile
+
+sys -> db: Validate and update profile
+activate db
+
+alt Sensitive data changed
+  db --> sys: Profile updated
+  sys -> email: Send notification to patient
+  email --> sys: Notification sent
+else No sensitive data changed
+  db --> sys: Profile updated
+end
+
+sys -> db: Log profile changes
+db --> sys: Changes logged
+
+sys --> admin: Profile updated successfully
+
+deactivate db
+deactivate sys
+deactivate admin
+
+@enduml
