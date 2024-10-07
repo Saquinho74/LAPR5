@@ -1,0 +1,106 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Controller" as ctrl
+participant "Service" as svc
+participant "DTO" as dto
+participant "Database" as db
+
+activate admin
+admin -> front: Search patient profiles by attributes
+
+activate front
+front -> back: Forward search request
+
+activate back
+back -> ctrl: Forward search request
+
+activate ctrl
+ctrl -> svc: Query patient profiles by attributes
+
+activate svc
+svc -> db: Query patient profiles by attributes
+activate db
+db --> svc: Return search results
+deactivate db
+
+svc --> ctrl: Return search results
+deactivate svc
+ctrl --> back: Return search results
+deactivate ctrl
+back --> front: Return search results
+front --> admin: Display search results
+
+admin -> front: Select patient profile from list
+front -> back: Forward selection
+
+back -> ctrl: Forward selection
+activate ctrl
+ctrl -> svc: Retrieve patient profile details
+
+activate svc
+svc -> db: Retrieve patient profile details
+activate db
+db --> svc: Return patient profile details
+deactivate db
+
+svc --> ctrl: Return patient profile details
+deactivate svc
+ctrl --> back: Return patient profile details
+deactivate ctrl
+back --> front: Return patient profile details
+front --> admin: Display patient profile details
+
+admin -> front: Edit or delete patient profile
+front -> back: Forward edit or delete request
+
+back -> ctrl: Forward edit or delete request
+activate ctrl
+
+alt Edit profile
+  ctrl -> svc: Update patient profile
+  activate svc
+  svc -> dto: Create DTO for update
+  activate dto
+  dto --> svc: DTO created
+  deactivate dto
+  svc -> db: Update patient profile
+  activate db
+  db --> svc: Profile updated
+  deactivate db
+  svc --> ctrl: Profile updated
+  deactivate svc
+else Delete profile
+  ctrl -> svc: Validate deletion request
+  activate svc
+  svc -> dto: Create DTO for deletion
+  activate dto
+  dto --> svc: DTO created
+  deactivate dto
+  svc -> db: Delete patient profile
+  activate db
+  db --> svc: Profile deleted
+  deactivate db
+  svc -> db: Log deletion for audit and compliance
+    activate db
+  db --> svc: Deletion logged
+  deactivate db
+  svc --> ctrl: Profile deleted
+  deactivate svc
+end
+
+ctrl --> back: Profile updated or deleted
+deactivate ctrl
+back --> front: Profile updated or deleted
+deactivate back
+front --> admin: Profile updated or deleted
+
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
