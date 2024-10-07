@@ -1,0 +1,39 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "Database" as db
+
+activate admin
+admin -> sys: Search for patient profile
+
+activate sys
+sys -> db: Query patient profile
+activate db
+db --> sys: Return patient profile
+deactivate db
+
+sys --> admin: Display patient profile
+
+admin -> sys: Mark patient profile for deletion
+
+sys -> admin: Prompt for deletion confirmation
+admin -> sys: Confirm deletion
+
+sys -> db: Delete patient profile
+activate db
+db --> sys: Profile marked for deletion
+
+sys -> db: Log deletion for audit and GDPR compliance
+db --> sys: Deletion logged
+deactivate db
+
+sys --> admin: Profile deletion scheduled
+
+deactivate db
+deactivate sys
+deactivate admin
+
+@enduml
