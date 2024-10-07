@@ -1,0 +1,36 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as patient
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "External IAM System" as iam
+participant "Email Service" as email
+
+activate patient
+patient -> front: Register for healthcare application
+
+activate front
+front -> back: Forward registration details
+
+activate back
+back -> iam: Forward registration details
+
+activate iam
+iam --> back: Registration successful
+deactivate iam
+
+back -> email: Send verification email
+activate email
+email --> patient: Verification email sent
+deactivate email
+
+back --> front: Registration successful, verify email to complete
+front --> patient: Registration successful, verify email to complete
+
+deactivate back
+deactivate front
+deactivate patient
+
+@enduml
