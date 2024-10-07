@@ -2,25 +2,29 @@
 'https://plantuml.com/sequence-diagram
 
 autonumber
-actor Patient as pa
-participant "<<System(C4)>>\nVisualização" as sys
+actor Patient as patient
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "External IAM System" as iam
+participant "Email Service" as email
 
-activate pa
-
-pa -> sys: asks to register for the healthcare application
+activate patient
+patient -> sys: Register for healthcare application
 
 activate sys
+sys -> iam: Forward registration details
 
-sys --> pa: request first name, last name, date of birth, gender, \nmedical record number, contact information (email, phone), \nallergies/medical conditions, emergency contact, \nappointement history 
+activate iam
+iam --> sys: Registration successful
+deactivate iam
+
+sys -> email: Send verification email
+activate email
+email --> patient: Verification email sent
+deactivate email
+
+sys --> patient: Registration successful, verify email to complete
+
 deactivate sys
-
-pa -> sys: input patient's data
-activate sys
-
-alt verification process
-  sys --> pa: valid data.\nPatient registed
-else
-  sys --> pa: invalid data.\nerror message
-end
+deactivate patient
 
 @enduml
