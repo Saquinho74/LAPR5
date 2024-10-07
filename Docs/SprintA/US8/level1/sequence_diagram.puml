@@ -1,0 +1,38 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "Database" as db
+
+activate admin
+admin -> sys: Request to create a new patient profile
+
+activate sys
+sys --> admin: Request patient details (first name, last name, date of birth, contact information, medical history)
+
+admin -> sys: Provide patient details
+
+sys -> db: Validate email and phone number uniqueness
+activate db
+
+alt Unique email and phone number
+  db --> sys: 
+  deactivate db
+  sys -> db: Store patient profile with generated Medical Record Number
+    activate db
+    
+  db --> sys: Profile stored successfully
+  sys --> admin: Patient profile created successfully
+else Email or phone number not unique
+  db --> sys: Email or phone number already exists
+  deactivate db
+  sys --> admin: Error message
+end
+
+deactivate db
+deactivate sys
+deactivate admin
+
+@enduml
