@@ -1,0 +1,43 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Database" as db
+
+activate admin
+admin -> front: Request to create a new patient profile
+
+activate front
+front -> back: Forward request to create a new patient profile
+
+activate back
+back --> front: Request patient details (first name, last name, date of birth, contact information, medical history)
+
+front --> admin: Request patient details
+admin -> front: Provide patient details
+front -> back: Forward patient details
+
+back -> db: Validate email and phone number uniqueness
+activate db
+
+alt Unique email and phone number
+  db --> back: Email and phone number are unique
+  back -> db: Store patient profile with generated Medical Record Number
+  db --> back: Profile stored successfully
+  back --> front: Patient profile created successfully
+  front --> admin: Patient profile created successfully
+else Email or phone number not unique
+  db --> back: Email or phone number already exists
+  back --> front: Error message
+  front --> admin: Error message
+end
+
+deactivate db
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
