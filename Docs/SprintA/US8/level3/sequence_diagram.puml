@@ -1,0 +1,55 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Controller" as ctrl
+participant "Service" as svc
+participant "DTO" as dto
+participant "Database" as db
+
+activate admin
+admin -> front: Request to create a new patient profile
+
+activate front
+front -> back: Forward request to create a new patient profile
+
+activate back
+back -> ctrl: Forward request with patient details
+
+activate ctrl
+ctrl -> dto: Create DTO from patient details
+dto --> ctrl: DTO created
+
+ctrl -> svc: Validate and process DTO
+
+activate svc
+svc -> db: Validate email and phone number uniqueness
+activate db
+
+alt Unique email and phone number
+  db --> svc: Email and phone number are unique
+  svc -> db: Store patient profile with generated Medical Record Number
+  db --> svc: Profile stored successfully
+  svc --> ctrl: Profile stored successfully
+  ctrl --> back: Profile stored successfully
+  back --> front: Patient profile created successfully
+  front --> admin: Patient profile created successfully
+else Email or phone number not unique
+  db --> svc: Email or phone number already exists
+  svc --> ctrl: Error message
+  ctrl --> back: Error message
+  back --> front: Error message
+  front --> admin: Error message
+end
+
+deactivate db
+deactivate svc
+deactivate ctrl
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
