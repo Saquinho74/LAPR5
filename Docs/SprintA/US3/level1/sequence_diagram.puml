@@ -1,0 +1,26 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "<<System(C4)>>\nVisualização" as sys
+
+activate pa
+
+pa -> sys: asks to register for the healthcare application
+
+activate sys
+
+sys --> pa: request first name, last name, date of birth, gender, \nmedical record number, contact information (email, phone), \nallergies/medical conditions, emergency contact, \nappointement history 
+deactivate sys
+
+pa -> sys: input patient's data
+activate sys
+
+alt verification process
+  sys --> pa: valid data.\nPatient registed
+else
+  sys --> pa: invalid data.\nerror message
+end
+
+@enduml
