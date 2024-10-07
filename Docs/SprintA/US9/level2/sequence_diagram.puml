@@ -1,0 +1,54 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Database" as db
+participant "Email Service" as email
+
+activate admin
+admin -> front: Search for patient profile
+
+activate front
+front -> back: Forward search request
+
+activate back
+back -> db: Query patient profile
+activate db
+db --> back: Return patient profile
+deactivate db
+
+back --> front: Return patient profile
+front --> admin: Display patient profile
+
+admin -> front: Update patient profile
+front -> back: Forward update request
+
+back -> db: Validate and update profile
+activate db
+
+alt Sensitive data changed
+  db --> back: Profile updated
+  back -> email: Send notification to patient
+    activate email
+    
+  email --> back: Notification sent
+deactivate email
+else No sensitive data changed
+  db --> back: Profile updated
+end
+
+back -> db: Log profile changes
+db --> back: Changes logged
+
+back --> front: Profile updated successfully
+front --> admin: Profile updated successfully
+
+deactivate db
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
