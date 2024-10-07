@@ -1,0 +1,49 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Database" as db
+
+activate admin
+admin -> front: Search for patient profile
+
+activate front
+front -> back: Forward search request
+
+activate back
+back -> db: Query patient profile
+
+activate db
+db --> back: Return patient profile
+deactivate db
+
+back --> front: Return patient profile
+front --> admin: Display patient profile
+
+admin -> front: Mark patient profile for deletion
+front -> back: Forward deletion request
+
+back -> front: Prompt for deletion confirmation
+front -> admin: Prompt for deletion confirmation
+admin -> front: Confirm deletion
+front -> back: Forward confirmation
+
+back -> db: Delete patient profile
+activate db
+db --> back: Profile marked for deletion
+
+back -> db: Log deletion for audit and GDPR compliance
+db --> back: Deletion logged
+deactivate db
+
+back --> front: Profile deletion scheduled
+front --> admin: Profile deletion scheduled
+
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
