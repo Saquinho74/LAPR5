@@ -1,0 +1,53 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "Database" as db
+
+activate admin
+admin -> sys: Search patient profiles by attributes
+
+activate sys
+sys -> db: Query patient profiles by attributes
+activate db
+db --> sys: Return search results
+deactivate db
+
+sys --> admin: Display search results
+
+admin -> sys: Select patient profile from list
+
+sys -> db: Retrieve patient profile details
+activate db
+db --> sys: Return patient profile details
+deactivate db
+
+sys --> admin: Display patient profile details
+
+admin -> sys: Edit or delete patient profile
+
+alt Edit profile
+  sys -> db: Update patient profile
+  activate db
+  db --> sys: Profile updated
+  deactivate db
+else Delete profile
+  sys -> db: Delete patient profile
+  activate db
+  db --> sys: Profile deleted
+  deactivate db
+end
+
+sys -> db: Log changes for audit and compliance
+activate db
+db --> sys: Changes logged
+deactivate db
+
+sys --> admin: Profile updated or deleted successfully
+
+deactivate sys
+deactivate admin
+
+@enduml
