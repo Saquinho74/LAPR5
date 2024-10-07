@@ -1,0 +1,34 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "<<System(C4)>>\nHealthcare System" as sys
+participant "<<External IAM>>\nProvider" as iam
+
+activate pa
+pa -> sys: Request login
+
+activate sys
+sys -> iam: Redirect to IAM for authentication
+
+activate iam
+iam --> pa: Display login page
+
+pa -> iam: Provide credentials
+
+iam -> iam: Authenticate credentials
+
+alt Successful authentication
+  iam --> sys: Redirect with valid session token
+  deactivate iam
+  sys --> pa: Redirect to healthcare system with valid session
+  pa -> sys: Access appointments, medical records, and other features
+else Authentication failed
+  iam -> pa: Display error message
+end
+
+deactivate sys
+deactivate pa
+
+@enduml
