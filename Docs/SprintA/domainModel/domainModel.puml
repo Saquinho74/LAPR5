@@ -116,8 +116,8 @@ class RoomID <<Identity>> <<Value Object>>
     SurgeyRoom "1" --> "1" MaintenanceSlots
     }
     
-           Patient "1" ---|> "1" SystemUser
-           Staff "1" ---|> "1" SystemUser
+           Patient "0..1" --> "0..1" SystemUser
+           Staff "0..1" --> "0..1" SystemUser
            
            SystemUser "1" --> "1" FirstName: has
            SystemUser "1" --> "1" LastName: has

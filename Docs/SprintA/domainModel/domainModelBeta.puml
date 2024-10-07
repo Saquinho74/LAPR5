@@ -1,0 +1,240 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+left to right direction
+
+hide <<Entity>> methods
+hide <<Aggregate Root>> methods
+hide <<Entity>> fields
+hide <<Aggregate Root>> fields
+hide enum methods
+
+
+rectangle Profiles #cfaaab{
+
+    class Profile<<Aggregate Root>><<Entity>>
+    class OperationalTypeName<<Value Object>>{
+        - firstName : String
+        - lastName : String
+        + fullName() : String
+    }
+    class PhoneNumber<<Identity>><<Value Object>>{
+            - countryCode : String
+            - number : String
+        }
+
+    Profile"1" *--> "1"OperationalTypeName : name
+    Profile "1" *--> "1" PhoneNumber
+
+}
+
+
+rectangle Credentials #aabbcc{
+
+   class Credential <<Aggregate Root>><<Entity>>{}
+   class CredentialId<<Identity>><<Value Object>>{
+    - id : UUID
+   }
+   class Email <<Value Object>><<Unique>>{
+    - emailAddress : String
+   }
+   class Username<<Value Object>><<Unique>>{
+    - username : String
+   }
+   enum Role<<Value Object>>{
+    ADMIN
+    DOCTOR
+    NURSE
+    GENERAL_STAFF
+    PATIENT
+    UNKNOWN
+   }
+
+
+   Credential"1" *-->"1"Role : autzRole
+   Credential"1" *-->"1"Username : username
+   Credential"1" *--> "1"CredentialId : userId
+   Credential"1" *-->"1"Email : email
+
+
+}
+
+rectangle Patients #bbaacc{
+    class Patient <<Aggregate Root>><<Entity>>{}
+    class PatientId <<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class Medical <<Entity>>{}
+    class Personal<<Entity>>
+    class DateOfBirth <<Value Object>>{
+        - date : Date
+    }
+    enum Gender <<Value Object>>{
+        MALE
+        FEMALE
+        OTHER
+    }
+    class MedicalRecordNumber<<Identity>><<Value Object>>{
+        - roomNumber : String
+    }
+    class Allergy<<Value Object>>{
+        - name : String
+    }
+
+    Patient "1" *-up-> "1"Medical : medicalInfo
+    Patient "1" *--> "1" PatientId : id
+    Patient "1" *--> "1" Personal : personalInfo
+    Personal "1" *-> "1" Gender : gender
+    Personal "1" *---> "1" DateOfBirth : dateOfBirth
+    Medical "1" *--> "1" MedicalRecordNumber : id
+    Medical "1" --> "*" Allergy : allergies
+    Medical "1" *--> "1" PhoneNumber : emergency
+    '' Last connection should be a no no for maintenance reasons, however, the creation of another class with the EXACT
+    '' same functionality and business role is also a nightmare for maintenance. Therefore, breaking DDD rules for maintenance's sake
+
+}
+
+
+rectangle Staffs #bbddcc{
+    class Staff <<Aggregate Root>><<Entity>>
+    class StaffId <<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class LicenseNumber<<Value Object>><<Unique>>{
+        - licence : String
+    }
+    class Specialization <<Value Object>>{
+        - name : String
+        '' Could be an enum or even another aggregate to harmonise with Required Staff by Specialization
+    }
+    class AvailabilitySlot<<Value Object>>{
+        - date : Date
+        - startTime : Time
+        - endTime : Time
+        + overlaps(slot : AvailabilitySlot) : boolean
+    }
+
+    Staff "1" *--> "1" LicenseNumber : license
+    Staff "1" *---> "1" Specialization : specialization
+    Staff "1" *--> "1" StaffId : id
+    Staff "1" --> "*" AvailabilitySlot : slots
+    '' Slots should be stored in Map for efficient storage and fetching
+}
+
+rectangle Requests #aaaaaa{
+    class OperationRequestId<<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class OperationRequest<<Aggregate Root>><<Entity>>
+    class DeadlineDate<<Value Object>>{
+        - date : Date
+    }
+    class Priority<<Value Object>><<Comparable>>{
+        - level : Integer
+    }
+
+
+    OperationRequest "1" *--> "1" DeadlineDate : deadline
+    OperationRequest "1" *--> "1" Priority : priority
+    OperationRequest "1" *--> "1" OperationRequestId : id
+
+}
+
+
+rectangle OperationTypes #bbccdd{
+    class OperationType<<Aggregate Root>> <<Entity>>
+    class OperationTypeId <<Value Object>>
+    class OperationalTypeName <<Value Object>>{
+        - name : String
+    }
+    class RequiredStaffEntry<<Value Object>>{
+        - speciality : String
+        - requiredStaff : Integer
+    }
+    class EstimatedDuration<<Value Object>>{
+        - durationInMinutes : Integer
+    }
+
+    OperationType "1" *--> "1" OperationTypeId : id
+    OperationType "1" *--> "1" OperationalTypeName : name
+    OperationType "1" --> "1.." RequiredStaffEntry : specializationRequirement
+    OperationType "1" *--> "1" EstimatedDuration : duration
+}
+
+
+rectangle Appointments #ccccaa{
+    class Appointment <<Aggregate Root>> <<Entity>>
+    class AppointmentId <<Identity>> <<Value Object>>
+    class Schedule<<Value Object>>{
+        - date : Date
+        - time : Time
+    }
+    enum Status <<Value Object>>{
+        SCHEDULED
+        COMPLETED
+        CANCELED
+    }
+    enum AppointmentType<<Value Object>><<Enumerable>>{
+        APPOINTMENT
+        SURGERY
+        MEETING
+    }
+
+    Appointment "1" *--> "1" AppointmentId : id
+    Appointment "1" *--> "1" Schedule : dateTime
+    Appointment "1" *--> "1" Status : status
+    Appointment "1" *--> "1" AppointmentType : type
+}
+
+rectangle Rooms #ddaadd{
+    class SurgeryRoom<<Aggregate Root>><<Entity>>
+    class RoomId<<Identity>><<Value Object>>{
+        - id : UUID
+    }
+    class Type<<Value Object>>{
+        - name : String
+        '' Could be an enum... In fact, many Value Objects with only name as attribute can be an enum
+    }
+    class Capacity<<Value Object>>{
+        - maxParticipants : Integer
+    }
+    class AssignedEquipment<<Value Object>>{
+        - name : String
+    }
+    enum CurrentStatus<<Value Object>><<Enumerable>>{
+        AVAILABLE
+        OCCUPIED
+        MAINTENANCE
+    }
+    class MaintenanceSlot<<Value Object>>{
+        - date : Date
+        - startTime : Time
+        - endTime : Time
+    }
+
+    SurgeryRoom "1" *--> "1" RoomId : id
+    SurgeryRoom "1" *--> "1" Type : type
+    SurgeryRoom "1" *--> "1" Capacity : capacity
+    SurgeryRoom "1" --> "*" AssignedEquipment : equipment
+    SurgeryRoom "1" *--> "1" CurrentStatus : status
+    SurgeryRoom "1" --> "*" MaintenanceSlot : maintenance
+}
+
+Profile "1" *--> "1" Credential : credentials
+
+OperationRequest "1" o--> "1" OperationType
+
+Appointment "1" o--> "1" OperationRequest : request
+Appointment "1" o--> "1..*" Staff : bookedStaff
+OperationRequest "1" o-> "1" Patient : patient
+OperationRequest "1" o---> "1" Staff : doctor
+
+Appointment "1" o--> "1" SurgeryRoom : room
+Medical "1" o--> "*"Appointment : history
+
+
+Patient --|> Profile
+Staff --|> Profile
+
+
+@enduml
