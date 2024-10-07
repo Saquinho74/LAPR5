@@ -1,0 +1,90 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "FrontEnd" as front
+participant "BackEnd" as back
+participant "Controller" as ctrl
+participant "Service" as svc
+participant "DTO" as dto
+participant "Database" as db
+
+activate admin
+admin -> front: Search for patient profile
+
+activate front
+front -> back: Forward search request
+
+activate back
+back -> ctrl: Forward search request
+
+activate ctrl
+ctrl -> svc: Query patient profile
+
+activate svc
+svc -> db: Query patient profile
+activate db
+db --> svc: Return patient profile
+deactivate db
+
+svc --> ctrl: Return patient profile
+deactivate svc
+ctrl --> back: Return patient profile
+deactivate ctrl
+back --> front: Return patient profile
+
+front --> admin: Display patient profile
+
+admin -> front: Mark patient profile for deletion
+
+front -> back: Forward deletion request
+
+back -> ctrl: Forward deletion request
+activate ctrl
+
+
+ctrl -> svc: Validate deletion request
+activate svc
+
+svc -> dto: Create DTO for deletion
+activate dto
+dto --> svc: DTO created
+deactivate dto
+
+svc -> ctrl: Prompt for deletion confirmation
+deactivate svc
+ctrl -> back: Prompt for deletion confirmation
+deactivate ctrl
+back -> front: Prompt for deletion confirmation
+front -> admin: Prompt for deletion confirmation
+admin -> front: Confirm deletion
+front -> back: Forward confirmation
+back -> ctrl: Forward confirmation
+activate ctrl
+ctrl -> svc: Forward confirmation
+activate svc
+
+svc -> db: Delete patient profile
+activate db
+db --> svc: Profile marked for deletion
+
+svc -> db: Log deletion for audit and GDPR compliance
+db --> svc: Deletion logged
+deactivate db
+
+svc --> ctrl: Profile deletion scheduled
+deactivate svc
+ctrl --> back: Profile deletion scheduled
+deactivate ctrl
+back --> front: Profile deletion scheduled
+deactivate back
+front --> admin: Profile deletion scheduled
+
+deactivate svc
+deactivate ctrl
+deactivate back
+deactivate front
+deactivate admin
+
+@enduml
