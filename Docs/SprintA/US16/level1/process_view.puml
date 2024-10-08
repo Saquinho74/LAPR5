@@ -46,16 +46,10 @@ doc -> sys: defines a suggested deadline
 
 alt verification process is successful
 
-  sys --> doc: shows data of the operation request \n(patient ID, doctor ID, type, deadline, priority) and requests confirmation
+  sys --> doc: shows data of the operation request \n(patient ID, doctor ID, type, deadline, priority)
 
 
-  doc -> sys: confirms the operation request
-
-
-    sys --> doc: shows success message
-
-
-else
+else error in the verification process
 
   sys --> doc: shows message of failure of the verification process
 
