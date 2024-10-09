@@ -1,0 +1,80 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Doctor as doc
+participant "FrontEnd" as sys
+participant "Backend"
+participant "Planning Module" as planning
+
+activate doc
+
+doc -> sys: request to update an existing operation
+
+activate sys
+
+
+sys -> "Backend" : GET /operations (fetch operations by doctor)
+
+activate "Backend"
+
+"Backend" --> sys : returns list of operations created by doctor
+
+deactivate "Backend"
+
+sys --> doc: shows list of operations and asks to select one
+
+
+doc -> sys: selects an operation to update
+
+
+sys -> "Backend" : GET /operationDetails (for selected operation)
+
+activate "Backend"
+
+"Backend" --> sys : returns current operation details
+
+deactivate "Backend"
+
+sys --> doc: shows current operation details (deadline, priority) and asks for update
+
+
+doc -> sys: updates priority or deadline
+
+
+sys -> "Backend" : PUT /updateOperation (with updated details)
+
+activate "Backend"
+
+alt verification process is successful
+
+    "Backend" -> "Backend" : check if doctor can update the operation
+
+    "Backend" --> sys: returns success message (operation updated)
+
+    sys --> doc: shows success message with updated operation data (priority, deadline)
+
+    sys -> planning : notify changes to Planning Module
+
+    activate planning
+
+    planning --> sys : confirmation of update received
+
+    deactivate planning
+
+
+else error in the verification process
+
+    "Backend" --> sys: returns error message (operation update failed)
+
+    deactivate "Backend"
+
+    sys --> doc: shows message of failure of the update
+
+end
+
+deactivate sys
+deactivate planning
+deactivate doc
+
+@enduml
