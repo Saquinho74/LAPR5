@@ -1,0 +1,83 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "                          " as sys
+participant "<<application>>\nOperationController" as ctrl
+participant "<<service>>\nOperationService" as serv
+participant "DataBase" as repo <<repository>>
+participant "Planning Module" as planning
+
+title Process View Backend Container - Level 3
+
+activate sys
+
+
+sys -> ctrl : GET /operations (fetch operations by doctor)
+
+activate ctrl
+
+ctrl --> sys: returns list of operations
+
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
+
+
+
+
+
+deactivate repo
+
+
+deactivate serv
+
+
+
+
+alt deletion is successful
+
+sys -> ctrl : DELETE /operation (request to delete operation)
+
+    ctrl -> serv: deleteOperation(operationId)
+
+    activate serv
+
+    serv -> repo: removeOperationById(operationId)
+
+    activate repo
+
+    repo --> serv: operation deleted from DB
+
+    deactivate repo
+
+    serv --> ctrl: deletion successful
+
+    deactivate serv
+
+    ctrl --> sys: returns success message (operation deleted)
+
+    sys -> planning: notify deletion to Planning Module
+
+    activate planning
+
+    planning --> sys: confirmation of deletion received
+
+    deactivate planning
+
+else deletion cancelled
+
+    ctrl --> sys: returns cancellation message
+
+    deactivate ctrl
+
+end
+
+deactivate sys
+deactivate ctrl
+
+@enduml

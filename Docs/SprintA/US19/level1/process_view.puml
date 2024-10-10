@@ -1,0 +1,37 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Doctor as doc
+participant "<<System(C4)>>\nVisualização" as sys
+title Process View - Level 1 (Search and Filter Operations)
+
+activate doc
+
+doc -> sys: request to list or search operation requests
+activate sys
+
+alt if user is searching for a specific operation request
+  doc -> sys: enters operation request ID for search
+  sys --> doc: shows operation request details (patient name, operation type, status, etc.)
+
+
+else
+
+sys --> doc: shows search filters (patient name, operation type, priority, status)
+doc -> sys: selects search filter and performs search
+
+sys --> doc: shows list of operation requests based on search/filter criteria
+
+
+doc -> sys: selects an operation request
+
+sys --> doc: shows operation request details (patient name, operation type, status, etc.)
+
+
+end
+deactivate sys
+
+
+
+@enduml

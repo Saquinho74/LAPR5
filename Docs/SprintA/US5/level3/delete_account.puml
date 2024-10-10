@@ -1,0 +1,72 @@
+﻿@startuml
+'autonumber
+participant FrontEnd as fe
+participant "PatientController" as ctrl
+participant "PatientService" as serv
+participant "PatientDTO" as dto
+participant "PatientMapper" as map
+participant "PatientAccount" as operation
+participant "Repository" as repo <<repository>>
+
+participant "EmailService" as es
+
+
+activate fe
+
+fe -> ctrl: asks to delete his account
+activate ctrl
+
+ctrl -> es: send confirmation email to the patient before\n proceeding with account deletion
+activate es
+
+es --> fe: sends a confirmation email
+deactivate es
+
+deactivate ctrl
+
+fe -> ctrl: confirmation of deletion
+activate ctrl
+
+alt verification process is successful
+
+ctrl -> ctrl: request account deletion
+activate ctrl
+
+ctrl -> serv: process account deletion
+activate serv
+
+serv -> dto: create PatientDTO
+activate dto
+dto --> serv: PatientDTO created
+deactivate dto
+
+serv -> map : map DTO to domain
+activate map
+map -> operation : create Patient entity from DTO
+activate operation
+operation --> map : Patient entity created
+deactivate operation
+map --> serv : mapped to Operation entity
+deactivate map
+
+serv -> serv: log the action for GDPR compliance
+
+serv -> es: save the deletion in database
+activate es
+es --> serv: account deletion successfully
+deactivate es
+
+serv --> ctrl: account deletion processed
+deactivate serv
+
+ctrl --> ctrl: account deletion confirmed
+deactivate ctrl
+
+ctrl --> fe: all personal data is deleted from the system
+else error in the verification process
+
+ctrl --> fe: shows message of failure of the verification process
+
+deactivate ctrl
+end
+@enduml

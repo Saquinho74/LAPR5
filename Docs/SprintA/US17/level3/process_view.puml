@@ -1,0 +1,136 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "                          " as sys
+participant "<<application>>\nOperationController" as ctrl
+participant "<<service>>\nOperationService" as serv
+participant "OperationDTO" as dto
+participant "OperationMapper" as map
+participant "<<domain>>\nOperation" as operation
+participant "DataBase" as repo <<repository>>
+participant "Planning Module" as planning
+
+title Process View Backend Container - Level 3
+
+
+
+activate sys
+
+sys -> ctrl : GET /operations (fetch operations by doctor)
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
+
+activate ctrl
+'
+'ctrl -> serv: getOperationsByDoctor(doctorId)
+'
+'activate serv
+'
+'serv -> repo: findOperationsByDoctorId(doctorId)
+'
+'activate repo
+'
+'repo --> serv: returns list of operations
+'
+'deactivate repo
+
+'serv --> ctrl: returns list of operations
+
+deactivate serv
+
+ctrl --> sys: returns list of operations
+
+deactivate ctrl
+
+
+
+
+
+sys -> ctrl: GET /operationDetails (for selected operation)
+
+activate ctrl
+'
+'ctrl -> serv: getOperationDetails(operationId)
+'
+'activate serv
+'
+'serv -> repo: findOperationById(operationId)
+'
+'activate repo
+'
+'repo --> serv: returns operation details
+'
+'deactivate repo
+'
+'serv --> ctrl: returns operation details
+'
+'deactivate serv
+'
+ctrl --> sys: returns operation details
+
+deactivate ctrl
+
+
+
+
+
+sys -> ctrl: PUT /updateOperation (with updated details)
+
+activate ctrl
+
+ctrl -> serv: updateOperation(operationDTO)
+
+activate serv
+
+alt verification process is successful
+
+    serv -> map: mapDTOToOperation(operationDTO)
+
+    activate map
+
+    map --> serv: returns mapped Operation object
+
+    deactivate map
+
+    serv -> repo: save(updated operation)
+
+    activate repo
+
+    repo --> serv: operation updated in DB
+
+    deactivate repo
+
+    serv --> ctrl: operation updated
+
+    deactivate serv
+
+    ctrl --> sys: returns success message
+
+
+    sys -> planning: notify changes to Planning Module
+
+    activate planning
+
+    planning --> sys: confirmation of update received
+
+    deactivate planning
+
+else error in the verification process
+
+    ctrl --> sys: returns error message
+
+    deactivate ctrl
+
+
+end
+
+deactivate sys
+deactivate planning
+
+@enduml

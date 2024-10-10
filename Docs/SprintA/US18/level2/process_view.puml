@@ -1,0 +1,62 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Doctor as doc
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as BackEnd
+participant "Planning Module" as planning
+
+title Process View - Level 2
+
+
+activate doc
+
+doc -> sys: request to delete an operation request
+
+activate sys
+
+sys -> BackEnd : GET /operations (fetch operations by doctor)
+
+activate BackEnd
+
+BackEnd --> sys : returns list of operations created by doctor
+
+deactivate BackEnd
+
+sys --> doc: shows list of operations and asks to select one
+
+doc -> sys: selects an operation to delete
+
+sys --> doc: shows confirmation prompt for deletion
+
+alt confirmation received
+
+    sys -> BackEnd : DELETE /operation (with operation ID)
+
+    activate BackEnd
+
+    BackEnd --> sys : returns success message (operation deleted)
+
+    deactivate BackEnd
+
+    sys --> doc: shows success message (operation request removed)
+
+    sys -> planning: notify deletion to Planning Module
+
+    activate planning
+
+    planning --> sys: confirmation of deletion received
+
+    deactivate planning
+
+else deletion cancelled
+
+    sys --> doc: shows cancellation message
+
+end
+
+deactivate sys
+deactivate doc
+
+@enduml

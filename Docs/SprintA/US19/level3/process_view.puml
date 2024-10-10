@@ -1,0 +1,54 @@
+﻿@startuml
+autonumber
+participant "                          " as sys
+participant "<<application>>\nOperationController" as ctrl
+participant "<<service>>\nOperationService" as serv
+participant "OperationDTO" as dto
+participant "OperationMapper" as map
+participant "<<domain>>\nOperation" as operation
+participant "Repository" as repo <<repository>>
+
+title Process View Backend Container - Level 3
+
+activate sys
+
+sys -> ctrl : request to list/search operation requests
+activate ctrl
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
+
+deactivate repo
+
+deactivate serv
+
+ctrl --> sys : returns list of operations
+deactivate ctrl
+
+alt doctor selects an operation to view
+  sys -> ctrl : GET /operationDetails (operation ID)
+  activate ctrl
+
+  ctrl -> serv : getOperationDetails(operationId)
+  activate serv
+
+  serv -> repo : findOperationById(operationId)
+  activate repo
+
+  repo --> serv : returns operation details
+  deactivate repo
+
+  serv --> ctrl : operation details
+  deactivate serv
+
+  ctrl --> sys : returns operation details
+  deactivate ctrl
+
+  deactivate ctrl
+  deactivate sys
+end
+
+@enduml

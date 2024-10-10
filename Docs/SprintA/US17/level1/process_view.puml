@@ -1,0 +1,32 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Doctor as doc
+participant "<<System(C4)>>\nVisualização" as sys
+title Process View - Level 1
+
+
+
+activate doc
+
+doc -> sys: request to update an exiting operation
+
+activate sys
+
+sys --> doc: shows list of operations and asks to select one
+doc -> sys: selects an operation update
+
+sys --> doc: shows current operation details (deadline, priority)
+doc -> sys: updates the deadline and/or priority
+
+alt verification process is successful
+    sys --> doc: operation updated successfully
+else error in the verification process
+    sys --> doc: error message (update failed)
+end
+
+deactivate sys
+deactivate doc
+
+@enduml

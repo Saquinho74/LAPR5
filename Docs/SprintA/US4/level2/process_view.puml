@@ -1,0 +1,67 @@
+﻿@startuml
+'autonumber
+actor Patient as pat
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as Backend
+
+activate pat
+
+title Process View - Level 2
+
+pat -> sys: request to update profile
+
+activate sys
+
+sys -> "Backend" : GET /patientProfile (fetch current profile details)
+
+activate Backend
+
+"Backend" --> sys : returns current profile details (e.g., name, contact info, preferences)
+
+deactivate Backend
+
+sys --> pat: shows current profile details \nand asks if wants to update
+
+alt selects to update profile
+
+pat -> sys: edits and submits updated profile details
+
+
+alt sensitive data (e.g., email) is changed
+    sys --> pat: prompts for additional verification (e.g., confirmation email)
+    pat -> sys: completes verification (e.g., confirms email change)
+end
+
+sys -> "Backend" : PUT /updateProfile (with updated details)
+
+activate Backend
+
+alt verification process is successful
+    "Backend" --> "Backend" : update profile in database
+    "Backend" --> sys : returns success message (profile updated)
+
+    sys --> sys : log changes for audit purposes
+
+    sys --> pat: shows success message (profile updated)
+
+else error in the verification process
+    "Backend" --> sys : returns error message (profile update failed)
+    deactivate Backend
+
+    sys --> pat: shows error message
+
+
+end
+
+else user cancels update
+
+    sys --> pat: shows cancel message (profile not updated)
+
+deactivate sys
+
+
+end
+
+deactivate pat
+
+@enduml
