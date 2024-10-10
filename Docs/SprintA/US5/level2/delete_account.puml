@@ -1,0 +1,52 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "FrontEnd" as fe
+participant "BackEnd" as be
+participant "EmailService" as es
+
+activate pa
+
+pa -> fe: asks to delete his account
+
+activate fe
+
+fe -> es: send confirmation email to the patient before\n proceeding with account deletion
+
+activate es
+
+es --> pa: sends a confirmation email
+
+deactivate es
+
+deactivate fe
+
+pa -> fe: confirmation of deletion
+activate fe
+
+fe -> be: request account deletion
+
+activate be
+
+alt verification process is successful
+
+
+be -> be: delete personal data within legally required time frame
+
+be -> be: log the action for GDPR compliance
+
+be --> fe: account deletion confirmed
+
+
+fe --> pa: all personal data is deleted from the system
+
+else error in the verification process
+be --> fe: returns failure message
+deactivate be
+fe --> pa: shows message of failure of the verification process
+
+deactivate fe
+end
+@enduml
