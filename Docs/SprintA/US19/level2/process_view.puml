@@ -3,102 +3,60 @@
 
 autonumber
 actor Doctor as doc
-participant "FrontEnd" as sys
-participant "Backend"
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as backEnd
 activate doc
 
-doc -> sys: request to create a new operation
+title Process View - Level 2 (Search and Filter Operations)
+
+doc -> sys: request to list/search operation requests
 
 activate sys
 
+alt if user is searching for a specific operation request
+  doc -> sys: enters operation request ID for search
+  sys -> backEnd : GET /operationRequestDetails (for selected ID)
 
-sys -> "Backend" : GET /patients
+  activate backEnd
 
-activate "Backend"
+  backEnd --> sys : returns operation request details (patient name, operation type, status, etc.)
 
-"Backend" --> sys : returns list of patients
+  deactivate backEnd
 
-deactivate "Backend"
+  sys --> doc: shows operation request details
 
+else
 
-sys --> doc: shows list of patients and asks to select one
+  sys -> backEnd : GET /operationRequests (with search criteria)
 
+  activate backEnd
 
-doc -> sys: selects a patient
+  backEnd --> sys : returns list of operations based on search/filter criteria
 
+  deactivate backEnd
 
-sys -> "Backend" : GET /operationTypes
+  sys --> doc: shows list of operations with details (patient name, operation type, status)
 
-activate "Backend"
+  deactivate sys
 
-"Backend" --> sys : returns list of operation types
+  doc -> sys: selects an operation request
 
-deactivate "Backend"
+  activate sys
 
-sys --> doc: shows list of operation types and asks to select one
+  sys -> backEnd : GET /operationDetails (for selected operation)
 
+  activate backEnd
 
+  backEnd --> sys : returns operation details (patient name, operation type, priority, status, etc.)
 
+  deactivate backEnd
 
-deactivate "Backend"
-
-doc -> sys: selects an operation type
-
-
-
-sys -> "Backend" : find priority options
-
-activate "Backend"
-
-"Backend" --> sys : returns list of priority options
-
-deactivate "Backend"
-
-sys --> doc : shows list of priority options and asks to select one
-
-
-
-
-
-doc -> sys: selects a priority option
-
-
-
-sys --> doc: requests suggested deadline for the operation
-
-
-
-doc -> sys: defines a suggested deadline
-
-
-
-
-
-
-
-sys -> "Backend" : POST /operations ( with given data )
-
-activate "Backend"
-
-alt verification process is successful
-
-
-"Backend" --> sys : returns success message
-
-
-  sys --> doc: shows data of the operation request \n(patient ID, doctor ID, type, deadline, priority)
-
-
-else error in the verification process
-
-"Backend" --> sys : returns success message
-
-deactivate "Backend"
-
-  sys --> doc: shows message of failure of the verification process
+  sys --> doc: shows operation details
 
   deactivate sys
 
 end
+
+deactivate sys
 
 @enduml

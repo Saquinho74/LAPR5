@@ -4,57 +4,34 @@
 autonumber
 actor Doctor as doc
 participant "<<System(C4)>>\nVisualização" as sys
+title Process View - Level 1 (Search and Filter Operations)
 
 activate doc
 
-doc -> sys: request to create a new operation
-
+doc -> sys: request to list or search operation requests
 activate sys
 
-sys --> doc: shows list of patients and asks selection of one
-doc -> sys: selects a patient
-
-deactivate sys
-
-sys --> doc: shows operation types and asks selection of one
-
-activate sys
+alt if user is searching for a specific operation request
+  doc -> sys: enters operation request ID for search
+  sys --> doc: shows operation request details (patient name, operation type, status, etc.)
 
 
-doc -> sys: selects an operation type
-deactivate sys
+else
+
+sys --> doc: shows search filters (patient name, operation type, priority, status)
+doc -> sys: selects search filter and performs search
+
+sys --> doc: shows list of operation requests based on search/filter criteria
 
 
-sys --> doc: shows priority options and asks selection of one
-activate sys
+doc -> sys: selects an operation request
 
-doc -> sys: selects a priority option
+sys --> doc: shows operation request details (patient name, operation type, status, etc.)
 
-deactivate sys
-
-
-sys --> doc: requests suggested deadline for the operation
-activate sys
-
-doc -> sys: defines a suggested deadline
-
-
-
-
-
-
-
-alt verification process is successful
-
-  sys --> doc: shows data of the operation request \n(patient ID, doctor ID, type, deadline, priority)
-
-
-else error in the verification process
-
-  sys --> doc: shows message of failure of the verification process
-
-  deactivate sys
 
 end
+deactivate sys
+
+
 
 @enduml
