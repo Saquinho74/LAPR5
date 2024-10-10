@@ -1,0 +1,23 @@
+﻿@startuml
+
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+
+activate admin
+admin -> sys: Request to create a staff profile
+activate sys 
+sys --> admin: Request Admin to provide staff details
+deactivate sys
+admin -> sys: Provide staff details (first name, last name, email,phone number and specialization)
+
+activate sys
+alt contact information is unique
+
+sys --> admin: Staff profile created successfully
+else contact information is not unique
+sys --> admin: Staff profile creation failed
+end
+deactivate sys
+
+@enduml
