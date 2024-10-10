@@ -3,9 +3,12 @@
 
 autonumber
 actor Doctor as doc
-participant "FrontEnd" as sys
-participant "Backend"
+participant " <<Container(C4)>>\n FrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as backEnd
 participant "Planning Module" as planning
+
+title Process View - Level 2
+
 
 activate doc
 
@@ -14,13 +17,13 @@ doc -> sys: request to update an existing operation
 activate sys
 
 
-sys -> "Backend" : GET /operations (fetch operations by doctor)
+sys -> backEnd : GET /operations (fetch operations by doctor)
 
-activate "Backend"
+activate backEnd
 
-"Backend" --> sys : returns list of operations created by doctor
+backEnd --> sys : returns list of operations created by doctor
 
-deactivate "Backend"
+deactivate backEnd
 
 sys --> doc: shows list of operations and asks to select one
 
@@ -28,13 +31,13 @@ sys --> doc: shows list of operations and asks to select one
 doc -> sys: selects an operation to update
 
 
-sys -> "Backend" : GET /operationDetails (for selected operation)
+sys -> backEnd : GET /operationDetails (for selected operation)
 
-activate "Backend"
+activate backEnd
 
-"Backend" --> sys : returns current operation details
+backEnd --> sys : returns current operation details
 
-deactivate "Backend"
+deactivate backEnd
 
 sys --> doc: shows current operation details (deadline, priority) and asks for update
 
@@ -42,15 +45,15 @@ sys --> doc: shows current operation details (deadline, priority) and asks for u
 doc -> sys: updates priority or deadline
 
 
-sys -> "Backend" : PUT /updateOperation (with updated details)
+sys -> backEnd : PUT /updateOperation (with updated details)
 
-activate "Backend"
+activate backEnd
 
 alt verification process is successful
 
-    "Backend" -> "Backend" : check if doctor can update the operation
+    backEnd --> backEnd : check if doctor can update the operation
 
-    "Backend" --> sys: returns success message (operation updated)
+    backEnd --> sys: returns success message (operation updated)
 
     sys --> doc: shows success message with updated operation data (priority, deadline)
 
@@ -65,9 +68,9 @@ alt verification process is successful
 
 else error in the verification process
 
-    "Backend" --> sys: returns error message (operation update failed)
+    backEnd --> sys: returns error message (operation update failed)
 
-    deactivate "Backend"
+    deactivate backEnd
 
     sys --> doc: shows message of failure of the update
 
