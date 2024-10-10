@@ -4,8 +4,8 @@
 autonumber
 
 participant "                          " as sys
-participant "OperationController" as ctrl
-participant "OperationService" as serv
+participant "<<application>>\nOperationController" as ctrl
+participant "<<service>>\nOperationService" as serv
 participant "DataBase" as repo <<repository>>
 participant "Planning Module" as planning
 
