@@ -3,9 +3,12 @@
 
 autonumber
 actor Doctor as doc
-participant "FrontEnd" as sys
-participant "Backend"
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as Backend
 activate doc
+
+title Process View - Level 2
+
 
 doc -> sys: request to create a new operation
 
