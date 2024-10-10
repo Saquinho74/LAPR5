@@ -1,0 +1,50 @@
+﻿@startuml
+'autonumber
+actor Admin as adm
+participant "FrontEnd" as fe
+participant "Backend" as be
+
+activate adm
+
+adm -> fe: request to add new type of operation
+
+activate fe
+
+fe --> adm: asks for operation name
+adm->fe: types operation name
+
+fe -> be : GET /specializations
+
+activate be
+
+be --> fe : returns list of specializations
+
+deactivate be
+
+fe --> adm: asks to select all the staff specialization required for the operation from a list
+
+adm->fe: selects staff specialization
+
+fe-->adm: asks for estimated duration of operation
+
+adm -> fe: types estimated duration
+
+
+
+fe->be: POST /operationTypes
+activate be
+
+alt operation name is unique
+
+be --> fe : returns success message
+
+fe --> adm: confirmation of successful creation
+else operation name is not unique
+
+be --> fe : returns error message
+deactivate be
+  fe --> adm: error message indicating duplicate operation name
+end
+
+deactivate fe
+@enduml

@@ -1,0 +1,29 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "<<System(C4)>>\nVisualização" as sys
+
+activate pa
+
+pa -> sys: asks to delete his account
+
+activate sys
+
+sys --> pa: sends a confirmation email
+deactivate sys
+
+pa -> sys: confirmation of deletion
+activate sys
+alt verification process is successful
+
+sys --> pa: all personal data is deleted from the system
+else error in the verification process
+
+sys--> pa: shows message of failure of the verification process
+
+end
+
+
+@enduml

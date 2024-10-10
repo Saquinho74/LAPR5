@@ -1,0 +1,24 @@
+﻿@startuml
+'autonumber
+actor Admin as adm
+participant "<<System(C4)>>\nVisualização" as sys
+
+activate adm
+
+adm -> sys: request to add new type of operation
+
+activate sys
+
+sys --> adm: shows form to enter operation details
+
+adm -> sys: submits operation details (Operation Name, Required Staff, Estimated Duration)
+
+
+alt operation name is unique
+  sys --> adm: confirmation of successful creation
+else operation name is not unique
+  sys --> adm: error message indicating duplicate operation name
+end
+
+deactivate sys
+@enduml
