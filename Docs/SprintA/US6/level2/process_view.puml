@@ -1,0 +1,43 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor "Backoffice User" as user
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as Backend
+
+activate user
+
+title Process View - Level 2
+
+user -> sys: request to log in
+
+activate sys
+
+sys -> "Backend" : POST /login (username, password)
+
+activate "Backend"
+
+alt verification process is successful
+    "Backend" --> sys : returns user details and role
+    sys --> user : shows dashboard (based on user role)
+
+else verification fails
+    alt 5th failed login attempt
+        "Backend" --> sys: account temporarily locked
+        sys --> user: shows message (account locked)
+    else fewer than 5 failed attempts
+        "Backend" --> sys: returns error message (invalid credentials)
+        sys --> user: shows login error (invalid username or password)
+    end
+end
+
+alt session expires due to inactivity
+    sys --> user: session expired, request re-login
+end
+
+deactivate Backend
+deactivate sys
+deactivate user
+
+@enduml

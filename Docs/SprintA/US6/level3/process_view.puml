@@ -1,0 +1,76 @@
+﻿@startuml
+autonumber
+participant "                          " as sys
+participant "<<application>>\nLoginController" as ctrl
+participant "<<service>>\nLoginService" as serv
+participant "UserDTO" as dto
+participant "UserMapper" as map
+participant "<<domain>>\nUser" as user
+participant "Repository" as repo <<repository>>
+
+title Process View Backend Container - Level 3 (Login Backoffice)
+
+activate sys
+
+sys -> ctrl : POST /login (username, password)
+
+activate ctrl
+
+ctrl -> serv : authenticateUser(username, password)
+activate serv
+
+serv -> repo : findUserByUsername(username)
+activate repo
+
+repo --> serv : returns user details (if exists)
+
+deactivate repo
+
+
+alt user exists
+    serv --> serv : validatePassword(password)
+    alt password is valid
+        serv -> dto : create UserDTO from user data
+        activate dto
+        dto --> serv : UserDTO created
+        deactivate dto
+
+        serv -> map : map UserDTO to domain User
+        activate map
+        map -> user : create User entity from UserDTO
+        activate user
+        user --> map : User entity created
+        deactivate user
+        map --> serv : mapped to User entity
+        deactivate map
+
+        serv -> ctrl : user authenticated successfully
+
+        ctrl --> sys : returns user role and access rights
+    else password is invalid
+        serv --> ctrl : invalid password error
+
+        ctrl --> sys : shows login error (incorrect username or password)
+
+        alt 5th failed login attempt
+            serv -> ctrl : temporarily lock account
+            ctrl --> sys : notify admin (user account temporarily locked)
+        end
+    end
+else user does not exist
+    serv --> ctrl : user not found error
+    deactivate serv
+
+    ctrl --> sys : shows login error (incorrect username or password)
+end
+
+deactivate ctrl
+deactivate sys
+
+alt session expires due to inactivity
+
+
+    sys --> user: session expired, request re-login
+end
+
+@enduml
