@@ -3,9 +3,12 @@
 
 autonumber
 actor Doctor as doc
-participant "<<System(C4)>>\nVisualização" as sys
-participant "Backend" as backend
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as BackEnd
 participant "Planning Module" as planning
+
+title Process View - Level 2
+
 
 activate doc
 
@@ -13,13 +16,13 @@ doc -> sys: request to delete an operation request
 
 activate sys
 
-sys -> backend : GET /operations (fetch operations by doctor)
+sys -> BackEnd : GET /operations (fetch operations by doctor)
 
-activate backend
+activate BackEnd
 
-backend --> sys : returns list of operations created by doctor
+BackEnd --> sys : returns list of operations created by doctor
 
-deactivate backend
+deactivate BackEnd
 
 sys --> doc: shows list of operations and asks to select one
 
@@ -29,13 +32,13 @@ sys --> doc: shows confirmation prompt for deletion
 
 alt confirmation received
 
-    sys -> backend : DELETE /operation (with operation ID)
+    sys -> BackEnd : DELETE /operation (with operation ID)
 
-    activate backend
+    activate BackEnd
 
-    backend --> sys : returns success message (operation deleted)
+    BackEnd --> sys : returns success message (operation deleted)
 
-    deactivate backend
+    deactivate BackEnd
 
     sys --> doc: shows success message (operation request removed)
 

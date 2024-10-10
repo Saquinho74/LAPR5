@@ -3,11 +3,13 @@
 
 autonumber
 
-participant "FrontEnd" as sys
+participant "                          " as sys
 participant "OperationController" as ctrl
 participant "OperationService" as serv
 participant "DataBase" as repo <<repository>>
 participant "Planning Module" as planning
+
+title Process View Backend Container - Level 3
 
 activate sys
 
@@ -17,6 +19,13 @@ sys -> ctrl : GET /operations (fetch operations by doctor)
 activate ctrl
 
 ctrl --> sys: returns list of operations
+
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
 
 
 
