@@ -67,10 +67,5 @@ end
 deactivate ctrl
 deactivate sys
 
-alt session expires due to inactivity
-
-
-    sys --> user: session expired, request re-login
-end
 
 @enduml

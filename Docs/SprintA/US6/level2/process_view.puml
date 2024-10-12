@@ -4,7 +4,7 @@
 autonumber
 actor "Backoffice User" as user
 participant "<<Container(C4)>>\nFrontEnd" as sys
-participant "<<Container(C4)>>\nBackend" as Backend
+participant "<<Container(C4)>>\nBackEnd" as Backend
 
 activate user
 
@@ -28,13 +28,13 @@ else verification fails
         sys --> user: shows message (account locked)
     else fewer than 5 failed attempts
         "Backend" --> sys: returns error message (invalid credentials)
+
+        deactivate "Backend"
+
         sys --> user: shows login error (invalid username or password)
     end
 end
 
-alt session expires due to inactivity
-    sys --> user: session expired, request re-login
-end
 
 deactivate Backend
 deactivate sys
