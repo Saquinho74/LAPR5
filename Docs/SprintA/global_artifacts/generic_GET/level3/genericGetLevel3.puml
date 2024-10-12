@@ -1,0 +1,42 @@
+@startuml Process View - Level 3
+
+autonumber
+skinparam packageStyle rect
+
+title GET resources
+
+participant "Back-End" as BE <<component>>
+database "DataBase" as DB <<component>>
+
+-> BE: GET resources
+
+alt user authorized
+
+'Find All'
+
+activate BE
+
+BE -> DB: find all
+
+activate DB
+
+DB --> BE:
+
+deactivate DB
+
+  <-- BE: sends message of success to client
+
+
+else user unauthorized
+
+  <-- BE: sends message to client informing of unauthorized access
+
+
+else  database unavailable
+
+  <-- BE: sends message to client informing of database unavailability
+
+end
+
+
+@enduml
