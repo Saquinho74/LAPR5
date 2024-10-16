@@ -1,0 +1,76 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "                          " as sys
+participant "<<application>>\nRegisterHealthcareController" as ctrl
+participant "<<service>>\nRegisterHealthcareService" as svc
+participant "RegisterHealthcareDTO" as dto
+participant "RegisterHealthcareMapper" as mapper
+participant "<<domain>>\nHealthcareApplication" as app
+participant "HealthcareApplicationRepository" as repo <<repository>>
+participant "EmailService" as email
+
+activate sys
+
+sys -> ctrl: Register for healthcare application
+
+activate ctrl
+
+ctrl -> svc: Forward registration details
+
+activate svc
+
+svc -> dto: Create RegisterHealthcareDTO from registration details
+activate dto
+
+dto --> svc: RegisterHealthcareDTO created
+deactivate dto
+
+svc -> mapper: Map DTO to domain
+activate mapper
+
+mapper -> app : create Application entity from DTO
+activate app
+
+app --> mapper : Application entity created
+
+deactivate app
+
+mapper --> svc: Application entity mapped
+deactivate mapper
+
+svc -> repo: Store patient data
+activate repo
+
+repo --> svc: Data stored
+
+deactivate repo
+
+alt Email sent successfully
+    svc -> email: Send verification email
+    activate email
+    email --> svc: Verification email sent
+    deactivate email
+    svc --> ctrl: Registration successful
+    
+    ctrl --> sys: Registration successful
+    
+else Email sending failed
+    svc -> email: Send verification email
+    activate email
+    
+    email --> svc: Email sending failed
+    deactivate email
+    svc --> ctrl: Registration unsuccessful, email sending failed
+    
+    ctrl --> sys: Registration unsuccessful, email sending failed
+end
+deactivate svc
+
+deactivate ctrl
+
+deactivate sys
+
+@enduml
