@@ -1,0 +1,28 @@
+@startuml Process View - Level 2
+
+autonumber
+skinparam packageStyle rect
+
+title Retrieve Resources
+
+participant "       " as DAM <<component>>
+
+-> DAM: GET resources/{...}
+
+activate DAM
+
+alt resources retrieved
+
+  <-- DAM: sends message to client informing of unauthorized access
+
+else unauthorized
+
+  <-- DAM: sends message to client informing of unauthorized access
+
+else database unavailable
+
+  <-- DAM: sends message to client informing of database unavailability
+
+end
+
+@enduml

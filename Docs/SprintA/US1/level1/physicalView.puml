@@ -1,0 +1,32 @@
+﻿@startuml
+autonumber
+actor "Admin" as admin
+participant "<<System(C4)>>\n Healthcare System" as sys
+participant "External Email API" as email
+participant "External IAM System" as iam
+
+activate admin
+admin -> sys: Requests to register new backoffice user
+activate sys
+sys --> admin: Requests to provide user details
+deactivate sys
+    admin -> sys: Provides user details (first name, last name, email, phone number, and role)
+activate sys
+sys -> sys: Validates user details
+alt user details are valid
+    sys -> email: Sends an email for password setup
+    activate email
+    email --> sys: Password setup correctly
+    deactivate email
+    sys -> iam: Registers user in IAM system
+    activate iam
+    
+    iam --> sys: User registration successful
+    deactivate iam
+    sys --> admin: User registration successful
+else user details are invalid
+    sys --> admin: User registration failed
+deactivate sys
+end
+
+@enduml

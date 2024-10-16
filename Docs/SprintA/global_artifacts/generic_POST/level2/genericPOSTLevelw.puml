@@ -1,0 +1,40 @@
+@startuml Process View - Level 1
+
+autonumber
+skinparam packageStyle rect
+
+title Create Resource
+
+participant "        " as DAM <<component>>
+
+-> DAM: POST resources/{...}
+
+activate DAM
+
+alt resource Created
+
+  <-- DAM: sends message of resource created successfully
+
+else invalid input
+
+  <-- DAM: sends message of invalid input
+
+else unauthorized
+
+  <-- DAM: sends message of unauthorized
+
+else necessary resource not found
+
+  <-- DAM: sends message of necessary resource not found
+
+else resource already exists
+
+  <-- DAM: sends message of resource already exists
+
+else database unavailable
+
+  <-- DAM: sends message of database unavailable
+
+end
+
+@enduml

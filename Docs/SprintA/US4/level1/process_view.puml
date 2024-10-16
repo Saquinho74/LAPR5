@@ -1,0 +1,42 @@
+﻿@startuml
+'autonumber
+actor Patient as pat
+participant "<<System(C4)>>\nSystem" as sys
+
+title Process View - Level 1
+
+activate pat
+
+pat -> sys: request to update profile
+
+activate sys
+
+sys --> pat: shows current profile details (e.g., name, contact info, preferences) \nand asks if wants to update
+
+alt if wants to update
+
+pat -> sys: edits and submits updated profile details
+
+
+
+alt sensitive data (e.g., email) is changed
+    sys --> pat: prompts for additional verification (e.g., confirmation email)
+    pat -> sys: completes verification (e.g., confirms email change)
+end
+
+sys --> sys: verifies and updates profile details
+sys --> sys: log changes for audit purposes
+
+sys --> pat: shows success message (profile updated)
+
+
+else if does not want to update
+
+sys --> pat: shows cancel message (profile not updated)
+
+end
+
+deactivate sys
+deactivate pat
+
+@enduml

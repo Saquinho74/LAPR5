@@ -1,0 +1,28 @@
+@startuml Process View - Level 1
+
+autonumber
+skinparam packageStyle rect
+
+title Get Resources
+
+participant "System" as RDG <<system (C4)>>
+
+-> RDG: GET resources/{...}
+
+activate RDG
+
+alt resources retrieved
+
+  <-- RDG: sends message to client with resources
+
+else unauthorized
+
+  <-- RDG: sends message to client informing of unauthorized access
+
+else database unavailable
+
+  <-- RDG: sends message to client informing of database unavailability
+
+end
+
+@enduml

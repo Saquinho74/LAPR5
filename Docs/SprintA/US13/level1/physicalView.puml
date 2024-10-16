@@ -1,0 +1,19 @@
+﻿@startuml
+autonumber
+actor Admin as admin
+participant "<<System(C4)>>\nHealthcare System" as sys
+
+activate admin
+admin -> sys: Request to edit a staff profile
+activate sys
+sys --> admin: Shows list of staff profiles
+deactivate sys
+admin -> sys: Selects a profile
+activate sys
+sys --> admin: Shows editable fields
+deactivate sys
+admin -> sys: Edits profile and saves profile
+activate sys
+sys --> admin: Shows success message
+deactivate sys
+@enduml

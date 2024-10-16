@@ -1,0 +1,72 @@
+﻿@startuml
+autonumber
+participant "                       " as sys
+participant "<<application>>\nPatientController" as ctrl
+participant "<<service>>\nPatientService" as serv
+participant "PatientDTO" as dto
+participant "PatientMapper" as map
+participant "<<domain>>\nPatient" as patient
+participant "Repository" as repo <<repository>>
+
+title Process View Backend Container - Level 3 (Update Patient Profile)
+
+activate sys
+
+sys -> ctrl : GET /patientProfile (fetch current profile details)
+activate ctrl
+
+ctrl -> serv : getPatientProfile(patientId)
+activate serv
+
+serv -> repo : findPatientById(patientId)
+activate repo
+repo --> serv : returns patient details
+deactivate repo
+
+serv --> ctrl : returns patient profile details
+deactivate serv
+
+ctrl --> sys : returns current patient profile details (name, contact info, preferences)
+deactivate ctrl
+
+sys -> ctrl : PUT /updateProfile (with updated details)
+activate ctrl
+
+alt verification process is successful
+    ctrl -> serv : verify and update patient profile
+    activate serv
+
+    serv -> dto : create PatientDTO from updated details
+    activate dto
+    dto --> serv : PatientDTO created
+    deactivate dto
+
+    serv -> map : map DTO to domain entity
+    activate map
+
+    map -> patient : create/update Patient entity
+    activate patient
+    patient --> map : Patient entity updated
+    deactivate patient
+
+    map --> serv : Patient entity mapped
+    deactivate map
+
+    serv -> repo : save updated patient profile in database
+    activate repo
+    repo --> serv : patient profile updated successfully
+    deactivate repo
+
+    serv --> ctrl : profile update success
+    deactivate serv
+
+    ctrl --> sys : returns success message
+    ctrl --> sys : log changes for audit purposes
+else error in the verification process
+    ctrl --> sys : returns error message
+    deactivate ctrl
+end
+
+deactivate sys
+
+@enduml
