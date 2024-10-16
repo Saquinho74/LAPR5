@@ -1,0 +1,124 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "FrontEnd" as sys
+participant "<<application>>\nOperationTypeController" as ctrl
+participant "<<service>>\nOperationTypeService" as serv
+participant "OperationTypeDTO" as dto
+participant "OperationTypeMapper" as map
+participant "<<domain>>\nOperationType" as operation
+participant "DataBase" as repo <<repository>>
+participant "Planning Module" as planning
+
+title Process View Backend Container - Level 3
+
+activate sys
+
+
+sys -> ctrl : GET /operationTypes 
+
+activate ctrl
+
+ctrl --> sys: returns list of operation types
+
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
+
+
+
+
+
+deactivate repo
+
+
+deactivate serv
+
+
+alt admin wants to deactivate
+
+sys -> ctrl : PUT /deactivateOperationType
+
+ctrl -> serv: updateOperationType(operationTypeDTO)
+
+activate serv
+
+alt deactivate is successful
+
+    serv -> map: mapDTOToOperationType(operationTypeDTO)
+
+    activate map
+
+    map --> serv: returns mapped Operation Type object
+
+    deactivate map
+
+    serv -> repo: save(edited operation type)
+
+    activate repo
+
+    repo --> serv: operation type edited type in DB
+
+    deactivate repo
+
+    serv --> ctrl: operation type updated
+
+    deactivate serv
+
+    ctrl --> sys: returns success message
+
+else deactivation cancelled
+
+    ctrl --> sys: returns error message
+
+end
+
+else admin wants to delete
+
+alt deletion is successful
+
+sys -> ctrl : DELETE /operation (request to delete operation)
+
+    ctrl -> serv: deleteOperation(operationId)
+
+    activate serv
+
+    serv -> repo: removeOperationById(operationId)
+
+    activate repo
+
+    repo --> serv: operation deleted from DB
+
+    deactivate repo
+
+    serv --> ctrl: deletion successful
+
+    deactivate serv
+
+    ctrl --> sys: returns success message (operation deleted)
+
+    sys -> planning: notify deletion to Planning Module
+
+    activate planning
+
+    planning --> sys: confirmation of deletion received
+
+    deactivate planning
+
+else deletion cancelled
+
+    ctrl --> sys: returns cancellation message
+
+    deactivate ctrl
+
+end
+end
+deactivate sys
+deactivate ctrl
+
+@enduml
