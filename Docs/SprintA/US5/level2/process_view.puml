@@ -1,0 +1,55 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Patient as pa
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as BackEnd
+participant "EmailService" as es
+
+
+activate pa
+
+pa -> sys: asks to delete his account
+
+activate sys
+
+sys -> BackEnd: send confirmation email to the patient before\n proceeding with account deletion
+activate BackEnd
+
+BackEnd-> es: send confirmation email 
+
+deactivate BackEnd
+activate es
+
+
+
+es --> pa: sends a confirmation email
+
+deactivate es
+
+deactivate sys
+
+pa -> sys: confirms of deletion
+activate sys
+
+alt confirmation received
+
+    sys -> BackEnd : DELETE /patient (with patient ID)
+
+    activate BackEnd
+
+    BackEnd --> sys : returns success message (patient deleted)
+
+    deactivate BackEnd
+
+    sys --> pa: shows success message (operation request removed)
+
+
+
+else deletion cancelled
+
+    sys --> pa: shows cancellation message
+
+end
+@enduml
