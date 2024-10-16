@@ -3,10 +3,9 @@
 participant FrontEnd as fe
 participant "PatientController" as ctrl
 participant "PatientService" as serv
-participant "PatientDTO" as dto
-participant "PatientMapper" as map
 participant "PatientAccount" as operation
-participant "Repository" as repo <<repository>>
+participant "DataBase" as repo <<repository>>
+participant "Planning Module" as planning
 
 participant "EmailService" as es
 
@@ -27,46 +26,38 @@ deactivate ctrl
 fe -> ctrl: confirmation of deletion
 activate ctrl
 
-alt verification process is successful
 
-ctrl -> ctrl: request account deletion
-activate ctrl
 
-ctrl -> serv: process account deletion
-activate serv
+alt deletion is successful
 
-serv -> dto: create PatientDTO
-activate dto
-dto --> serv: PatientDTO created
-deactivate dto
+fe -> ctrl : DELETE /patient (request to delete operation)
 
-serv -> map : map DTO to domain
-activate map
-map -> operation : create Patient entity from DTO
-activate operation
-operation --> map : Patient entity created
-deactivate operation
-map --> serv : mapped to Operation entity
-deactivate map
+    ctrl -> serv: deletePatient(patientId)
 
-serv -> serv: log the action for GDPR compliance
+    activate serv
 
-serv -> es: save the deletion in database
-activate es
-es --> serv: account deletion successfully
-deactivate es
+    serv -> repo: removePatientById(patientId)
 
-serv --> ctrl: account deletion processed
-deactivate serv
+    activate repo
 
-ctrl --> ctrl: account deletion confirmed
-deactivate ctrl
+    repo --> serv: patient deleted from DB
 
-ctrl --> fe: all personal data is deleted from the system
-else error in the verification process
+    deactivate repo
 
-ctrl --> fe: shows message of failure of the verification process
+    serv --> ctrl: deletion successful
 
-deactivate ctrl
+    deactivate serv
+
+    ctrl --> fe: returns success message (operation deleted)
+
+
+
+else deletion cancelled
+
+    ctrl --> fe: returns cancellation message
+
+    deactivate ctrl
+
 end
+
 @enduml

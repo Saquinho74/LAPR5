@@ -13,9 +13,15 @@ pa -> fe: asks to delete his account
 
 activate fe
 
-fe -> es: send confirmation email to the patient before\n proceeding with account deletion
+fe -> be: send confirmation email to the patient before\n proceeding with account deletion
+activate be
 
+be-> es: send confirmation email 
+
+deactivate be
 activate es
+
+
 
 es --> pa: sends a confirmation email
 
@@ -23,7 +29,7 @@ deactivate es
 
 deactivate fe
 
-pa -> fe: confirmation of deletion
+pa -> fe: confirms of deletion
 activate fe
 
 fe -> be: request account deletion
