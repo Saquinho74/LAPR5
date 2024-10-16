@@ -1,0 +1,47 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as doc
+participant "<<System(C4)>>\nSystem" as sys
+
+title Process View - Level 1
+
+
+activate doc
+
+doc -> sys: request to delete an operation type request
+
+activate sys
+
+sys --> doc: shows list of operations and asks to select one
+doc -> sys: selects an operation to delete or deactivate
+
+sys-->doc: asks if admin want to deactivate or delete the operation type
+
+alt admin wants to deactivate
+
+sys --> doc: shows confirmation prompt for deactivation
+
+
+alt confirmation received
+    sys --> doc: shows success message (operation request inactive)
+else deletion cancelled
+    sys --> doc: shows cancellation message
+end
+
+else admin wants to delete
+
+
+sys --> doc: shows confirmation prompt for deletion
+
+alt confirmation received
+    sys --> doc: shows success message (operation request removed)
+else deletion cancelled
+    sys --> doc: shows cancellation message
+end
+end
+deactivate sys
+deactivate doc
+
+@enduml

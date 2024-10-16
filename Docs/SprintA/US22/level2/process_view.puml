@@ -1,0 +1,83 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as doc
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as BackEnd
+
+title Process View - Level 2
+
+
+activate doc
+
+doc -> sys: request to delete an operation type request
+
+activate sys
+
+sys -> BackEnd : GET /operationTypes
+
+activate BackEnd
+
+BackEnd --> sys : returns list of operation types 
+
+deactivate BackEnd
+
+sys --> doc: shows list of operation types and asks to select one
+
+doc -> sys: selects an operation to delete or deactivate
+
+sys-->doc: asks if admin want to deactivate or delete the operation type
+
+alt admin wants to deactivate
+
+sys --> doc: shows confirmation prompt for deactivation
+
+alt confirmation received
+
+    sys -> BackEnd : PUT /deactivateOperationType
+
+    activate BackEnd
+
+    BackEnd --> sys : returns success message (operation deactivated)
+
+    deactivate BackEnd
+
+    sys --> doc: shows success message (operation type inactive)
+
+
+
+else deletion cancelled
+
+    sys --> doc: shows cancellation message
+
+end
+
+else admin wants to delete
+
+sys --> doc: shows confirmation prompt for deletion
+
+
+alt confirmation received
+
+    sys -> BackEnd : DELETE /operation (with operation ID)
+
+    activate BackEnd
+
+    BackEnd --> sys : returns success message (operation deleted)
+
+    deactivate BackEnd
+
+    sys --> doc: shows success message (operation request removed)
+
+
+else deletion cancelled
+
+    sys --> doc: shows cancellation message
+
+end
+end
+deactivate sys
+deactivate doc
+
+@enduml

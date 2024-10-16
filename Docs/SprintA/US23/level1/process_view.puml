@@ -1,0 +1,37 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as doc
+participant "<<System(C4)>>\nSystem" as sys
+title Process View - Level 1 (Search and Filter Operation Types)
+
+activate doc
+
+doc -> sys: request to list or search operation types
+activate sys
+
+alt if user is searching for a specific operation type
+  doc -> sys: enters operation type ID for search
+  sys --> doc: shows operation type details (name, required, staff, and estimated duration)
+
+
+else
+
+sys --> doc: shows search filters (name, required, staff, and estimated duration)
+doc -> sys: selects search filter and performs search
+
+sys --> doc: shows list of operation types based on search/filter criteria
+
+
+doc -> sys: selects an operation type
+
+sys --> doc: shows operation request types (name, required, staff, and estimated duration)
+
+
+end
+deactivate sys
+
+
+
+@enduml
