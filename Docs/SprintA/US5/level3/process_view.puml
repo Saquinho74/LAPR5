@@ -1,0 +1,63 @@
+﻿@startuml
+'autonumber
+participant FrontEnd as sys
+participant "<<application>>\nPatientController" as ctrl
+participant "<<service>>\nPatientService" as serv
+participant "PatientAccount" as operation
+participant "DataBase" as repo <<repository>>
+
+participant "EmailService" as es
+
+
+activate sys
+
+sys -> ctrl: asks to delete his account
+activate ctrl
+
+ctrl -> es: send confirmation email to the patient 
+activate es
+
+deactivate es
+
+deactivate ctrl
+
+sys -> ctrl: confirmation of deletion
+activate ctrl
+
+
+
+alt deletion is successful
+
+sys -> ctrl : DELETE /patient 
+
+    ctrl -> serv: deletePatient(patientId)
+
+    activate serv
+
+    serv -> repo: removePatientById(operationId)
+
+    activate repo
+
+    repo --> serv: patient account deleted from DB
+
+    deactivate repo
+
+    serv --> ctrl: deletion successful
+
+    deactivate serv
+
+    ctrl --> sys: returns success message (patient account deleted)
+
+
+else deletion cancelled
+
+    ctrl --> sys: returns cancellation message
+
+    deactivate ctrl
+
+end
+
+deactivate sys
+deactivate ctrl
+
+@enduml
