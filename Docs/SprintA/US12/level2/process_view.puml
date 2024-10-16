@@ -1,0 +1,38 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as be
+
+activate admin
+admin -> sys: Request to create a staff profile
+activate sys 
+
+
+sys --> admin: Request Admin to provide staff details
+deactivate sys
+admin -> sys: Provide staff details (first name, last name, email,phone number and specialization)
+activate sys
+sys -> be: Post/request to create a staff profile
+
+activate be 
+be -> be: Check if contact information is unique
+
+alt contact information is unique
+
+be -> be: Create staff profile and persists to database
+be --> sys: Staff profile created successfully
+deactivate be
+sys --> admin: Staff profile created successfully
+else contact information is not unique
+activate be 
+be --> sys: ERROR: Contact information were not unique
+deactivate be
+sys --> admin: Shows error message with the information that was not unique
+end
+deactivate sys
+
+
+@enduml
