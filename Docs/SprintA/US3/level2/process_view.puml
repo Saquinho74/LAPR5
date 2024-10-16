@@ -3,8 +3,8 @@
 
 autonumber
 actor Patient as patient
-participant "FrontEnd" as front
-participant "BackEnd" as back
+participant "<<Container(C4)>>\nFrontEnd" as front
+participant "Container(C4)>>\nBackend" as back
 participant "External IAM System" as iam
 participant "Email Service" as email
 

@@ -3,7 +3,7 @@
 
 autonumber
 actor Patient as patient
-participant "<<System(C4)>>\nHealthcare System" as sys
+participant "<<System(C4)>>\nSystem" as sys
 participant "External IAM System" as iam
 participant "Email Service" as email
 
