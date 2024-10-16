@@ -1,42 +1,38 @@
-@startuml Process View - Level 3
-
+@startuml
 autonumber
 skinparam packageStyle rect
 
-title GET resources
+title Back-End get resources - Logical View LV3
 
-participant "Back-End" as BE <<component>>
-database "DataBase" as DB <<component>>
+participant AspnetRouter as router
+participant ResourceController as ctrl
+participant ResourceService as service
+participant ResourceDTO as dto
+participant ResourceMapper as mapper
+participant ResourceRepository as repo
+participant Resource as domain
 
--> BE: GET resources
+-> router: GET /resource
+activate router
+router -> ctrl: getAllResources()
+activate ctrl
+ctrl -> service: getAllResources()
+activate service
+service -> repo: fetchAll()
+activate repo
+repo --> service: returns all resource entities
+deactivate repo
 
-alt user authorized
+service -> mapper: mapEntitiesToDTOs()
+activate mapper
+mapper --> service: returns mapped resource DTOs
+deactivate mapper
 
-'Find All'
+service --> ctrl: returns resource DTOs
+deactivate service
 
-activate BE
-
-BE -> DB: find all
-
-activate DB
-
-DB --> BE:
-
-deactivate DB
-
-  <-- BE: sends message of success to client
-
-
-else user unauthorized
-
-  <-- BE: sends message to client informing of unauthorized access
-
-
-else  database unavailable
-
-  <-- BE: sends message to client informing of database unavailability
-
-end
-
+ctrl --> router: returns resource DTOs
+deactivate ctrl
+deactivate router
 
 @enduml

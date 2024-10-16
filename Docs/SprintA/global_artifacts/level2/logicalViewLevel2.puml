@@ -7,12 +7,17 @@ component "IAM_API" as IAM_API
 component "WebUI" as WebUI 
 
 component SARM<<System>> as SARM{
-    component "Web Application" <<BackOffice>> as BO
+    component "FrontEnd" <<component>> as FE
+    component "Auth" <<component>> as Auth
     component "Planning/Optimization" <<Planning>> as PO
  
- WebUI -down-0 BO 
- BO -right-(0 PO
- BO -down-( IAM_API
+ WebUI -down-0 FE 
+
+
+Auth_API - FE
+"Auth" -( Auth_API
+
+
  
  
  }

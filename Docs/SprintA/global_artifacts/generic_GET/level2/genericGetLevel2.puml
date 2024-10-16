@@ -1,28 +1,42 @@
-@startuml Process View - Level 2
+@startuml Process View - Level 3
 
 autonumber
 skinparam packageStyle rect
 
-title Retrieve Resources
+title GET resources - Logical View LV2
 
-participant "       " as DAM <<component>>
+participant "Front-End" as FE <<C4 Container>>
+participant "Back-End" as BE <<C4 Container>>
+database "DataBase" as DB <<C4 Container>>
 
--> DAM: GET resources/{...}
+note over FE
+A mãe do tua lipa é gira ;) Also, this diagram
+is a generic representation of any database asset
+end note
 
-activate DAM
+-> FE: List All of resources
+activate FE
+FE -> BE: GET /resource
+activate BE
+alt user authorized
 
-alt resources retrieved
+BE -> DB: Fetch all resources
+activate DB
+DB --> BE: Returns all resources
+deactivate DB
 
-  <-- DAM: sends message to client informing of unauthorized access
+BE --> FE: Returns all resources
+deactivate BE
+<-- FE : Displays all resources
 
-else unauthorized
+else user unauthorized
 
-  <-- DAM: sends message to client informing of unauthorized access
+<-- FE: Sends message to client informing of unauthorized access
 
 else database unavailable
+<-- FE: Sends message to client informing of database unavailability
+end alt
+deactivate FE
 
-  <-- DAM: sends message to client informing of database unavailability
-
-end
 
 @enduml
