@@ -1,0 +1,62 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as doc
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackEnd" as backEnd
+activate doc
+
+title Process View - Level 2 (Search and Filter Operations)
+
+doc -> sys: request to list/search operation types
+
+activate sys
+
+alt if user is searching for a specific operation request
+  doc -> sys: enters operation type ID for search
+  sys -> backEnd : GET /operationTypeDetails (for selected ID)
+
+  activate backEnd
+
+  backEnd --> sys : returns operation type details (name, required, staff, and estimated duration)
+
+  deactivate backEnd
+
+  sys --> doc: shows operation type details
+
+else
+
+  sys -> backEnd : GET /operationTypes (with search criteria)
+
+  activate backEnd
+
+  backEnd --> sys : returns list of operation types based on search/filter criteria
+
+  deactivate backEnd
+
+  sys --> doc: shows list of operation types with details (name, required, staff, and estimated duration)
+
+  deactivate sys
+
+  doc -> sys: selects an operation type
+
+  activate sys
+
+  sys -> backEnd : GET /operationTypeDetails (for selected operation type)
+
+  activate backEnd
+
+  backEnd --> sys : returns operation type details (name, required, staff, and estimated duration)
+
+  deactivate backEnd
+
+  sys --> doc: shows operation type details
+
+  deactivate sys
+
+end
+
+deactivate sys
+
+@enduml

@@ -1,0 +1,54 @@
+﻿@startuml
+autonumber
+participant "FrontEnd" as sys
+participant "<<application>>\nOperationTypeController" as ctrl
+participant "<<service>>\nOperationTypeService" as serv
+participant "OperationTypeDTO" as dto
+participant "OperationTypeMapper" as map
+participant "<<domain>>\nOperationType" as operation
+participant "Repository" as repo <<repository>>
+
+title Process View Backend Container - Level 3
+
+activate sys
+
+sys -> ctrl : request to list/search operation types
+activate ctrl
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+
+
+end note
+
+deactivate repo
+
+deactivate serv
+
+ctrl --> sys : returns list of operation types
+deactivate ctrl
+
+alt doctor selects an operation to view
+  sys -> ctrl : GET /operationTypeDetails (operation type ID)
+  activate ctrl
+
+  ctrl -> serv : getOperationTypeDetails(operationTypeId)
+  activate serv
+
+  serv -> repo : findOperationTypeById(operationId)
+  activate repo
+
+  repo --> serv : returns operation type details
+  deactivate repo
+
+  serv --> ctrl : operation type details
+  deactivate serv
+
+  ctrl --> sys : returns operation type details
+  deactivate ctrl
+
+  deactivate ctrl
+  deactivate sys
+end
+
+@enduml
