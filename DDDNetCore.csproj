@@ -13,5 +13,21 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Compile Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <EmbeddedResource Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <Content Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <None Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+  </ItemGroup>
 
 </Project>
