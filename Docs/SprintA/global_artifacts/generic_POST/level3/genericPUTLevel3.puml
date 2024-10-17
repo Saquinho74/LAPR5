@@ -12,6 +12,13 @@ participant ResourceMapper as mapper
 participant ResourceRepository as repo
 participant Resource as domain
 
+
+
+note over router
+This diagram represents a PUT request to add a new resource to the database.
+end note
+
+
 -> router: PUT /resource
 activate router
 router -> ctrl: createResource(resourceDTO)

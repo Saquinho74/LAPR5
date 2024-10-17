@@ -1,6 +1,0 @@
-﻿@startuml
-
-  UI -down- [<<System>>\nHospital]
-  API -down- [<<System>>\nHospital]
-
-@enduml

@@ -2,7 +2,7 @@
 autonumber
 skinparam packageStyle rect
 
-title Back-End get resources - Logical View LV3
+title Back-End GET resources - Logical View LV3
 
 participant AspnetRouter as router
 participant ResourceController as ctrl
@@ -10,21 +10,31 @@ participant ResourceService as service
 participant ResourceDTO as dto
 participant ResourceMapper as mapper
 participant ResourceRepository as repo
-participant Resource as domain
+
+
+note over router
+This diagram is a generic representation of any database asset
+end note
+
 
 -> router: GET /resource
 activate router
+
 router -> ctrl: getAllResources()
 activate ctrl
+
 ctrl -> service: getAllResources()
 activate service
-service -> repo: fetchAll()
+
+service -> repo: fetchAllResources()
 activate repo
-repo --> service: returns all resource entities
+
+repo --> service: returns resource entities
 deactivate repo
 
-service -> mapper: mapEntitiesToDTOs()
+service -> mapper: mapResourcesToDTOs(resource entities)
 activate mapper
+
 mapper --> service: returns mapped resource DTOs
 deactivate mapper
 
@@ -33,6 +43,8 @@ deactivate service
 
 ctrl --> router: returns resource DTOs
 deactivate ctrl
+
+ <-- router : returns resource DTOs
 deactivate router
 
 @enduml
