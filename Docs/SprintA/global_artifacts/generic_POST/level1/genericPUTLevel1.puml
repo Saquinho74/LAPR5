@@ -7,7 +7,7 @@ title Create Resource
 
 participant "System" as RDG <<system (C4)>>
 
--> RDG: POST resources/{...}
+-> RDG: User fills out form with resource details
 
 activate RDG
 

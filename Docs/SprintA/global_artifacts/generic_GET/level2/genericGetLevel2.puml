@@ -10,8 +10,7 @@ participant "Back-End" as BE <<C4 Container>>
 database "DataBase" as DB <<C4 Container>>
 
 note over FE
-A mãe do tua lipa é gira ;) Also, this diagram
-is a generic representation of any database asset
+This diagram is a generic representation of any database asset
 end note
 
 -> FE: List All of resources
