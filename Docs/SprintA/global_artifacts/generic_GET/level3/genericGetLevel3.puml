@@ -27,7 +27,14 @@ ctrl -> service: getAllResources()
 activate service
 
 service -> repo: fetchAllResources()
+
 activate repo
+
+
+repo -> : Fetch all resources
+
+repo <-- : returns resource entities
+
 
 repo --> service: returns resource entities
 deactivate repo
