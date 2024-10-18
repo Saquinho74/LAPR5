@@ -31,5 +31,6 @@ namespace DDDSample1.Domain.OperationType
         public Guid AsGuid(){
             return (Guid) base.ObjValue;
         }
+        
     }
 }

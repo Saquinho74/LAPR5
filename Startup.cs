@@ -16,6 +16,7 @@ using DDDSample1.Domain.Products;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Infrastructure.OperationTypes;
+using DDDSample1.Mappers;
 
 namespace DDDSample1
 {
@@ -78,6 +79,8 @@ namespace DDDSample1
 
             services.AddTransient<IFamilyRepository,FamilyRepository>();
             services.AddTransient<FamilyService>();
+
+            services.AddTransient<IOperationTypeMapper, OperationTypeMapper>();
             
             services.AddTransient<IOperationTypeRepository,OperationTypeRepository>();
             services.AddTransient<OperationTypeService>();
