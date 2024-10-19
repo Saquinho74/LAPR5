@@ -4,10 +4,15 @@
 autonumber
 actor Doctor as doc
 participant "<<Container(C4)>>\nFrontEnd" as sys
-participant "<<Container(C4)>>\nBackend" as Backend
+participant "<<Container(C4)>>\nBackend" as BE
+participant "DataBase" as DB <<C4 Container>>
 activate doc
 
 title Process View - Level 2
+
+note right of doc
+  The requested actions ( GET ) and ( POST ) are already documented in global documentation
+end note
 
 
 doc -> sys: request to create a new operation
@@ -15,13 +20,22 @@ doc -> sys: request to create a new operation
 activate sys
 
 
-sys -> "Backend" : GET /patients
+sys -> BE : GET /patients
 
-activate "Backend"
+activate BE
 
-"Backend" --> sys : returns list of patients
+BE -> DB: Fetch all patients
+activate DB
+DB --> BE: Returns all patients
+deactivate DB
 
-deactivate "Backend"
+
+
+BE --> sys : returns list of patients
+
+deactivate BE
+
+
 
 
 sys --> doc: shows list of patients and asks to select one
@@ -30,32 +44,38 @@ sys --> doc: shows list of patients and asks to select one
 doc -> sys: selects a patient
 
 
-sys -> "Backend" : GET /operationTypes
+sys -> BE : GET /operationTypes
 
-activate "Backend"
+activate BE
 
-"Backend" --> sys : returns list of operation types
+BE -> DB: Fetch all operationTypes
+activate DB
+DB --> BE: Returns all operationTypes
+deactivate DB
 
-deactivate "Backend"
+
+BE--> sys : returns list of operation types
+
+deactivate BE
 
 sys --> doc: shows list of operation types and asks to select one
 
 
 
 
-deactivate "Backend"
+deactivate BE
 
 doc -> sys: selects an operation type
 
 
 
-sys -> "Backend" : find priority options
+sys -> BE: find priority options
 
-activate "Backend"
+activate BE
 
-"Backend" --> sys : returns list of priority options
+BE --> sys : returns list of priority options
 
-deactivate "Backend"
+deactivate BE
 
 sys --> doc : shows list of priority options and asks to select one
 
@@ -79,14 +99,14 @@ doc -> sys: defines a suggested deadline
 
 
 
-sys -> "Backend" : POST /operations ( with given data )
+sys -> BE: POST /operations ( with given data )
 
-activate "Backend"
+activate BE
 
 alt verification process is successful
 
 
-"Backend" --> sys : returns success message
+BE --> sys : returns success message
 
 
   sys --> doc: shows data of the operation request \n(patient ID, doctor ID, type, deadline, priority)
@@ -94,9 +114,9 @@ alt verification process is successful
 
 else error in the verification process
 
-"Backend" --> sys : returns success message
+BE --> sys : returns success message
 
-deactivate "Backend"
+deactivate BE
 
   sys --> doc: shows message of failure of the verification process
 

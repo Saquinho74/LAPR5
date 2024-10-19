@@ -16,7 +16,7 @@ sys -> ctrl : request to list/search operation requests
 activate ctrl
 
 note right of ctrl
-  The requested actions ( GET ) are already documented in other user story
+  The requested actions ( GET ) are already documented in global documentation
 
 
 end note

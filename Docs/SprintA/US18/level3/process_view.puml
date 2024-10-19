@@ -22,7 +22,7 @@ ctrl --> sys: returns list of operations
 
 
 note right of ctrl
-  The requested actions ( GET ) are already documented in other user story
+  The requested actions ( GET ) are already documented in global documentation
 
 
 end note

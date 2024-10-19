@@ -15,11 +15,11 @@ participant Resource as domain
 
 
 note over router
-This diagram represents a PUT request to add a new resource to the database.
+This diagram represents a POST request to add a new resource to the database.
 end note
 
 
--> router: PUT /resource {resource data}
+-> router: POST /resource {resource data}
 activate router
 router -> ctrl: createResource(resourceDTO)
 activate ctrl

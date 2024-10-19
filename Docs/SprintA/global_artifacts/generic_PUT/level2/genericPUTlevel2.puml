@@ -1,0 +1,51 @@
+@startuml Process View - Level 3
+
+autonumber
+skinparam packageStyle rect
+
+title PUT resources - Logical View LV2
+
+participant "Front-End" as FE <<C4 Container>>
+participant "Back-End" as BE <<C4 Container>>
+participant "DataBase" as DB <<C4 Container>>
+
+note over FE
+This diagram represents a PUT request to update an existing resource in the database.
+end note
+
+-> FE: User fills out form with updated resource details
+activate FE
+FE -> BE: PUT /resource/{id} {updated resource data}
+activate BE
+alt user authorized
+
+    BE -> DB: Update existing resource in the database
+    activate DB
+    DB --> BE: Returns success response (resource updated)
+    deactivate DB
+
+    BE --> FE: Returns success message (resource updated)
+    deactivate BE
+    <-- FE : Displays success message to user
+
+else user unauthorized
+    <-- FE: Sends message to client informing of unauthorized access
+
+else invalid input
+    <-- FE: Sends message to client informing of invalid input
+
+else resource not found
+    <-- FE: Sends message to client informing of resource not found
+
+else resource conflict
+    <-- FE: Sends message to client informing of resource conflict
+
+else database unavailable
+    <-- FE: Sends message to client informing of database unavailability
+
+deactivate
+
+end alt
+deactivate FE
+
+@enduml
