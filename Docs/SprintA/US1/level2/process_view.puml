@@ -14,14 +14,14 @@ admin -> sys: Requests to register new backoffice user
 activate sys
 sys --> admin: Requests to provide user details
 deactivate sys
-    admin -> sys: Provides user details (first name, last name, email, phone number, and role)
+    admin -> sys: Provides user details (first name, last name, email, phone number, role)
 activate sys
-sys -> be:GET/validate user details
+sys -> be:POST/registerUser{email, username, role, firstName, lastName, fullName}
 activate be
 
 alt user details are valid
 
-    be --> sys: User details are valid
+    be --> sys: returns user
     deactivate be
     
    
@@ -39,17 +39,21 @@ alt user details are valid
     
     deactivate be
     
-     sys -> be: POST/ create user profile
-        activate be
-        be -> be: persists user details to database
-        
-    sys -> iam: Registers user in IAM system
-    deactivate be
+    
+    sys -> be: Registers user in IAM system
+    activate be
+    be -> iam: Registers user in IAM system
             
     activate iam
     
-    iam --> sys: User registration successful
+    iam --> be: User registration successful
+   
+ 
     deactivate iam
+
+    be --> sys: User registration successful
+    deactivate be
+   
     sys --> admin: User registration successful
 else user details are invalid
     sys --> admin: ERROR: User registration failed
