@@ -1,0 +1,67 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "                          " as sys
+participant "<<application>>\nOperationController" as ctrl
+participant "<<service>>\nCreateService" as svc
+participant "CreateDTO" as dto
+participant "CreateMapper" as mapper
+participant "<<domain>>\nPatientProfile" as profile
+participant "Repository" as repo <<repository>>
+participant "IDGenerator" as idGen
+
+activate sys
+
+sys -> ctrl: POST / (with given data)
+activate ctrl
+
+alt Unique email and phone number
+
+  ctrl -> svc: verify email and phone number and create patient profile
+  activate svc
+    
+  svc -> dto: create CreateDTO from request data
+  activate dto
+    
+  dto --> svc: CreateDTO created
+  deactivate dto
+    
+  svc -> mapper: map DTO to domain
+  activate mapper
+    
+  mapper -> profile: create Patient Profile entity from DTO
+  activate profile
+
+  profile -> idGen: generate unique patient ID
+  activate idGen
+  
+  idGen --> profile: unique patient ID generated
+  deactivate idGen
+        
+  profile --> mapper: Patient Profile entity created
+  deactivate profile
+    
+  mapper --> svc: mapped to Patient Profile entity
+  deactivate mapper
+    
+  svc -> repo: save Patient Profile entity
+  activate repo
+    
+  repo --> svc: Patient Profile entity saved
+  deactivate repo
+    
+  svc --> ctrl: Patient Profile created
+  deactivate svc
+    
+  ctrl --> sys: returns Patient Profile created
+    
+else Email or phone number already exists
+  ctrl --> sys: returns error message
+    
+end
+
+deactivate ctrl
+deactivate sys
+
+@enduml
