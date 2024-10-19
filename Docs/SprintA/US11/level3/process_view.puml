@@ -1,0 +1,114 @@
+﻿@startuml
+autonumber
+participant "                          " as sys
+participant "<<application>>\nSearchController" as ctrl
+participant "<<service>>\nSearchService" as serv
+participant "SearchDTO" as dto
+participant "SearchMapper" as map
+participant "<<domain>>\nPatientProfile" as profile
+participant "Repository" as repo <<repository>>
+participant "AuditService" as audit
+
+title Process View Backend Container - Level 3
+
+activate sys
+
+sys -> ctrl : GET /searchPatientProfiles (with search criteria)
+
+activate ctrl
+ctrl -> serv : search patient profiles by attributes
+activate serv
+
+serv -> dto : create SearchDTO from request data
+activate dto
+dto --> serv : SearchDTO created
+deactivate dto
+
+serv -> map : map DTO to domain
+activate map
+map -> profile : create search criteria from DTO
+activate profile
+profile --> map : search criteria created
+deactivate profile
+map --> serv : mapped to search criteria
+deactivate map
+
+serv -> repo : search patient profiles in database
+activate repo
+repo --> serv : search results returned
+deactivate repo
+
+serv --> ctrl : search results
+deactivate serv
+ctrl --> sys : returns list of patient profiles
+deactivate ctrl
+
+sys -> ctrl : select patient profile from list
+activate ctrl
+
+ctrl -> serv : retrieve patient profile details
+activate serv
+
+serv -> repo : retrieve patient profile
+activate repo
+repo --> serv : patient profile retrieved
+deactivate repo
+
+serv -> dto : create DTO from patient profile
+activate dto
+dto --> serv : DTO created
+deactivate dto
+
+serv --> ctrl : returns patient profile DTO
+deactivate serv
+ctrl --> sys : returns patient profile DTO
+deactivate ctrl
+
+sys -> ctrl : edit or delete patient profile
+activate ctrl
+
+alt Edit profile
+  ctrl -> serv : update patient profile
+  activate serv
+  serv -> dto : create DTO for update
+  activate dto
+  dto --> serv : DTO created
+  deactivate dto
+  serv -> map : map DTO to domain
+  activate map
+  map -> profile : update Patient Profile entity
+  activate profile
+  profile --> map : Patient Profile entity updated
+  deactivate profile
+  map --> serv : mapped to Patient Profile entity
+  deactivate map
+  serv -> repo : save updated patient profile
+  activate repo
+  repo --> serv : updated patient profile saved
+  deactivate repo
+  serv --> ctrl : patient profile updated
+  deactivate serv
+else Delete profile
+  ctrl -> serv : validate deletion request
+  activate serv
+  serv -> dto : create DTO for deletion
+  activate dto
+  dto --> serv : DTO created
+  deactivate dto
+  serv -> repo : delete patient profile
+  activate repo
+  repo --> serv : patient profile deleted
+  deactivate repo
+  serv -> audit : log deletion for audit and compliance
+  activate audit
+  audit --> serv : deletion logged
+  deactivate audit
+  serv --> ctrl : patient profile deleted
+  deactivate serv
+end
+
+ctrl --> sys : returns success message
+deactivate ctrl
+
+deactivate sys
+@enduml

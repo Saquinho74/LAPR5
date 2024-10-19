@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDNetCore.Domain.OperationType
 {
     public class CreatingOperationTypeDto
     {

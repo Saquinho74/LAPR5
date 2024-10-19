@@ -15,9 +15,7 @@ activate sys
 
 sys -> ctrl : GET /patients
 note right of ctrl
-  The requested actions ( GET ) are already documented in other user story
-
-
+  The requested actions ( GET ) are already documented in global documentation
 end note
 
 activate ctrl
@@ -45,39 +43,25 @@ activate ctrl
 ctrl --> sys : returns list of priorities
 deactivate ctrl
 
+
+
+
 sys -> ctrl : POST /operations (with given data)
+
+
+
 activate ctrl
 
-alt verification process is successful
-  ctrl -> serv : verify and create operation
-  activate serv
+note right of ctrl
+  The requested actions ( POST ) are already documented in global documentation
 
-  serv -> dto : create OperationDTO from request data
-  activate dto
-  dto --> serv : OperationDTO created
-  deactivate dto
+end note
 
-  serv -> map : map DTO to domain
-  activate map
-  map -> operation : create Operation entity from DTO
-  activate operation
-  operation --> map : Operation entity created
-  deactivate operation
-  map --> serv : mapped to Operation entity
-  deactivate map
 
-  serv -> repo : save operation in database
-  activate repo
-  repo --> serv : operation saved successfully
-  deactivate repo
+ctrl --> sys : returns success message
 
-  serv --> ctrl : operation saved, success response
-  deactivate serv
 
-  ctrl --> sys : returns success message
-else error in the verification process
-  ctrl --> sys : shows message of failure of the verification process
-end
+
 
 deactivate ctrl
 deactivate sys

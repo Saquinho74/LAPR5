@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
+using System.Threading.Tasks;
+using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Shared;
 
-namespace DDDSample1.Domain.Products
+namespace DDDNetCore.Domain.Products
 {
     public class ProductService
     {

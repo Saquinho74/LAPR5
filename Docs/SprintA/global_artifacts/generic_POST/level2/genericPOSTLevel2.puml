@@ -1,0 +1,54 @@
+@startuml Process View - Level 3
+
+autonumber
+skinparam packageStyle rect
+
+title POST resources - Logical View LV2
+
+participant "Front-End" as FE <<C4 Container>>
+participant "Back-End" as BE <<C4 Container>>
+participant "DataBase" as DB <<C4 Container>>
+
+note over FE
+This diagram represents a POST request to add a new resource to the database.
+end note
+
+-> FE: User fills out form with resource details
+activate FE
+FE -> BE: POST /resource {resource data}
+activate BE
+alt user authorized
+
+    BE -> DB: Insert new resource into database
+    activate DB
+    DB --> BE: Returns success response
+    deactivate DB
+
+    BE --> FE: Returns success message
+    deactivate BE
+    <-- FE : Displays success message to user
+
+else user unauthorized
+
+    <-- FE: Sends message to client informing of unauthorized access
+
+else database unavailable
+
+    <-- FE: Sends message to client informing of database unavailability
+
+else invalid input
+
+    <-- FE: Sends message to client informing of invalid input
+
+else necessary resource not found
+
+    <-- FE: Sends message to client informing necessary resource not found
+
+else resource already exists
+
+    <-- FE: Sends message to client informing resource already exists
+
+end alt
+deactivate FE
+
+@enduml

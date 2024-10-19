@@ -1,18 +1,20 @@
+using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.OperationType;
+using DDDNetCore.Domain.Products;
+using DDDNetCore.Infraestructure.Categories;
+using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Products;
 using Microsoft.EntityFrameworkCore;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Products;
-using DDDSample1.Domain.Families;
-using DDDSample1.Domain.OperationType;
-using DDDSample1.Infrastructure.Categories;
-using DDDSample1.Infrastructure.OperationTypes;
-using DDDSample1.Infrastructure.Products;
 
-namespace DDDSample1.Infrastructure
+namespace DDDNetCore.Infraestructure
 {
-    public class DDDSample1DbContext : DbContext
+    public class DddSample1DbContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
+        
+        public DbSet<Domain.Operation.Operation> Operation { get; set; }
 
         public DbSet<Product> Products { get; set; }
 
@@ -20,7 +22,7 @@ namespace DDDSample1.Infrastructure
         
         public DbSet<OperationType> OperationTypes { get; set; }
 
-        public DDDSample1DbContext(DbContextOptions options) : base(options)
+        public DddSample1DbContext(DbContextOptions options) : base(options)
         {
 
         }

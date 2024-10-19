@@ -1,9 +1,8 @@
-﻿
-using System;
-using DDDSample1.Domain.Shared;
+﻿using System;
+using DDDNetCore.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDNetCore.Domain.OperationType
 {
     public class OperationTypeId : EntityId
     {

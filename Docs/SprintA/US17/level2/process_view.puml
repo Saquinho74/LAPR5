@@ -6,6 +6,7 @@ actor Doctor as doc
 participant " <<Container(C4)>>\n FrontEnd" as sys
 participant "<<Container(C4)>>\nBackEnd" as backEnd
 participant "Planning Module" as planning
+participant "<<Container(C4)>>\nDatabase" as DB
 
 title Process View - Level 2
 
@@ -21,6 +22,14 @@ sys -> backEnd : GET /operations (fetch operations by doctor)
 
 activate backEnd
 
+
+backEnd -> DB : Fetch all operations by doctor
+activate DB
+
+DB --> backEnd : Return all operations by doctor
+deactivate DB
+
+
 backEnd --> sys : returns list of operations created by doctor
 
 deactivate backEnd
@@ -32,8 +41,16 @@ doc -> sys: selects an operation to update
 
 
 sys -> backEnd : GET /operationDetails (for selected operation)
-
 activate backEnd
+backEnd -> DB : Fetch all operations by doctor
+activate DB
+
+DB --> backEnd : Return all operations by doctor
+
+deactivate DB
+
+
+
 
 backEnd --> sys : returns current operation details
 
@@ -51,7 +68,7 @@ activate backEnd
 
 alt verification process is successful
 
-    backEnd --> backEnd : check if doctor can update the operation
+    backEnd -> backEnd : check if doctor can update the operation
 
     backEnd --> sys: returns success message (operation updated)
 

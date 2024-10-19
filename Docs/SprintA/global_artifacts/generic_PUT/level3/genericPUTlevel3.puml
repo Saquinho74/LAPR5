@@ -1,0 +1,64 @@
+@startuml
+autonumber
+skinparam packageStyle rect
+
+title Back-End update resources - Logical View LV3 (PUT)
+
+participant AspnetRouter as router
+participant ResourceController as ctrl
+participant ResourceService as service
+participant ResourceDTO as dto
+participant ResourceMapper as mapper
+participant ResourceRepository as repo
+participant Resource as domain
+
+note over router
+This diagram represents a PUT request to update an existing resource.
+end note
+
+-> router: PUT /resource/{id} {updated resource data}
+activate router
+router -> ctrl: updateResource(id, resourceDTO)
+activate ctrl
+ctrl -> service: update(id, resourceDTO)
+activate service
+
+service -> repo: findById(id)
+activate repo
+repo --> service: returns existing resource
+deactivate repo
+
+alt resource found
+    service -> mapper: mapToDomain(resourceDTO)
+    activate mapper
+    mapper --> domain** : <<update>>
+    mapper --> service : returns updated domain
+    deactivate mapper
+
+    service -> service: validate(updated domain)
+    service -> repo: save(updated domain)
+    activate repo
+    repo --> service : returns updated domain
+    deactivate repo
+
+    service -> mapper: mapToDTO(updated domain)
+    activate mapper
+    mapper --> service : returns updated resourceDTO
+    deactivate mapper
+    service --> ctrl : returns updated resourceDTO
+
+    ctrl --> router : returns updated resourceDTO
+
+    <-- router  : returns success message
+else resource not found
+    service --> ctrl : returns error (resource not found)
+    deactivate service
+    ctrl --> router : returns 404 error
+    deactivate
+     <--  router: returns 404 error
+    deactivate service
+    deactivate ctrl
+    deactivate router
+end alt
+
+@enduml

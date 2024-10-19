@@ -1,0 +1,76 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "                          " as sys
+participant "<<application>>\nDeleteController" as ctrl
+participant "<<service>>\nDeleteService" as svc
+participant "Repository" as repo <<repository>>
+participant "AuditService" as audit
+
+activate sys
+sys -> ctrl: GET /patient profile
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+end note
+
+activate ctrl
+ctrl --> sys : returns list of patients
+deactivate ctrl
+
+sys -> ctrl: choose patient profile to delete
+activate ctrl
+
+ctrl -> svc: Retrieve patient profile
+activate svc
+
+svc -> repo: Retrieve patient profile
+activate repo
+repo --> svc: Patient profile retrieved
+deactivate repo
+
+svc --> ctrl: returns patient profile
+deactivate svc
+ctrl --> sys: returns patient profile
+deactivate ctrl
+
+sys -> ctrl: mark patient profile for deletion
+activate ctrl
+
+ctrl -> svc: validate deletion request
+activate svc
+
+svc -> repo: check if patient profile exists
+activate repo
+repo --> svc: patient profile exists
+deactivate repo
+
+svc --> ctrl: prompt for deletion confirmation
+deactivate svc
+ctrl --> sys: prompt for deletion confirmation
+deactivate ctrl
+
+sys -> ctrl: confirm deletion
+activate ctrl
+
+ctrl -> svc: confirm deletion request
+activate svc
+
+svc -> repo: delete patient profile
+activate repo
+repo --> svc: patient profile deleted
+deactivate repo
+
+svc -> audit: log deletion for audit and GDPR compliance
+activate audit
+audit --> svc: deletion logged
+deactivate audit
+
+svc --> ctrl: patient profile deletion confirmed
+deactivate svc
+ctrl --> sys: returns success message
+deactivate ctrl
+
+deactivate sys
+@enduml

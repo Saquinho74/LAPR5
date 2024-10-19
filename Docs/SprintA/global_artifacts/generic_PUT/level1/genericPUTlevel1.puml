@@ -1,0 +1,40 @@
+@startuml Process View - Level 1
+
+autonumber
+skinparam packageStyle rect
+
+title Update Resource
+
+participant "System" as RDG <<system (C4)>>
+
+-> RDG: User fills out form with updated resource details
+
+activate RDG
+
+alt resource updated
+
+  <-- RDG: sends message of resource updated successfully
+
+else invalid input
+
+  <-- RDG: sends message of invalid input
+
+else unauthorized
+
+  <-- RDG: sends message of unauthorized
+
+else resource not found
+
+  <-- RDG: sends message of resource not found
+
+else resource conflict
+
+  <-- RDG: sends message of resource conflict
+
+else database unavailable
+
+  <-- RDG: sends message of database unavailable
+
+end
+
+@enduml

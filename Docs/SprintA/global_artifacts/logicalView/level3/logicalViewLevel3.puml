@@ -1,0 +1,21 @@
+﻿@startuml
+'https://plantuml.com/component-diagram
+
+title "Logical View (Level 3) of SARM"
+
+  
+ component "Web Application" <<BackOffice>> as BO{
+  
+  component "WA_FrontEnd" <<Web_Application>> as FE
+  component "WA_BackEnd" <<Web_Application>> as BE
+
+  FE -down- BE
+
+  }
+
+ component "Planning/Optimization" <<Planning>> as PO{
+}
+
+ FE 0-right-( PO
+
+@enduml

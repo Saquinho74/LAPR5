@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Families;
+using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.Shared;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DDDSample1.Controllers
+namespace DDDNetCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

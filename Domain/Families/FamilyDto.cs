@@ -1,7 +1,6 @@
 using System;
 
-
-namespace DDDSample1.Domain.Families
+namespace DDDNetCore.Domain.Families
 {
     public class FamilyDto
     {

@@ -1,4 +1,4 @@
-﻿namespace DDDSample1.Mappers
+﻿namespace DDDNetCore.Mappers
 {
     public interface IMapper<E,D,C>
     {
