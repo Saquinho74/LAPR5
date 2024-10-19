@@ -1,8 +1,8 @@
+using DDDNetCore.Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDSample1.Domain.Products;
 
-namespace DDDSample1.Infrastructure.Products
+namespace DDDNetCore.Infraestructure.Products
 {
     internal class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
     {

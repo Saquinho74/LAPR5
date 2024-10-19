@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace DDDNetCore.Domain.Categories
+namespace DDDNetCore.Domain.Operation
 {
-    public class CategoryDto
+    public class OperationDto
     {
         public Guid Id { get; set; }
 

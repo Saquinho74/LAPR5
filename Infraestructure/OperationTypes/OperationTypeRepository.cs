@@ -1,8 +1,7 @@
-﻿using DDDSample1.Domain.Families;
-using DDDSample1.Domain.OperationType;
-using DDDSample1.Infrastructure.Shared;
+﻿using DDDNetCore.Domain.OperationType;
+using DDDNetCore.Infraestructure.Shared;
 
-namespace DDDSample1.Infrastructure.OperationTypes
+namespace DDDNetCore.Infraestructure.OperationTypes
 {
     public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeId>, IOperationTypeRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace MyLibrary.Tests;
+﻿namespace DDDNetCore.Test.unit.MyLibrary.Tests;
 
 public class UnitTest1
 {

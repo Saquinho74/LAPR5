@@ -1,8 +1,8 @@
+using DDDNetCore.Domain.Families;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDSample1.Domain.Families;
 
-namespace DDDSample1.Infrastructure.Categories
+namespace DDDNetCore.Infraestructure.Families
 {
     internal class FamilyEntityTypeConfiguration : IEntityTypeConfiguration<Family>
     {

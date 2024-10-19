@@ -1,7 +1,7 @@
-using DDDSample1.Domain.Categories;
-using DDDSample1.Infrastructure.Shared;
+using DDDNetCore.Domain.Categories;
+using DDDNetCore.Infraestructure.Shared;
 
-namespace DDDSample1.Infrastructure.Categories
+namespace DDDNetCore.Infraestructure.Categories
 {
     public class CategoryRepository : BaseRepository<Category, CategoryId>, ICategoryRepository
     {

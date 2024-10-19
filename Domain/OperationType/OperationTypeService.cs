@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Mappers;
+using DDDNetCore.Domain.Shared;
+using DDDNetCore.Mappers;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDNetCore.Domain.OperationType
 {
     public class OperationTypeService
     {

@@ -1,14 +1,14 @@
+using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.OperationType;
+using DDDNetCore.Domain.Products;
+using DDDNetCore.Infraestructure.Categories;
+using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Products;
 using Microsoft.EntityFrameworkCore;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Products;
-using DDDSample1.Domain.Families;
-using DDDSample1.Domain.OperationType;
-using DDDSample1.Infrastructure.Categories;
-using DDDSample1.Infrastructure.OperationTypes;
-using DDDSample1.Infrastructure.Products;
 
-namespace DDDSample1.Infrastructure
+namespace DDDNetCore.Infraestructure
 {
     public class DDDSample1DbContext : DbContext
     {

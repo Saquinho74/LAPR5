@@ -2,26 +2,26 @@
 using DDDNetCore.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDNetCore.Domain.OperationType
+namespace DDDNetCore.Domain.Operation
 {
-    public class OperationTypeId : EntityId
+    public class OperationId : EntityId
     {
         [JsonConstructor]
-        public OperationTypeId(Guid value) : base(value)
+        public OperationId(Guid value) : base(value)
         {
         }
 
-        public OperationTypeId(String value) : base(value)
+        public OperationId(String value) : base(value)
         {
         }
 
         override
-            protected  Object createFromString(String text){
+        protected  Object createFromString(String text){
             return new Guid(text);
         }
 
         override
-            public String AsString(){
+        public String AsString(){
             Guid obj = (Guid) base.ObjValue;
             return obj.ToString();
         }
@@ -30,6 +30,5 @@ namespace DDDNetCore.Domain.OperationType
         public Guid AsGuid(){
             return (Guid) base.ObjValue;
         }
-        
     }
 }

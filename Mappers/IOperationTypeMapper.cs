@@ -1,6 +1,6 @@
-﻿using DDDSample1.Domain.OperationType;
+﻿using DDDNetCore.Domain.OperationType;
 
-namespace DDDSample1.Mappers
+namespace DDDNetCore.Mappers
 {
     public interface IOperationTypeMapper : IMapper<OperationType,OperationTypeDto,CreatingOperationTypeDto> 
     {

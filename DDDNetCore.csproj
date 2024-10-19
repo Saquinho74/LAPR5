@@ -16,18 +16,38 @@
  
   <ItemGroup>
     <Compile Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+    <Compile Remove="Docs\SprintA\global_artifacts\level5\**" />
+    <Compile Remove="Docs\SprintA\global_artifacts\level4\**" />
+    <Compile Remove="Docs\SprintA\global_artifacts\level3\**" />
+    <Compile Remove="Docs\SprintA\global_artifacts\level2\**" />
+    <Compile Remove="Docs\SprintA\global_artifacts\level1\**" />
   </ItemGroup>
  
   <ItemGroup>
     <EmbeddedResource Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+    <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level5\**" />
+    <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level4\**" />
+    <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level3\**" />
+    <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level2\**" />
+    <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level1\**" />
   </ItemGroup>
  
   <ItemGroup>
     <Content Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+    <Content Remove="Docs\SprintA\global_artifacts\level5\**" />
+    <Content Remove="Docs\SprintA\global_artifacts\level4\**" />
+    <Content Remove="Docs\SprintA\global_artifacts\level3\**" />
+    <Content Remove="Docs\SprintA\global_artifacts\level2\**" />
+    <Content Remove="Docs\SprintA\global_artifacts\level1\**" />
   </ItemGroup>
  
   <ItemGroup>
     <None Remove="Docs\SprintA\register_backoffice_users\level3\**" />
+    <None Remove="Docs\SprintA\global_artifacts\level5\**" />
+    <None Remove="Docs\SprintA\global_artifacts\level4\**" />
+    <None Remove="Docs\SprintA\global_artifacts\level3\**" />
+    <None Remove="Docs\SprintA\global_artifacts\level2\**" />
+    <None Remove="Docs\SprintA\global_artifacts\level1\**" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
+using DDDNetCore.Domain.Categories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDSample1.Domain.Categories;
 
-namespace DDDSample1.Infrastructure.Categories
+namespace DDDNetCore.Infraestructure.Categories
 {
     internal class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
     {

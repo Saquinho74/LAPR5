@@ -1,5 +1,4 @@
-﻿using DDDSample1.Domain.OperationType;
-using DDDSample1.Infrastructure;
+﻿using DDDNetCore.Domain.OperationType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

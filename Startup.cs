@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.OperationType;
+using DDDNetCore.Domain.Products;
+using DDDNetCore.Domain.Shared;
+using DDDNetCore.Infraestructure;
+using DDDNetCore.Infraestructure.Categories;
+using DDDNetCore.Infraestructure.Families;
+using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Products;
+using DDDNetCore.Infraestructure.Shared;
+using DDDNetCore.Mappers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using DDDSample1.Infrastructure;
-using DDDSample1.Infrastructure.Categories;
-using DDDSample1.Infrastructure.Products;
-using DDDSample1.Infrastructure.Families;
-using DDDSample1.Infrastructure.Shared;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
-using DDDSample1.Domain.Products;
-using DDDSample1.Domain.Families;
-using DDDSample1.Domain.OperationType;
-using DDDSample1.Infrastructure.OperationTypes;
-using DDDSample1.Mappers;
 
-namespace DDDSample1
+namespace DDDNetCore
 {
     public class Startup
     {

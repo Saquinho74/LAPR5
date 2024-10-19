@@ -1,7 +1,6 @@
-﻿using DDDSample1.Domain.OperationType;
-using DDDSample1.Domain.Shared;
+﻿using DDDNetCore.Domain.Shared;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDNetCore.Domain.OperationType
 {
     public class OperationType : Entity<OperationTypeId>, IAggregateRoot
     {
