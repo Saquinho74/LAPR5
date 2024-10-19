@@ -1,0 +1,38 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<Container(C4)>>\nFront End" as sys
+participant "<<Container(C4)>>\nBack End" as be
+
+activate admin
+admin -> sys: Requests to deactivate a staff profile
+activate sys
+sys -> be: GET /staff profiles
+activate be
+be -> be: Retrieves staff profiles from database
+be --> sys: Returns staff profiles
+deactivate be
+
+
+sys --> admin: Shows list of staff profiles
+
+deactivate sys
+admin -> sys: Selects a staff profile
+activate sys
+sys -> be: PUT /staff profiles/{id}/deactivate
+activate be
+be -> be: Deactivates profile and records the action
+alt profile deactivated successfully
+be --> sys: Profile deactivated successfully
+else profile not deactivated
+be --> sys: ERROR: Profile not deactivated
+deactivate be
+sys --> admin: ERROR: Profile not deactivated
+
+end
+sys --> admin: deactivates profile and records the action 
+deactivate sys
+
+@enduml
