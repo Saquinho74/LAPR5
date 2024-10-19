@@ -1,0 +1,85 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "                          " as sys
+participant "<<application>>\nEditController" as ctrl
+participant "<<service>>\nEditService" as svc
+participant "Repository" as repo <<repository>>
+participant "PatientProfileDTO" as dto
+participant "PatientProfileMapper" as mapper
+participant "Email Service" as email
+participant "AuditService" as audit
+participant "<<domain>>\nPatientProfile" as profile
+
+activate sys
+sys -> ctrl: GET /patient profile
+
+note right of ctrl
+  The requested actions ( GET ) are already documented in other user story
+end note
+
+activate ctrl
+ctrl --> sys : returns list of patients
+deactivate ctrl
+
+sys -> ctrl: choose patient profile to edit
+activate ctrl
+
+ctrl -> svc: Retrieve patient profile
+activate svc
+
+svc -> repo: Retrieve patient profile
+activate repo
+repo --> svc: Patient profile retrieved
+deactivate repo
+
+svc -> dto: Create DTO from patient profile
+activate dto
+dto --> svc: DTO created
+deactivate dto
+
+svc --> ctrl: returns patient profile DTO
+deactivate svc
+ctrl --> sys: returns patient profile DTO
+deactivate ctrl
+
+sys -> ctrl: submit edited patient profile
+activate ctrl
+
+ctrl -> svc: update patient profile
+activate svc
+
+svc -> mapper: map DTO to domain
+activate mapper
+mapper -> profile: update Patient Profile entity
+activate profile
+profile --> mapper: Patient Profile entity updated
+deactivate profile
+mapper --> svc: mapped to Patient Profile entity
+deactivate mapper
+
+svc -> repo: save updated patient profile
+activate repo
+repo --> svc: updated patient profile saved
+deactivate repo
+
+alt Sensitive data changed
+  svc -> email: send email notification
+  activate email
+  email --> svc: email notification sent
+  deactivate email
+end
+
+svc -> audit: log profile changes
+activate audit
+audit --> svc: profile changes logged
+deactivate audit
+
+svc --> ctrl: patient profile updated
+deactivate svc
+ctrl --> sys: returns success message
+deactivate ctrl
+
+deactivate sys
+@enduml
