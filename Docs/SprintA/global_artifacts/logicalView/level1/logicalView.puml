@@ -1,0 +1,10 @@
+﻿@startuml
+
+title "Logical View (Level 1) of SARM"
+
+
+  IAM_API )-up- [<<component>>\n<<System(C4)>>\nSARM]
+  Web_UI -down- [<<component>>\n<<System(C4)>>\nSARM]
+  EmailService_API )-up- [<<component>>\n<<System(C4)>>\nSARM]
+
+@enduml

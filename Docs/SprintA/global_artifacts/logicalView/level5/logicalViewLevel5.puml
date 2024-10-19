@@ -1,0 +1,17 @@
+﻿@startuml
+'https://plantuml.com/component-diagram
+
+title "Logical View (Level 5) of SARM"
+
+  
+ component "logic" <<WA_BackEndLogic>> as logic{
+  
+    component "DDD" <<WA_BackEndLogic>> as DDD
+
+  }
+
+    component "IAM_API" <<IAM>> as IAM
+
+DDD 0-down-( IAM
+
+@enduml
