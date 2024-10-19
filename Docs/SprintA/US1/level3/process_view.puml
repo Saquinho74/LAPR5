@@ -1,0 +1,67 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "<<Application>>\nRegisterBackofficeUserController" as be
+participant "<<Service>>\nBackofficeUserService" as srv
+participant "<<Mapper>>\nSystemUserMapper" as mapper
+participant "<<Domain>>\nSystemUser" as sys
+participant "<<Repository>>\nSystemUserRepository" as repo
+participant "<<DTO>>\nSystemUserDTO" as dto
+
+participant "External Email API" as email
+participant "External IAM System" as iam
+
+
+ -> be: POST/registerUser{email, username, role, firstName, lastName, fullName}
+activate be
+be -> srv: createUser(SystemUserDTO)
+activate srv
+srv -> mapper: mapDTOtoDomain(SystemUserDTO)
+activate mapper
+mapper --> sys**: <<create>>
+mapper --> srv: returns SystemUser
+deactivate mapper
+srv->srv:validate(SystemUser)
+alt User is valid = unique data
+srv -> repo: save(SystemUser)
+activate repo
+repo -> repo: insert new SystemUser into database
+repo --> srv: returns success response
+deactivate repo
+srv -> mapper: mapDomainToDTO(SystemUser)
+activate mapper
+mapper -> dto**: <<create>>
+mapper --> srv: returns SystemUserDTO
+deactivate mapper
+srv --> be: returns SystemUserDTO
+deactivate srv
+be -> srv: sendPasswordSetupEmail(SystemUserDTO)
+activate srv
+srv -> email: send email to user
+activate email
+email -> email: send email to user
+email --> srv: returns success message
+deactivate email
+srv -> iam: create user in IAM system
+activate iam
+iam -> iam: create user in IAM system
+iam --> srv: returns success message
+deactivate iam
+srv --> be: returns success message
+deactivate srv
+<-- be: returns success message
+else User is invalid = duplicate data
+<-- be: returns error message
+deactivate be
+end
+
+
+
+
+
+
+
+
+
+@enduml
