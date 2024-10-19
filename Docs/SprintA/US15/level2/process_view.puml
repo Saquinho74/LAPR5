@@ -1,0 +1,24 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Admin as admin
+participant "<<Container(C4)>>\nFront End" as sys
+participant "<<Container(C4)>>\nBack End" as be
+
+activate admin
+admin -> sys: Request to view a staff profiles
+activate sys
+sys --> admin: Shows filters for searching staff profiles
+deactivate sys
+admin -> sys: Updates filters
+activate sys
+sys -> be: GET/ staff profiles by id 
+activate be
+be --> sys: returns staff profiles
+deactivate be
+sys --> admin: Shows Staff profiles and requests to select one
+deactivate sys
+
+
+@enduml
