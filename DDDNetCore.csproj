@@ -21,6 +21,7 @@
     <Compile Remove="Docs\SprintA\global_artifacts\level3\**" />
     <Compile Remove="Docs\SprintA\global_artifacts\level2\**" />
     <Compile Remove="Docs\SprintA\global_artifacts\level1\**" />
+    <Compile Remove="Test\**" />
   </ItemGroup>
  
   <ItemGroup>
@@ -30,6 +31,7 @@
     <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level3\**" />
     <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level2\**" />
     <EmbeddedResource Remove="Docs\SprintA\global_artifacts\level1\**" />
+    <EmbeddedResource Remove="Test\**" />
   </ItemGroup>
  
   <ItemGroup>
@@ -39,6 +41,7 @@
     <Content Remove="Docs\SprintA\global_artifacts\level3\**" />
     <Content Remove="Docs\SprintA\global_artifacts\level2\**" />
     <Content Remove="Docs\SprintA\global_artifacts\level1\**" />
+    <Content Remove="Test\**" />
   </ItemGroup>
  
   <ItemGroup>
@@ -48,6 +51,7 @@
     <None Remove="Docs\SprintA\global_artifacts\level3\**" />
     <None Remove="Docs\SprintA\global_artifacts\level2\**" />
     <None Remove="Docs\SprintA\global_artifacts\level1\**" />
+    <None Remove="Test\**" />
   </ItemGroup>
  
   <ItemGroup>

@@ -6,7 +6,7 @@ namespace DDDNetCore.Infraestructure.Families
     public class FamilyRepository : BaseRepository<Family, FamilyId>, IFamilyRepository
     {
       
-        public FamilyRepository(DDDSample1DbContext context):base(context.Families)
+        public FamilyRepository(DddSample1DbContext context):base(context.Families)
         {
             
         }

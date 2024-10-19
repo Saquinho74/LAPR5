@@ -5,9 +5,9 @@ namespace DDDNetCore.Infraestructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DDDSample1DbContext _context;
+        private readonly DddSample1DbContext _context;
 
-        public UnitOfWork(DDDSample1DbContext context)
+        public UnitOfWork(DddSample1DbContext context)
         {
             this._context = context;
         }
