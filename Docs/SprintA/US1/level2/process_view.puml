@@ -1,0 +1,59 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor "Admin" as admin
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as be
+participant "External Email API" as email
+participant "External IAM System" as iam
+
+activate admin
+admin -> sys: Requests to register new backoffice user
+activate sys
+sys --> admin: Requests to provide user details
+deactivate sys
+    admin -> sys: Provides user details (first name, last name, email, phone number, and role)
+activate sys
+sys -> be:GET/validate user details
+activate be
+
+alt user details are valid
+
+    be --> sys: User details are valid
+    deactivate be
+    
+   
+    
+    sys -> be: send email for password setup
+    activate be
+    
+    be -> email: Sends an email for password setup
+    activate email
+    
+    email --> be: Password setup correctly
+    deactivate email
+    
+    be --> sys: Email sent successfully
+    
+    deactivate be
+    
+     sys -> be: POST/ create user profile
+        activate be
+        be -> be: persists user details to database
+        
+    sys -> iam: Registers user in IAM system
+    deactivate be
+            
+    activate iam
+    
+    iam --> sys: User registration successful
+    deactivate iam
+    sys --> admin: User registration successful
+else user details are invalid
+    sys --> admin: ERROR: User registration failed
+deactivate sys
+end
+
+@enduml
