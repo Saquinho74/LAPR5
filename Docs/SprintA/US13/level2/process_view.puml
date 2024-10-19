@@ -1,0 +1,47 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor "Admin" as admin
+participant "<<Container(C4)>>\nFrontEnd" as sys
+participant "<<Container(C4)>>\nBackend" as be
+
+activate admin
+admin -> sys: Request to edit a staff profile
+activate sys
+
+sys -> be: GET/fetch all staff profiles
+activate be
+be -> be: Fetches staff profiles from database
+be --> sys: Returns list of staff profiles
+deactivate be
+sys --> admin: Shows list of staff profiles
+
+deactivate sys
+admin -> sys: Selects a profile
+activate sys
+sys -> be: GET/fetch profile details by id
+activate be
+be --> sys: Returns profile 
+deactivate be
+sys --> admin: Shows editable fields
+deactivate sys
+admin -> sys: Edits profile and saves profile
+activate sys
+
+sys -> be: PUT/Request to update staff profile
+activate be
+be -> be: Updates profile and persists to database
+alt profile updated successfully
+be --> sys: Profile updated successfully
+deactivate be
+sys --> admin: Shows success message
+deactivate sys
+activate be
+else profile not updated
+be --> sys: ERROR: Profile not updated
+deactivate be
+activate sys
+sys --> admin: Shows error message
+end
+@enduml
