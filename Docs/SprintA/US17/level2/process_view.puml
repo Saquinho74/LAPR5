@@ -6,7 +6,7 @@ actor Doctor as doc
 participant " <<Container(C4)>>\n FrontEnd" as sys
 participant "<<Container(C4)>>\nBackEnd" as backEnd
 participant "Planning Module" as planning
-participant "Database" as DB
+participant "<<Container(C4)>>\nDatabase" as DB
 
 title Process View - Level 2
 

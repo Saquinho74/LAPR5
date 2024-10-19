@@ -5,34 +5,43 @@ autonumber
 actor Doctor as doc
 participant "<<Container(C4)>>\nFrontEnd" as sys
 participant "<<Container(C4)>>\nBackEnd" as backEnd
+participant "<<Container(C4)>>\nDatabase" as DB
+
+title Process View - Level 2 (Search Operations)
+
 activate doc
 
-title Process View - Level 2 (Search and Filter Operations)
-
 doc -> sys: request to list/search operation requests
-
 activate sys
 
 alt if user is searching for a specific operation request
   doc -> sys: enters operation request ID for search
-  sys -> backEnd : GET /operationRequestDetails (for selected ID)
-
+  sys -> backEnd: GET /operationRequestDetails (for selected ID)
   activate backEnd
 
-  backEnd --> sys : returns operation request details (patient name, operation type, status, etc.)
+  backEnd -> DB: Fetch operation request details by ID
+  activate DB
 
+  DB --> backEnd: Return operation request details (patient name, operation type, status, etc.)
+  deactivate DB
+
+  backEnd --> sys: returns operation request details
   deactivate backEnd
 
   sys --> doc: shows operation request details
 
 else
 
-  sys -> backEnd : GET /operationRequests (with search criteria)
-
+  sys -> backEnd: GET /operationRequests (with search criteria)
   activate backEnd
 
-  backEnd --> sys : returns list of operations based on search/filter criteria
+  backEnd -> DB: Fetch operations based on search/filter criteria
+  activate DB
 
+  DB --> backEnd: Return list of operations based on criteria
+  deactivate DB
+
+  backEnd --> sys: returns list of operations with details (patient name, operation type, status)
   deactivate backEnd
 
   sys --> doc: shows list of operations with details (patient name, operation type, status)
@@ -43,12 +52,16 @@ else
 
   activate sys
 
-  sys -> backEnd : GET /operationDetails (for selected operation)
-
+  sys -> backEnd: GET /operationDetails (for selected operation)
   activate backEnd
 
-  backEnd --> sys : returns operation details (patient name, operation type, priority, status, etc.)
+  backEnd -> DB: Fetch operation details by ID
+  activate DB
 
+  DB --> backEnd: Return operation details (patient name, operation type, priority, status, etc.)
+  deactivate DB
+
+  backEnd --> sys: returns operation details
   deactivate backEnd
 
   sys --> doc: shows operation details
@@ -58,5 +71,6 @@ else
 end
 
 deactivate sys
+deactivate doc
 
 @enduml

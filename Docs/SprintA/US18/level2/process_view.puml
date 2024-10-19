@@ -6,22 +6,25 @@ actor Doctor as doc
 participant "<<Container(C4)>>\nFrontEnd" as sys
 participant "<<Container(C4)>>\nBackEnd" as BackEnd
 participant "Planning Module" as planning
+participant "<<Container(C4)>>\nDatabase" as DB
 
 title Process View - Level 2
-
 
 activate doc
 
 doc -> sys: request to delete an operation request
-
 activate sys
 
 sys -> BackEnd : GET /operations (fetch operations by doctor)
-
 activate BackEnd
 
-BackEnd --> sys : returns list of operations created by doctor
+BackEnd -> DB: Fetch all operations by doctor
+activate DB
 
+DB --> BackEnd: Return all operations by doctor
+deactivate DB
+
+BackEnd --> sys: returns list of operations created by doctor
 deactivate BackEnd
 
 sys --> doc: shows list of operations and asks to select one
@@ -32,22 +35,24 @@ sys --> doc: shows confirmation prompt for deletion
 
 alt confirmation received
 
-    sys -> BackEnd : DELETE /operation (with operation ID)
-
+    sys -> BackEnd: DELETE /operation (with operation ID)
     activate BackEnd
 
-    BackEnd --> sys : returns success message (operation deleted)
+    BackEnd -> DB: Delete operation by ID
+    activate DB
 
+    DB --> BackEnd: Operation deleted successfully
+    deactivate DB
+
+    BackEnd --> sys: returns success message (operation deleted)
     deactivate BackEnd
 
     sys --> doc: shows success message (operation request removed)
 
     sys -> planning: notify deletion to Planning Module
-
     activate planning
 
     planning --> sys: confirmation of deletion received
-
     deactivate planning
 
 else deletion cancelled
