@@ -49,5 +49,10 @@
     <None Remove="Docs\SprintA\global_artifacts\level2\**" />
     <None Remove="Docs\SprintA\global_artifacts\level1\**" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Folder Include="Docs\SprintA\global_artifacts\mapping_Between_View\" />
+    <Folder Include="Docs\SprintA\global_artifacts\UCD\" />
+  </ItemGroup>
 
 </Project>
