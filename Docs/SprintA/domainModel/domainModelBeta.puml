@@ -49,12 +49,19 @@ rectangle Credentials #aabbcc{
     PATIENT
     UNKNOWN
    }
+   enum Staus <<Value Object>>{
+    NEW
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+   }
 
 
    Credential"1" *-->"1"Role : autzRole
    Credential"1" *-->"1"Username : username
    Credential"1" *--> "1"CredentialId : userId
    Credential"1" *-->"1"Email : email
+    Credential"1" *-->"1"Staus : status
 
 
 }
@@ -97,10 +104,8 @@ rectangle Patients #bbaacc{
 
 rectangle Staffs #bbddcc{
     class Staff <<Aggregate Root>><<Entity>>
-    class StaffId <<Identity>><<Value Object>>{
-        - id : UUID
-    }
-    class LicenseNumber<<Value Object>><<Unique>>{
+   
+    class LicenseNumber<<Value Object>><<Identity>>{
         - licence : String
     }
     class Specialization <<Value Object>>{
@@ -116,7 +121,7 @@ rectangle Staffs #bbddcc{
 
     Staff "1" *--> "1" LicenseNumber : license
     Staff "1" *---> "1" Specialization : specialization
-    Staff "1" *--> "1" StaffId : id
+   
     Staff "1" --> "*" AvailabilitySlot : slots
     '' Slots should be stored in Map for efficient storage and fetching
 }
