@@ -6,7 +6,7 @@ namespace DDDNetCore.Infraestructure.Categories
     public class CategoryRepository : BaseRepository<Category, CategoryId>, ICategoryRepository
     {
     
-        public CategoryRepository(DDDSample1DbContext context):base(context.Categories)
+        public CategoryRepository(DddSample1DbContext context):base(context.Categories)
         {
            
         }
