@@ -15,7 +15,7 @@ note right of doc
 end note
 
 
-doc -> sys: request to create a new operation
+doc -> sys: request to create a new operation request
 
 activate sys
 
