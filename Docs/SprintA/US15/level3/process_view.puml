@@ -1,0 +1,35 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "<<Application>>\nSearchStaffProfilesController" as ctrl
+participant "<<Service>>\nSearchStaffProfilesService" as serv
+participant "<<Repository>>\nStaffRepository" as repo
+participant "<<Entity>>\nStaff" as staff
+participant "<<Mapper>>\nStaffMapper" as mapper
+participant "<<DTO>>\nStaffDTO" as dto
+
+-> ctrl:GET /staff{filters}
+activate ctrl
+ctrl -> serv: searchStaffProfiles()
+activate serv
+serv -> repo: searchStaffProfiles()
+activate repo
+repo -> repo: Fetches staff profiles from database
+repo --> serv: Returns list of staff profiles
+serv-> serv: filter staff profiles
+deactivate repo
+serv -> mapper: mapStaffToDTOs(staff entities)
+activate mapper
+mapper -> dto**: <<create>> StaffDTO
+mapper --> serv: Returns mapped staff DTOs
+deactivate mapper
+serv --> ctrl: Returns staff DTOs
+deactivate serv
+<-- ctrl  : Returns staff DTOs
+deactivate ctrl
+
+
+
+@enduml
