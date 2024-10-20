@@ -1,0 +1,58 @@
+﻿@startuml
+autonumber
+skinparam packageStyle rect
+
+title Back-End GET patients - Logical View LV3
+
+participant AspnetRouter as router
+participant PatientController as ctrl
+participant PatientService as service
+participant PatientDTO as dto
+participant PatientMapper as mapper
+participant PatientRepository as repo
+
+
+note over router
+This diagram is a example ( US16 ) of level 3 
+representation of the GET
+end note
+
+
+-> router: GET /patients
+activate router
+
+router -> ctrl: getAllPatients()
+activate ctrl
+
+ctrl -> service: getAllPatients()
+activate service
+
+service -> repo: fetchAllPatients()
+
+activate repo
+
+
+repo -> : Fetch all patients
+
+repo <-- : returns patients entities
+
+
+repo --> service: returns patients entities
+deactivate repo
+
+service -> mapper: mapPatientsToDTOs(patients entities)
+activate mapper
+
+mapper --> service: returns mapped patients DTOs
+deactivate mapper
+
+service --> ctrl: returns patients DTOs
+deactivate service
+
+ctrl --> router: returns patients DTOs
+deactivate ctrl
+
+ <-- router : returns patients DTOs
+deactivate router
+
+@enduml

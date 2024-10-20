@@ -1,12 +1,12 @@
 @startuml
 autonumber
 participant "                          " as sys
-participant "<<application>>\nOperationController" as ctrl
-participant "<<service>>\nOperationService" as serv
-participant "OperationDTO" as dto
-participant "OperationMapper" as map
-participant "<<domain>>\nOperation" as operation
-participant "Repository" as repo <<repository>>
+participant "<<application>>\nOperationRequestController" as ctrl
+participant "<<service>>\nOperationRequestService" as serv
+participant "OperationRequestDTO" as dto
+participant "OperationRequestMapper" as map
+participant "<<domain>>\nOperationRequest" as operation
+participant "OperationRequestRepository" as repo <<repository>>
 
 title Process View Backend Container - Level 3
 
@@ -44,33 +44,33 @@ activate ctrl
 ctrl --> sys : returns list of priorities
 deactivate ctrl
 
-sys -> ctrl : POST /operations (with given data)
+sys -> ctrl : POST /operationRequest (with given data)
 activate ctrl
 
 alt verification process is successful
   ctrl -> serv : verify and create operation
   activate serv
 
-  serv -> dto : create OperationDTO from request data
+  serv -> dto : create OperationRequestDTO from request data
   activate dto
-  dto --> serv : OperationDTO created
+  dto --> serv : OperationRequestDTO created
   deactivate dto
 
   serv -> map : map DTO to domain
   activate map
-  map -> operation : create Operation entity from DTO
+  map -> operation : create Operation request entity from DTO
   activate operation
-  operation --> map : Operation entity created
+  operation --> map : Operation request entity created
   deactivate operation
-  map --> serv : mapped to Operation entity
+  map --> serv : mapped to Operation request entity
   deactivate map
 
-  serv -> repo : save operation in database
+  serv -> repo : save operation request in database
   activate repo
-  repo --> serv : operation saved successfully
+  repo --> serv : operation request saved successfully
   deactivate repo
 
-  serv --> ctrl : operation saved, success response
+  serv --> ctrl : operation request saved, success response
   deactivate serv
 
   ctrl --> sys : returns success message

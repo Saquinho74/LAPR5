@@ -1,0 +1,72 @@
+﻿@startuml
+autonumber
+skinparam packageStyle rect
+
+title Back-End post operations request - Logical View LV3
+
+participant AspnetRouter as router
+participant OperationRequestController as ctrl
+participant OperationRequestService as service
+participant OperationRequestDTO as dto
+participant OperationRequestMapper as mapper
+participant OperationRequestRepository as repo
+participant OperationRequest as domain
+
+note over router
+This diagram is a example ( US16 ) of level 3 
+representation of the POST
+end note
+
+
+-> router: POST /operation request {operation request data}
+activate router
+
+router -> ctrl: createOperationRequest(operationRequestDTO)
+activate ctrl
+
+ctrl -> service: create(operationRequestDTO)
+activate service
+
+service -> mapper: mapToDomain(operationRequestDTO)
+activate mapper
+
+mapper --> domain** : <<create>>
+mapper --> service : returns domain
+
+deactivate mapper
+service -> service: validate(domain)
+service -> repo: save(domain)
+
+activate repo
+
+
+repo -> : insert new operation request into database
+
+repo <-- : returns success response
+
+
+
+
+
+repo --> service : returns domain
+deactivate repo
+service -> mapper: mapToDTO(domain)
+activate mapper
+mapper --> service : returns operationRequestDTO
+deactivate mapper
+service --> ctrl : returns operationRequestDTO
+
+deactivate service
+ctrl --> router : returns operationRequestDTO
+
+deactivate ctrl
+
+ <-- router  : returns success message
+
+ deactivate router
+
+
+
+
+@enduml
+ 

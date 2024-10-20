@@ -1,12 +1,12 @@
 ﻿@startuml
 autonumber
 participant "                          " as sys
-participant "<<application>>\nOperationController" as ctrl
-participant "<<service>>\nOperationService" as serv
-participant "OperationDTO" as dto
-participant "OperationMapper" as map
-participant "<<domain>>\nOperation" as operation
-participant "Repository" as repo <<repository>>
+participant "<<application>>\nOperationRequestController" as ctrl
+participant "<<service>>\nOperationRequestService" as serv
+participant "OperationRequestDTO" as dto
+participant "OperationRequestMapper" as map
+participant "<<domain>>\nOperationRequest" as operation
+participant "OperationRequestRepository" as repo <<repository>>
 
 title Process View Backend Container - Level 3
 
