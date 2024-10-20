@@ -1,0 +1,47 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "<<Application>>\nRegisterStaffController" as ctrl
+participant "<<Service>>\nRegisterStaffService" as svc
+participant "<<DTO>>\nStaffDTO" as dto
+participant "<<Mapper>>\nStaffMapper" as mapper
+participant "<<Repository>>\nStaffRepository" as repo
+participant "<<Domain>>\nStaff" as staff
+
+-> ctrl:POST/staffProfile{staffDTO}
+activate ctrl
+ctrl -> svc: createStaffProfile(staffDTO)
+activate svc
+svc -> mapper: mapToDomain(staffDTO)
+activate mapper
+mapper -> staff**: <<create>>
+mapper --> svc: returns staff
+deactivate mapper
+svc -> repo: findStaffByLicenseNumber(staffDTO.licenseNumber)
+activate repo
+repo --> svc: returns staff
+deactivate repo
+alt staff is not found
+svc -> repo: save(staff)
+activate repo
+repo -> : insert new staff into database
+repo --> svc: returns success response
+deactivate repo
+svc -> mapper: mapToDTO(staff)
+activate mapper
+mapper --> svc: returns staffDTO
+deactivate mapper
+svc --> ctrl: returns staffDTO
+deactivate svc
+<-- ctrl : returns success message
+deactivate ctrl
+else staff is found
+activate svc
+svc --> ctrl: returns error message
+activate ctrl
+<-- ctrl : returns error message
+deactivate svc
+end
+
+@enduml
