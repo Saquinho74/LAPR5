@@ -1,0 +1,61 @@
+﻿@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+participant "<<Application>>\nDeactivateStaffProfileController" as ctrl
+participant "<<Service>>\nDeactivateStaffProfileService" as srv
+participant "<<Repository>>\nStaffRepository" as repo
+participant "<<Mapper>>\nStaffMapper" as mapper
+participant "<<DTO>>\nStaffDTO" as dto
+participant "<<Domain>>\nStaff" as staff
+
+-> ctrl:GET /staff
+activate ctrl
+ctrl -> srv: fetchAllStaffProfiles()
+activate srv
+srv -> repo: findAll()
+activate repo
+repo -> repo: Fetches staff profiles from database
+repo --> srv: Returns list of staff profiles
+deactivate repo
+srv -> mapper: mapStaffToDTOs(staff entities)
+activate mapper
+mapper -> dto**: <<create>> StaffDTO
+mapper --> srv: Returns mapped staff DTOs
+deactivate mapper
+srv --> ctrl: Returns staff DTOs
+deactivate srv
+<-- ctrl  : Returns staff DTOs
+deactivate ctrl
+-> ctrl: PUT /Staff/{id}/deactivate
+activate ctrl
+ctrl -> srv: deactivateStaffProfile(id, staffDTO)
+activate srv
+srv -> repo: findById(id)
+activate repo
+repo --> srv: returns existing staff
+deactivate repo
+alt staff found
+    srv -> mapper: mapToDomain(staffDTO)
+    activate mapper
+    mapper --> staff** : <<update>>
+    mapper --> srv : returns updated domain
+    deactivate mapper
+    srv -> srv: validate(updated domain)
+    srv -> repo: save(updated domain)
+    activate repo
+    repo --> srv : returns updated domain
+    deactivate repo
+    srv -> mapper: mapToDTO(updated domain)
+    activate mapper
+    mapper --> srv : returns updated staffDTO
+    deactivate mapper
+    srv --> ctrl : returns updated staffDTO
+  <-- ctrl : Shows success message
+    deactivate srv
+else staff not found
+    srv --> ctrl : returns error (staff not found)
+    deactivate srv
+    <-- ctrl : Shows error message
+    end
+@enduml
