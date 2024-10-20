@@ -103,6 +103,14 @@ sys -> BE: POST /operations ( with given data )
 
 activate BE
 
+
+BE -> DB : insert new resource into database
+activate DB
+DB --> BE: Returns success response
+
+deactivate DB
+
+
 alt verification process is successful
 
 
