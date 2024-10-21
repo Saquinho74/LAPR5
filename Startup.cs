@@ -1,4 +1,5 @@
 ﻿using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Credential;
 using DDDNetCore.Domain.Families;
 using DDDNetCore.Domain.Operation;
 using DDDNetCore.Domain.OperationType;
@@ -6,6 +7,7 @@ using DDDNetCore.Domain.Products;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Infraestructure;
 using DDDNetCore.Infraestructure.Categories;
+using DDDNetCore.Infraestructure.Credential;
 using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
@@ -91,8 +93,8 @@ namespace DDDNetCore
             services.AddTransient<OperationService>();
             services.AddTransient<IOperationRepository,OperationRepository>();
 
-
-
+            services.AddTransient<CredentialService>();
+            services.AddTransient<ICredentialRepository,CredentialRepository>();
 
         }
     }

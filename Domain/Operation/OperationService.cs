@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Shared;
+using DDDNetCore.Mappers;
 
 namespace DDDNetCore.Domain.Operation
 {
@@ -11,84 +12,106 @@ namespace DDDNetCore.Domain.Operation
 
         public OperationService(IUnitOfWork unitOfWork, IOperationRepository repo)
         {
-            this._unitOfWork = unitOfWork;
-            this._repo = repo;
+            _unitOfWork = unitOfWork;
+            _repo = repo;
         }
 
+        // Método para obter todas as operações
         public async Task<List<OperationDto>> GetAllAsync()
         {
-            var list = await this._repo.GetAllAsync();
+            var operations = await _repo.GetAllAsync();
             
-            List<OperationDto> listDto = list.ConvertAll<OperationDto>(cat => new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description});
+            // Conversão das operações em DTOs
+            var listDto = OperationMapper.toDTOList(operations);
 
             return listDto;
         }
 
+        // Método para obter uma operação por ID
         public async Task<OperationDto> GetByIdAsync(OperationId id)
         {
-            var cat = await this._repo.GetByIdAsync(id);
+            var operation = await _repo.GetByIdAsync(id);
             
-            if(cat == null)
+            if (operation == null)
                 return null;
 
-            return new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description};
+            var dtoReturn = OperationMapper.toDTO(operation);
+
+            return dtoReturn;
         }
 
+        // Método para adicionar uma nova operação
         public async Task<OperationDto> AddAsync(CreatingOperationDto dto)
         {
-            var operation = new Operation(dto.Description);
+            var operation = new Operation(
+                new OperationDescription(dto.Description.Value), // Supondo que Description é um Value Object
+                new Priority(dto.Priority.Value), // Supondo que Priority é um Value Object
+                new Deadline(dto.Deadline.Value), // Deadline como um Value Object
+                dto.OperationType
+            );
 
-            await this._repo.AddAsync(operation);
+            await _repo.AddAsync(operation);
+            await _unitOfWork.CommitAsync();
+            
+            var dtoReturn = OperationMapper.toDTO(operation);
 
-            await this._unitOfWork.CommitAsync();
+            return dtoReturn;
 
-            return new OperationDto { Id = operation.Id.AsGuid(), Description = operation.Description };
+           
         }
 
+        // Método para atualizar uma operação existente
         public async Task<OperationDto> UpdateAsync(OperationDto dto)
         {
-            var category = await this._repo.GetByIdAsync(new OperationId(dto.Id)); 
+            var operation = await _repo.GetByIdAsync(new OperationId(dto.Id));
 
-            if (category == null)
-                return null;   
+            if (operation == null)
+                return null;
 
-            // change all field
-            category.ChangeDescription(dto.Description);
+            // Atualiza as informações da operação
+            operation.ChangeDescription(new OperationDescription(dto.Description)); // Atualizando a descrição da operação
+
+            await _unitOfWork.CommitAsync();
             
-            await this._unitOfWork.CommitAsync();
+            var dtoReturn = OperationMapper.toDTO(operation);
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            return dtoReturn;
         }
 
+        // Método para inativar uma operação
         public async Task<OperationDto> InactivateAsync(OperationId id)
         {
-            var category = await this._repo.GetByIdAsync(id); 
+            var operation = await _repo.GetByIdAsync(id);
 
-            if (category == null)
-                return null;   
+            if (operation == null)
+                return null;
 
-            // change all fields
-            category.MarkAsInative();
-            
-            await this._unitOfWork.CommitAsync();
+            // Aqui você deve implementar a lógica para inativar a operação
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            await _unitOfWork.CommitAsync();
+
+            var dtoReturn = OperationMapper.toDTO(operation);
+
+            return dtoReturn;
         }
 
-         public async Task<OperationDto> DeleteAsync(OperationId id)
+        // Método para deletar uma operação
+        public async Task<OperationDto> DeleteAsync(OperationId id)
         {
-            var category = await this._repo.GetByIdAsync(id); 
+            var operation = await _repo.GetByIdAsync(id);
 
-            if (category == null)
-                return null;   
+            if (operation == null)
+                return null;
 
-            if (category.Active)
-                throw new BusinessRuleValidationException("It is not possible to delete an active category.");
-            
-            this._repo.Remove(category);
-            await this._unitOfWork.CommitAsync();
+            if (operation.Active)
+                throw new BusinessRuleValidationException("It is not possible to delete an active operation.");
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            _repo.Remove(operation);
+            await _unitOfWork.CommitAsync();
+
+            var dtoReturn = OperationMapper.toDTO(operation);
+
+            return dtoReturn;
         }
     }
 }

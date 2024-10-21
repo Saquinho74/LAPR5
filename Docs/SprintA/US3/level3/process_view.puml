@@ -4,12 +4,12 @@
 autonumber
 
 participant "                          " as sys
-participant "<<application>>\nRegisterHealthcareController" as ctrl
-participant "<<service>>\nRegisterHealthcareService" as svc
-participant "RegisterHealthcareDTO" as dto
-participant "RegisterHealthcareMapper" as mapper
-participant "<<domain>>\nHealthcareApplication" as app
-participant "HealthcareApplicationRepository" as repo <<repository>>
+participant "<<application>>\nRegisterPatientController" as ctrl
+participant "<<service>>\nRegisterPatientService" as svc
+participant "RegisterPatientMapper" as mapper
+participant "RegisterPatientDTO" as dto
+participant "<<domain>>\nPatient" as app
+participant "PatientRepository" as repo <<repository>>
 participant "EmailService" as email
 
 activate sys
@@ -22,11 +22,7 @@ ctrl -> svc: Forward registration details
 
 activate svc
 
-svc -> dto: Create RegisterHealthcareDTO from registration details
-activate dto
 
-dto --> svc: RegisterHealthcareDTO created
-deactivate dto
 
 svc -> mapper: Map DTO to domain
 activate mapper
@@ -45,8 +41,22 @@ svc -> repo: Store patient data
 activate repo
 
 repo --> svc: Data stored
-
 deactivate repo
+
+svc -> mapper: Create RegisterHealthcareDTO from registration details
+deactivate repo
+
+activate mapper
+
+mapper --> dto: RegisterHealthcareDTO created
+activate dto
+
+dto --> mapper: dto created
+deactivate dto
+
+mapper --> svc: RegisterHealthcareDTO created
+deactivate mapper
+
 
 alt Email sent successfully
     svc -> email: Send verification email
