@@ -36,7 +36,7 @@ namespace DDDNetCore.Domain.Operation
 
         public async Task<OperationDto> AddAsync(CreatingOperationDto dto)
         {
-            var operation = new Operation(dto.Description);
+            var operation = new Operation(dto.Description,dto.Priority, dto.Deadline, dto.OperationType);
 
             await this._repo.AddAsync(operation);
 
@@ -68,7 +68,6 @@ namespace DDDNetCore.Domain.Operation
                 return null;   
 
             // change all fields
-            category.MarkAsInative();
             
             await this._unitOfWork.CommitAsync();
 
