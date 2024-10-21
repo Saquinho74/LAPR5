@@ -5,7 +5,7 @@ namespace DDDNetCore.Domain.Operation
 {
     public class Operation : Entity<OperationId>, IAggregateRoot
     {
-        public string Description { get; private set; }
+        public OperationDescription Description { get; private set; }
         public Priority Priority { get; private set; }
         public Deadline Deadline { get; private set; }
         public OperationType.OperationType Type { get; private set; }
@@ -18,11 +18,8 @@ namespace DDDNetCore.Domain.Operation
         }
 
         // Constructor to initialize the Operation entity with required parameters
-        public Operation(string description, Priority priorityValue, Deadline deadlineValue, OperationType.OperationType type)
+        public Operation(OperationDescription description, Priority priorityValue, Deadline deadlineValue, OperationType.OperationType type)
         {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description cannot be null or empty.", nameof(description));
-                
             this.Id = new OperationId(Guid.NewGuid()); // Generate a new unique ID
             this.Description = description;
             this.Priority = new Priority(priorityValue.Value); // Use the Priority value object
@@ -32,12 +29,10 @@ namespace DDDNetCore.Domain.Operation
         }
 
         // Method to change the description of the operation
-        public void ChangeDescription(string description)
+        public void ChangeDescription(OperationDescription description)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the description of an inactive operation.");
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description cannot be null or empty.", nameof(description));
             this.Description = description;
         }
 

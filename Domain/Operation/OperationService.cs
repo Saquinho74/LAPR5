@@ -19,7 +19,7 @@ namespace DDDNetCore.Domain.Operation
         {
             var list = await this._repo.GetAllAsync();
             
-            List<OperationDto> listDto = list.ConvertAll<OperationDto>(cat => new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description});
+            List<OperationDto> listDto = list.ConvertAll<OperationDto>(cat => new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description, OperationType = cat.Type, Deadline = cat.Deadline});
 
             return listDto;
         }
@@ -31,7 +31,7 @@ namespace DDDNetCore.Domain.Operation
             if(cat == null)
                 return null;
 
-            return new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description};
+            return new OperationDto{Id = cat.Id.AsGuid(), Description = cat.Description, OperationType = cat.Type, Deadline = cat.Deadline};
         }
 
         public async Task<OperationDto> AddAsync(CreatingOperationDto dto)
@@ -42,7 +42,7 @@ namespace DDDNetCore.Domain.Operation
 
             await this._unitOfWork.CommitAsync();
 
-            return new OperationDto { Id = operation.Id.AsGuid(), Description = operation.Description };
+            return new OperationDto { Id = operation.Id.AsGuid(), Description = operation.Description, OperationType = operation.Type, Deadline = operation.Deadline };
         }
 
         public async Task<OperationDto> UpdateAsync(OperationDto dto)
@@ -57,7 +57,7 @@ namespace DDDNetCore.Domain.Operation
             
             await this._unitOfWork.CommitAsync();
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description , OperationType = category.Type, Deadline = category.Deadline };
         }
 
         public async Task<OperationDto> InactivateAsync(OperationId id)
@@ -71,7 +71,7 @@ namespace DDDNetCore.Domain.Operation
             
             await this._unitOfWork.CommitAsync();
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description, OperationType = category.Type, Deadline = category.Deadline };
         }
 
          public async Task<OperationDto> DeleteAsync(OperationId id)
@@ -87,7 +87,7 @@ namespace DDDNetCore.Domain.Operation
             this._repo.Remove(category);
             await this._unitOfWork.CommitAsync();
 
-            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description };
+            return new OperationDto { Id = category.Id.AsGuid(), Description = category.Description, OperationType = category.Type, Deadline = category.Deadline };
         }
     }
 }

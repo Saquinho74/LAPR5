@@ -12,7 +12,25 @@ namespace DDDNetCore.Infraestructure.Operation
             
             //builder.ToTable("Operation", SchemaNames.DDDSample1);
             builder.HasKey(b => b.Id);
-            //builder.Property<bool>("_active").HasColumnName("Active");
+            builder.OwnsOne(b => b.Deadline, nameBuilder =>
+            {
+                nameBuilder.Property(p => p.Value)
+                    .HasColumnName("DeadLine");
+            });
+            
+            builder.OwnsOne(b => b.Description, nameBuilder =>
+            {
+                nameBuilder.Property(p => p.Value)
+                    .HasColumnName("Description");
+            });
+
+            builder.OwnsOne(b => b.Priority, nameBuilder =>
+            {
+                nameBuilder.Property(p => p.Value)
+                    .HasColumnName("Priority");
+            });
+
+            
         }
     }
 }
