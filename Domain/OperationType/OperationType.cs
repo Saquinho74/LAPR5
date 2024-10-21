@@ -4,15 +4,15 @@ namespace DDDNetCore.Domain.OperationType
 {
     public class OperationType : Entity<OperationTypeId>, IAggregateRoot
     {
-        public string OperationalTypeName { get; private set; }
+        public OperationalTypeName OperationalTypeName { get; private set; }
         
-        public string RequiredStaffEntry { get; private set; }
+        public RequiredStaffEntry RequiredStaffEntry { get; private set; }
         
-        public string EstimatedDuration { get; private set; }
+        public EstimatedDuration EstimatedDuration { get; private set; }
         
         public bool Active{ get;  private set; }
         
-        public OperationType(string code, string operationalTypeName, string requiredStaffEntry, string estimatedDuration)
+        public OperationType(string code, OperationalTypeName operationalTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
         {
             this.Id = new OperationTypeId(code);
             this.OperationalTypeName = operationalTypeName;
@@ -21,7 +21,7 @@ namespace DDDNetCore.Domain.OperationType
             this.Active = true;
         }
         
-        public OperationType(string operationalTypeName, string requiredStaffEntry, string estimatedDuration)
+        public OperationType(OperationalTypeName operationalTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
         {
             this.OperationalTypeName = operationalTypeName;
             this.RequiredStaffEntry = requiredStaffEntry;
@@ -29,7 +29,7 @@ namespace DDDNetCore.Domain.OperationType
             this.Active = true;
         }
         
-        public void ChangeOperationalTypeName(string operationalTypeName)
+        public void ChangeOperationalTypeName(OperationalTypeName operationalTypeName)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the operational type name to an inactive operation type.");
@@ -37,14 +37,14 @@ namespace DDDNetCore.Domain.OperationType
         }
         
         
-        public void ChangeRequiredStaffEntry(string RequiredStaffEntry)
+        public void ChangeRequiredStaffEntry(RequiredStaffEntry requiredStaffEntry)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the required staff entry to an inactive operation type.");
             this.RequiredStaffEntry = RequiredStaffEntry;
         }
         
-        public void ChangeEstimatedDuration(string estimatedDuration)
+        public void ChangeEstimatedDuration(EstimatedDuration estimatedDuration)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the estimated duration to an inactive operation type.");
