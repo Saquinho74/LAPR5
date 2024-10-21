@@ -28,6 +28,13 @@ namespace DDDNetCore.Domain.Operation
             this.Active = true; // Set operation as active
         }
 
+        public Operation(OperationDescription description, Deadline deadline)
+        {
+            this.Description = description;
+            this.Deadline = new Deadline(deadline.Value); // Use the Priority value object
+
+        }
+
         // Method to change the description of the operation
         public void ChangeDescription(OperationDescription description)
         {

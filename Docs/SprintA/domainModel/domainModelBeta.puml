@@ -134,13 +134,21 @@ rectangle Requests #aaaaaa{
     class DeadlineDate<<Value Object>>{
         - date : Date
     }
-    class Priority<<Value Object>><<Comparable>>{
-        - level : Integer
+    enum Priority<<Value Object>><<Enumerable>>{
+        EFFECTIVE
+        URGENT
+        EMERGENCY
+        }
+    enum Status<<Value Object>><<Enumerable>>{
+                PLANNED
+                REQUESTED
+                
     }
 
 
     OperationRequest "1" *--> "1" DeadlineDate : deadline
     OperationRequest "1" *--> "1" Priority : priority
+    OperationRequest "1" *--> "1" Status
     OperationRequest "1" *--> "1" OperationRequestId : id
 
 }
