@@ -27,6 +27,8 @@ namespace DDDNetCore.Infraestructure
         
         public DbSet<Domain.Credential.Credential> Credentials { get; set; }
         
+        public DbSet<Domain.SurgeryRoom.SurgeryRoom> SurgeryRooms { get; set; }
+        
 
         public DddSample1DbContext(DbContextOptions options) : base(options)
         {

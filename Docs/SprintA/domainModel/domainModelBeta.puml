@@ -220,9 +220,9 @@ rectangle Rooms #ddaadd{
     SurgeryRoom "1" *--> "1" RoomId : id
     SurgeryRoom "1" *--> "1" Type : type
     SurgeryRoom "1" *--> "1" Capacity : capacity
-    SurgeryRoom "1" --> "*" AssignedEquipment : equipment
+    SurgeryRoom "1" *--> "*" AssignedEquipment : equipment
     SurgeryRoom "1" *--> "1" CurrentStatus : status
-    SurgeryRoom "1" --> "*" MaintenanceSlot : maintenance
+    SurgeryRoom "1" *--> "*" MaintenanceSlot : maintenance
 }
 
 Profile "1" *--> "1" Credential : credentials

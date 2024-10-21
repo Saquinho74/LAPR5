@@ -5,6 +5,7 @@ using DDDNetCore.Domain.Operation;
 using DDDNetCore.Domain.OperationType;
 using DDDNetCore.Domain.Products;
 using DDDNetCore.Domain.Shared;
+using DDDNetCore.Domain.SurgeryRoom;
 using DDDNetCore.Infraestructure;
 using DDDNetCore.Infraestructure.Categories;
 using DDDNetCore.Infraestructure.Credential;
@@ -13,6 +14,7 @@ using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
 using DDDNetCore.Infraestructure.Products;
 using DDDNetCore.Infraestructure.Shared;
+using DDDNetCore.Infraestructure.SurgeryRoom;
 using DDDNetCore.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -96,6 +98,11 @@ namespace DDDNetCore
             services.AddTransient<CredentialService>();
             services.AddTransient<ICredentialRepository,CredentialRepository>();
 
+            services.AddTransient<SurgeryRoomService>();
+            services.AddTransient<ISurgeryRoomRepository, SurgeryRoomRepository>();
+
         }
     }
+
+ 
 }
