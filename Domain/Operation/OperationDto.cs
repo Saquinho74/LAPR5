@@ -1,4 +1,5 @@
 ﻿using System;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Domain.Operation
 {
@@ -6,6 +7,14 @@ namespace DDDNetCore.Domain.Operation
     {
         public Guid Id { get; set; }
 
-        public string Description { get; set; }
+        public OperationDescription Description { get; set; }
+        
+        public OperationType.OperationType Type { get; set; }
+        
+        public Deadline Deadline { get; set; }
+        
+        public OperationType.OperationType OperationType { get; set; }
+        
+        
     }
 }
