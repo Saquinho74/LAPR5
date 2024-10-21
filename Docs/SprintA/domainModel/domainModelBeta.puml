@@ -199,6 +199,24 @@ rectangle Appointments #ccccaa{
     Appointment "1" *--> "1" AppointmentType : type
 }
 
+
+
+rectangle Sessions #ddbacc{
+    class Session<<Aggregrate Root>><<Entity>>
+    class SessionId <<Identity>><<Value Object>>
+    class Token <<Value Object>>
+    
+  
+}
+
+    Session "1" *--> "1" SessionId : id
+    Session "1" *--> "1" Token : token
+    Credential "1" *--> "0..1" Session
+
+
+
+
+
 rectangle Rooms #ddaadd{
     class SurgeryRoom<<Aggregate Root>><<Entity>>
     class RoomId<<Identity>><<Value Object>>{
