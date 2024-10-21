@@ -1,11 +1,13 @@
 ﻿using DDDNetCore.Domain.Categories;
 using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.Operation;
 using DDDNetCore.Domain.OperationType;
 using DDDNetCore.Domain.Products;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Infraestructure;
 using DDDNetCore.Infraestructure.Categories;
 using DDDNetCore.Infraestructure.Families;
+using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
 using DDDNetCore.Infraestructure.Products;
 using DDDNetCore.Infraestructure.Shared;
@@ -48,6 +50,15 @@ namespace DDDNetCore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Enable middleware to serve generated Swagger as a JSON endpoint
+                app.UseSwagger();
+
+                // Enable middleware to serve Swagger-UI (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
+                });
             }
             else
             {
@@ -69,21 +80,20 @@ namespace DDDNetCore
 
         public void ConfigureMyServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
             services.AddTransient<IUnitOfWork,UnitOfWork>();
-
-            services.AddTransient<ICategoryRepository,CategoryRepository>();
-            services.AddTransient<CategoryService>();
-
-            services.AddTransient<IProductRepository,ProductRepository>();
-            services.AddTransient<ProductService>();
-
-            services.AddTransient<IFamilyRepository,FamilyRepository>();
-            services.AddTransient<FamilyService>();
-
+            
             services.AddTransient<IOperationTypeMapper, OperationTypeMapper>();
             
             services.AddTransient<IOperationTypeRepository,OperationTypeRepository>();
             services.AddTransient<OperationTypeService>();
+
+            services.AddTransient<OperationService>();
+            services.AddTransient<IOperationRepository,OperationRepository>();
+
+
+
+
         }
     }
 }
