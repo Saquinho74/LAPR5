@@ -1,6 +1,8 @@
 ﻿namespace DDDNetCore.Domain.Families;
 
-public class Gender
+public enum Gender
 {
-    
+    Male,
+    Female,
+    Other
 }

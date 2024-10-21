@@ -1,6 +1,19 @@
-﻿namespace DDDNetCore.Domain.Families;
+﻿using System;
+using DDDNetCore.Domain.Shared;
 
-public class EmergencyContact
+namespace DDDNetCore.Domain.Families;
+
+public class EmergencyContact : IValueObject
 {
-    
+    public Double emergyContact { get; private set; }
+
+    public EmergencyContact()
+    {
+        this.emergyContact = emergyContact;
+    }
+
+    public void addEmergencyContact(Double emergyContact)
+    {
+        this.emergyContact = emergyContact;
+    }
 }
