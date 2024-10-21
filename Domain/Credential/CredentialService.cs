@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Shared;
+using DDDNetCore.Mappers;
 
 namespace DDDNetCore.Domain.Credential
 {
@@ -21,17 +22,10 @@ namespace DDDNetCore.Domain.Credential
         {
             var credentials = await _repo.GetAllAsync();
             
-            // Conversão das credenciais em DTOs
-            var listDto = credentials.ConvertAll(credential => new CredentialDto 
-            { 
-                Id = credential.Id.AsGuid().ToString(), // Certificando-se que é uma string
-                Username = credential.Username.Value, // Usando a propriedade Value do Username
-                Email = credential.Email.Value, // Usando a propriedade Value do Email
-                UserStatus = credential.UserStatus.ToString(), // Supondo que UserStatus pode ser convertido para string
-                UserRole = credential.UserRole.ToString() // Supondo que UserRole pode ser convertido para string
-            });
+            
+            var dtoReturn = CredentialMapper.toDTOList(credentials);
 
-            return listDto;
+            return dtoReturn;
         }
 
         // Método para obter uma credencial por ID
@@ -42,14 +36,9 @@ namespace DDDNetCore.Domain.Credential
             if (credential == null)
                 return null;
 
-            return new CredentialDto 
-            { 
-                Id = credential.Id.AsGuid().ToString(),
-                Username = credential.Username.Value,
-                Email = credential.Email.Value,
-                UserStatus = credential.UserStatus.ToString(),
-                UserRole = credential.UserRole.ToString()
-            };
+            
+            var dtoReturn = CredentialMapper.toDTO(credential);
+            return dtoReturn;
         }
 
         // Método para adicionar uma nova credencial
@@ -60,14 +49,9 @@ namespace DDDNetCore.Domain.Credential
             await _repo.AddAsync(credential);
             await _unitOfWork.CommitAsync();
 
-            return new CredentialDto 
-            { 
-                Id = credential.Id.AsGuid().ToString(),
-                Username = credential.Username.Value,
-                Email = credential.Email.Value,
-                UserStatus = credential.UserStatus.ToString(),
-                UserRole = credential.UserRole.ToString()
-            };
+            
+            var dtoReturn = CredentialMapper.toDTO(credential);
+            return dtoReturn;
         }
 
         // Método para atualizar uma credencial existente
@@ -83,35 +67,25 @@ namespace DDDNetCore.Domain.Credential
 
             await _unitOfWork.CommitAsync();
 
-            return new CredentialDto 
-            { 
-                Id = credential.Id.AsGuid().ToString(),
-                Username = credential.Username.Value,
-                Email = credential.Email.Value,
-                UserStatus = credential.UserStatus.ToString(),
-                UserRole = credential.UserRole.ToString()
-            };
+             
+            var dtoReturn = CredentialMapper.toDTO(credential);
+            return dtoReturn;
         }
 
         // Método para deletar uma credencial
         public async Task<CredentialDto> DeleteAsync(CredentialId id)
         {
-            var credential = await _repo.GetByIdAsync(id); 
+            var credential = await _repo.GetByIdAsync(id);
 
             if (credential == null)
-                return null;   
+                return null;
 
             _repo.Remove(credential);
             await _unitOfWork.CommitAsync();
 
-            return new CredentialDto 
-            { 
-                Id = credential.Id.AsGuid().ToString(),
-                Username = credential.Username.Value,
-                Email = credential.Email.Value,
-                UserStatus = credential.UserStatus.ToString(),
-                UserRole = credential.UserRole.ToString()
-            };
+
+            var dtoReturn = CredentialMapper.toDTO(credential);
+            return dtoReturn;
         }
 
         // Método para inativar uma credencial
@@ -124,17 +98,12 @@ namespace DDDNetCore.Domain.Credential
 
             // Aqui você deve implementar a lógica para inativar a credencial
             credential.Inactivate(); // Supondo que há um método Inactivate na classe Credential
-            
+
             await _unitOfWork.CommitAsync();
 
-            return new CredentialDto
-            {
-                Id = credential.Id.AsGuid().ToString(),
-                Username = credential.Username.Value,
-                Email = credential.Email.Value,
-                UserStatus = credential.UserStatus.ToString(),
-                UserRole = credential.UserRole.ToString()
-            };
+
+            var dtoReturn = CredentialMapper.toDTO(credential);
+            return dtoReturn;
         }
     }
 }
