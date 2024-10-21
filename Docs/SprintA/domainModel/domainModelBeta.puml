@@ -104,8 +104,12 @@ rectangle Patients #bbaacc{
 
 rectangle Staffs #bbddcc{
     class Staff <<Aggregate Root>><<Entity>>
+    
+    class StaffId <<Identity>><<Value Object>>{
+        - id : UUID
+    }
    
-    class LicenseNumber<<Value Object>><<Identity>>{
+    class LicenseNumber<<Value Object>><<Unique>>{
         - licence : String
     }
     class Specialization <<Value Object>>{
@@ -123,6 +127,7 @@ rectangle Staffs #bbddcc{
     Staff "1" *---> "1" Specialization : specialization
    
     Staff "1" --> "*" AvailabilitySlot : slots
+    Staff "1" --> "1" StaffId: id
     '' Slots should be stored in Map for efficient storage and fetching
 }
 
