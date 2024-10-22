@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DDDNetCore.DTO;
 using DDDNetCore.Services;
+using DDDSample1.Domain.Patients;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace lapr5_2024_25_g5.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> RegisterPatient([FromBody] PatientDTO dto)
+        public async Task<IActionResult> RegisterPatient( PatientDTO dto)
         {
             try
             {
@@ -28,7 +29,7 @@ namespace lapr5_2024_25_g5.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e);
             }
         }
     
