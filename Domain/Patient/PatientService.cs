@@ -6,6 +6,7 @@ using DDDNetCore.DTO;
 using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Mappers;
 using DDDSample1.Domain.Patients;
+using Microsoft.AspNetCore.Components.Sections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -13,27 +14,28 @@ namespace DDDNetCore.Services;
 
 public class PatientService
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IPatientRepository _patientRepository;
+    private readonly ILogger<PatientService> logger;
+    private readonly IConfiguration _configuration;
+    private PatientMapper _patientMapper;
 
-private readonly IUnitOfWork _unitOfWork;
-private readonly IPatientRepository _patientRepository;
-private readonly ILogger<PatientService> logger;
-private readonly IConfiguration _configuration;
-private PatientMapper _patientMapper;
+    public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IConfiguration configuration)
+    {
+        _unitOfWork = unitOfWork;
+        _patientRepository = patientRepository;
+        _configuration = configuration;
+        _patientMapper = new PatientMapper();
+    }
 
-public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IConfiguration configuration)
-{
-    _unitOfWork = unitOfWork;
-    _patientRepository = patientRepository;
-    _configuration = configuration;
-    _patientMapper = new PatientMapper();
-}
-
-        public async Task<object> RegisterPatient(PatientDTO dto)
+    public async Task<object> RegisterPatient(PatientDTO dto)
     {
         try
         {
+            dto.PatientID = Guid.NewGuid().ToString();
+
             Patient mapped = _patientMapper.ToEntity(dto);
-            
+
             await this._patientRepository.AddAsync(mapped);
 
             PatientDTO mappedDto = _patientMapper.ToDTO(mapped);
@@ -41,12 +43,11 @@ public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientReposito
             await this._unitOfWork.CommitAsync();
 
             return mappedDto;
-
         }
         catch (Exception e)
         {
-          logger.LogError(e.Message);
-          throw new Exception("Error registering patient");
+            logger.LogError(e.Message);
+            throw new Exception("Error registering patient");
         }
     }
 
@@ -55,6 +56,3 @@ public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientReposito
         throw new NotImplementedException();
     }
 }
-
-
-

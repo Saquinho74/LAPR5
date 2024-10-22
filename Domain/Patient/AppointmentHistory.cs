@@ -6,15 +6,15 @@ namespace DDDNetCore.Domain.Families;
 
 public class AppointmentHistory : IValueObject
 {
-    public List<JSType.String> appointementHistory { get; private set; }
+    public List<string> appointementHistory { get; private set; }
     
     public AppointmentHistory()
     {
-        this.appointementHistory = appointementHistory;
     }
 
-    public void addAppointmentHistory(JSType.String appointementHistory)
+    public AppointmentHistory(List<string> dtoAppointmentHistory)
     {
-        this.appointementHistory.Add(appointementHistory);
+        this.appointementHistory = dtoAppointmentHistory;
     }
+    
 }

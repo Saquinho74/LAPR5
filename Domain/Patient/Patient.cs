@@ -5,10 +5,8 @@ using DDDNetCore.Domain.Shared;
 
 namespace DDDSample1.Domain.Patients
 {
-    public class Patient : Entity<PatientID>
+    public class Patient : Entity<PatientId>
     {
-        // Identity
-        public PatientID PatientID { get; private set; }
 
         // Value Objects
         public DateOfBirth DateOfBirth { get; private set; }
@@ -20,12 +18,12 @@ namespace DDDSample1.Domain.Patients
         public AllergiesMedicalConditions AllergiesMedicalConditions { get; private set; }
 
         // Constructor
-        public Patient(PatientID patientID, DateOfBirth dateOfBirth, Gender gender, 
+        public Patient(PatientId patientID, DateOfBirth dateOfBirth, Gender gender, 
                         MedicalRecordNumber medicalRecordNumber, ContactInformation contactInformation,
                         EmergencyContact emergencyContact, AppointmentHistory appointmentHistory,
                         AllergiesMedicalConditions allergiesMedicalConditions)
         {
-            PatientID = patientID ?? throw new ArgumentNullException(nameof(patientID));
+            Id = patientID;
             DateOfBirth = dateOfBirth ?? throw new ArgumentNullException(nameof(dateOfBirth));
             Gender = gender;
             MedicalRecordNumber = medicalRecordNumber ?? throw new ArgumentNullException(nameof(medicalRecordNumber));

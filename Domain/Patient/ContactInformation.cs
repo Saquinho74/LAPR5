@@ -6,15 +6,15 @@ namespace DDDNetCore.Domain.Families;
 
 public class ContactInformation : IValueObject{
     
-    public List<JSType.String> contactInformation { get; private set; }
+    public string contactInformation { get; private set; }
     
     public ContactInformation()
     {
     this.contactInformation = contactInformation;
     }
 
-    public void addContactInformation(JSType.String contactInformation)
+    public ContactInformation(string dtoContactInformation)
     {
-    this.contactInformation.Add(contactInformation);
+    this.contactInformation = contactInformation;
     }
 }

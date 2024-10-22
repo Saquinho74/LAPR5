@@ -6,6 +6,6 @@ using DDDNetCore.Infraestructure.Shared;
 
 namespace DDDNetCore.Infraestructure.Patient;
 
-public interface IPatientRepository : IRepository<DDDSample1.Domain.Patients.Patient, PatientID>
+public interface IPatientRepository : IRepository<DDDSample1.Domain.Patients.Patient, PatientId>
 {
 }
