@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class PatientId : EntityId
 {

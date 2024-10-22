@@ -1,20 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
-using DDDNetCore.Domain.Shared;
+﻿using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class ContactInformation : IValueObject{
     
     public string contactInformation { get; private set; }
     
-    public ContactInformation()
+    public ContactInformation(string contactInformation)
     {
     this.contactInformation = contactInformation;
     }
 
-    public ContactInformation(string dtoContactInformation)
+    public ContactInformation()
     {
-    this.contactInformation = contactInformation;
+        
     }
 }

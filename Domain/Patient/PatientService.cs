@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Shared;
-using DDDNetCore.DTO;
-using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Mappers;
-using DDDSample1.Domain.Patients;
-using Microsoft.AspNetCore.Components.Sections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace DDDNetCore.Services;
+namespace DDDNetCore.Domain.Patient;
 
 public class PatientService
 {
@@ -34,7 +30,7 @@ public class PatientService
         {
             dto.PatientID = Guid.NewGuid().ToString();
 
-            Patient mapped = _patientMapper.ToEntity(dto);
+            DDDSample1.Domain.Patients.Patient mapped = _patientMapper.ToEntity(dto);
 
             await this._patientRepository.AddAsync(mapped);
 

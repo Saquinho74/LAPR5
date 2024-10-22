@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
-
-namespace DDDNetCore.Domain.Families;
+﻿namespace DDDNetCore.Domain.Patient;
 
 public class MedicalRecordNumber
 {
@@ -12,4 +9,6 @@ public class MedicalRecordNumber
     }
 
     public int medicalRecordNumber { get; private set; }
+    
+    public MedicalRecordNumber() {  }
 }

@@ -1,6 +1,7 @@
 ﻿using DDDNetCore.Domain.Categories;
 using DDDNetCore.Domain.Families;
 using DDDNetCore.Domain.Operation;
+using DDDNetCore.Domain.Patient;
 using DDDNetCore.Infraestructure.Shared;
 
 namespace DDDNetCore.Infraestructure.Patient

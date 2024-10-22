@@ -1,8 +1,7 @@
-﻿using DDDNetCore.Domain.Families;
+﻿using DDDNetCore.Infraestructure;
 using DDDNetCore.Infraestructure.Shared;
-using Microsoft.EntityFrameworkCore;
 
-namespace DDDNetCore.Infraestructure.Patient;
+namespace DDDNetCore.Domain.Patient;
 
 public class PatientRepository : BaseRepository<DDDSample1.Domain.Patients.Patient, PatientId>, IPatientRepository
 {

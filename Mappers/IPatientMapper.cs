@@ -1,4 +1,4 @@
-﻿using DDDNetCore.DTO;
+﻿using DDDNetCore.Domain.Patient;
 using DDDSample1.Domain.Patients;
 
 namespace DDDNetCore.Mappers;

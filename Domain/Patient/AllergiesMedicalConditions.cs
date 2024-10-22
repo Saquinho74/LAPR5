@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class AllergiesMedicalConditions : IValueObject
 {
@@ -12,8 +11,8 @@ public class AllergiesMedicalConditions : IValueObject
     {
     }
 
-    public AllergiesMedicalConditions(List<string> dtoAllergiesMedicalConditions)
+    public AllergiesMedicalConditions(List<string> allergiesMedicalConditions)
     {
-        this.allergiesMedicalConditions = dtoAllergiesMedicalConditions;
+        this.allergiesMedicalConditions = allergiesMedicalConditions;
     }
 }

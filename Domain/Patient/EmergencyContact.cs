@@ -1,7 +1,6 @@
-﻿using System;
-using DDDNetCore.Domain.Shared;
+﻿using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class EmergencyContact : IValueObject
 {
@@ -11,9 +10,9 @@ public class EmergencyContact : IValueObject
     {
     }
 
-    public EmergencyContact(string dtoEmergencyContact)
+    public EmergencyContact(string emergencyContact)
     {
-        this.emergyContact = dtoEmergencyContact;
+        this.emergyContact = emergencyContact;
 
     }
 }

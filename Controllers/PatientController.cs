@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DDDNetCore.DTO;
-using DDDNetCore.Services;
+using DDDNetCore.Domain.Patient;
 using DDDSample1.Domain.Patients;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

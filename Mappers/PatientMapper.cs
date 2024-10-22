@@ -1,6 +1,6 @@
 ﻿using System;
 using DDDNetCore.Domain.Families;
-using DDDNetCore.DTO;
+using DDDNetCore.Domain.Patient;
 using DDDSample1.Domain.Patients;
 
 namespace DDDNetCore.Mappers;

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class AppointmentHistory : IValueObject
 {

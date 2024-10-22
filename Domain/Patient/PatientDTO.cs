@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 using DDDNetCore.Domain.Families;
 
-namespace DDDNetCore.DTO;
+namespace DDDNetCore.Domain.Patient;
 
 public class PatientDTO
 {

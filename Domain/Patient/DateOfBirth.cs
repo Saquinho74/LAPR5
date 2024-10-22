@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 
-namespace DDDNetCore.Domain.Families;
+namespace DDDNetCore.Domain.Patient;
 
 public class DateOfBirth
 {
     public DateTime dateOfBirth { get; private set; }
 
-    public DateOfBirth(string dtoDateOfBirth)
+    public DateOfBirth(string dateOfBirth)
     {
-        this.dateOfBirth = DateTime.Parse(dtoDateOfBirth);
+        this.dateOfBirth = DateTime.Parse(dateOfBirth);
         ;
     }
+
+    public DateOfBirth()
+    {
+        
+    }
+    
 }
