@@ -1,12 +1,18 @@
-﻿using DDDNetCore.Domain.Families;
+﻿using DDDNetCore.Domain.Categories;
+using DDDNetCore.Domain.Families;
+using DDDNetCore.Domain.Operation;
 using DDDNetCore.Infraestructure.Shared;
-using Microsoft.EntityFrameworkCore;
 
-namespace DDDNetCore.Infraestructure.Patient;
-
-public class PatientRepository : BaseRepository<DDDSample1.Domain.Patients.Patient, PatientID>, IPatientRepository
+namespace DDDNetCore.Infraestructure.Patient
 {
-    public PatientRepository(DbSet<DDDSample1.Domain.Patients.Patient> objs) : base(objs)
+    public class OperationRepository : BaseRepository<DDDSample1.Domain.Patients.Patient, PatientId>, IPatientRepository
     {
+    
+        public OperationRepository(DddSample1DbContext context):base(context.Patients)
+        {
+           
+        }
+
+
     }
 }
