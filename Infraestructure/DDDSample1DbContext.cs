@@ -8,7 +8,9 @@ using DDDNetCore.Infraestructure.Credential;
 using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Infraestructure.Products;
+using DDDNetCore.Infraestructure.SurgeryRoom;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDDNetCore.Infraestructure
@@ -17,6 +19,8 @@ namespace DDDNetCore.Infraestructure
     {
         public DbSet<Category> Categories { get; set; }
         
+        public DbSet<DDDSample1.Domain.Patients.Patient> Patients { get; set; }
+
         public DbSet<Domain.Operation.Operation> Operation { get; set; }
 
         public DbSet<Product> Products { get; set; }
@@ -43,6 +47,8 @@ namespace DDDNetCore.Infraestructure
             modelBuilder.ApplyConfiguration(new OperationTypesEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CredentialEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientConfiguration());
+            modelBuilder.ApplyConfiguration(new SurgeryRoomEntityTypeConfiguration());
         }
     }
 }

@@ -2,19 +2,33 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+
 namespace DDDNetCore.Infraestructure.OperationTypes
 {
     internal class OperationTypesEntityTypeConfiguration : IEntityTypeConfiguration<OperationType>
     {
         public void Configure(EntityTypeBuilder<OperationType> builder)
         {
-            builder.ToTable("OperationType", SchemaNames.DDDSample1);
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.OperationalTypeName).HasColumnName("OperationalTypeName");
-            builder.Property(b => b.RequiredStaffEntry).HasColumnName("RequiredStaffEntry");
-            builder.Property(b => b.EstimatedDuration).HasColumnName("EstimatedDuration");
-            builder.Property<bool>("_active").HasColumnName("Active");
+
+            builder.OwnsOne(b => b.OperationTypeName, nameBuilder =>
+            {
+                nameBuilder.Property(p => p.Value)
+                    .HasColumnName("Name");
+            });
+
+            builder.OwnsOne(b => b.RequiredStaffEntry, staffBuilder =>
+            {
+                staffBuilder.Property(p => p.Value)
+                    .HasColumnName("Speciality");
+            });
+
+            builder.OwnsOne(b => b.EstimatedDuration, durationBuilder =>
+            {
+                durationBuilder.Property(p => p.Value)
+                    .HasColumnName("EstimatedDuration");
+            });
         }
-        
+
     }
 }

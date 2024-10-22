@@ -1,102 +1,124 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Mappers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DDDNetCore.Domain.OperationType
 {
     public class OperationTypeService
     {
-        
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOperationTypeRepository _repo;
-        private readonly IOperationTypeMapper _mapper;
 
-        public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository repo,IOperationTypeMapper mapper)
+        public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository repo, IOperationTypeMapper mapper)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
-            this._mapper = mapper;
         }
+
         
+        // Método para obter todas as operações
         public async Task<List<OperationTypeDto>> GetAllAsync()
         {
-            var list = await this._repo.GetAllAsync();
+            var operationTypes = await _repo.GetAllAsync();
             
-            List<OperationTypeDto> listDto = list.ConvertAll<OperationTypeDto>(cat => _mapper.toDto(cat));
+            // Conversão das operações em DTOs
+            var listDto = OperationTypeMapper.toDTOList(operationTypes);
 
             return listDto;
         }
 
-        public async Task<OperationTypeDto> GetByIdAsync(OperationTypeId id)
-        {
-            var cat = await this._repo.GetByIdAsync(id);
-            
-            if(cat == null)
-                return null;
-
-            return _mapper.toDto(cat);
-        }
-
+        // Método para obter uma operação por ID
         public async Task<OperationTypeDto> AddAsync(CreatingOperationTypeDto dto)
         {
-            var operationType = new OperationType(Guid.NewGuid().ToString(), dto.OperationalTypeName, dto.RequiredStaffEntry, dto.EstimatedDuration);
-
-            await this._repo.AddAsync(operationType);
-
-            await this._unitOfWork.CommitAsync();
-
-            return _mapper.toDto(operationType);
-        }
-
-        public async Task<OperationTypeDto> UpdateAsync(OperationTypeDto dto)
-        {
-            var operationType = await this._repo.GetByIdAsync(new OperationTypeId(dto.Id)); 
-
-            if (operationType == null)
-                return null;   
-
-            // change all field
-            operationType.ChangeOperationalTypeName(dto.OperationalTypeName);
-            operationType.ChangeRequiredStaffEntry(dto.RequiredStaffEntry);
-            operationType.ChangeEstimatedDuration(dto.EstimatedDuration);
+            var operationType = new OperationType(
+                new OperationTypeName(dto.OperationTypeName.Value), // Use the OperationalTypeName value object
+                new RequiredStaffEntry(dto.RequiredStaffEntry.Value), // Use the RequiredStaffEntry value object
+                new EstimatedDuration(dto.EstimatedDuration.Value)
+                ); // Use the EstimatedDuration value object
             
-            await this._unitOfWork.CommitAsync();
 
-            return _mapper.toDto(operationType);
-        }
-
-        public async Task<OperationTypeDto> InactivateAsync(OperationTypeId id)
-        {
-            var operationType = await this._repo.GetByIdAsync(id); 
-
-            if (operationType == null)
-                return null;   
-
-            // change all fields
-            operationType.MarkAsInative();
+            await _repo.AddAsync(operationType);
+            await _unitOfWork.CommitAsync();
             
-            await this._unitOfWork.CommitAsync();
+            var dtoReturn = OperationTypeMapper.toDTO(operationType);
 
-            return _mapper.toDto(operationType);
-        }
+            return dtoReturn;
 
-         public async Task<OperationTypeDto> DeleteAsync(OperationTypeId id)
-        {
-            var operationType = await this._repo.GetByIdAsync(id); 
-
-            if (operationType == null)
-                return null;   
-
-            if (operationType.Active)
-                throw new BusinessRuleValidationException("It is not possible to delete an active category.");
-            
-            this._repo.Remove(operationType);
-            await this._unitOfWork.CommitAsync();
-
-            return _mapper.toDto(operationType);
+           
         }
         
+        // Método para atualizar uma operação existente
+        public async Task<OperationTypeDto> UpdateAsync(OperationTypeDto dto)
+        {
+            var operationType = await _repo.GetByIdAsync(new OperationTypeId(dto.Id));
+
+            
+            
+            if (operationType == null)
+                return null;
+
+            // Atualiza as informações da operação
+            operationType.ChangeOperationalTypeName(new OperationTypeName(dto.OperationTypeName)); // Atualizando a descrição da operação
+            operationType.ChangeRequiredStaffEntry(new RequiredStaffEntry(dto.RequiredStaffEntry)); // Atualizando a Deadline da operação    
+            operationType.ChangeEstimatedDuration(new EstimatedDuration(dto.EstimatedDuration)); // Atualizando a Estimated Duartion da operação
+            
+            await _unitOfWork.CommitAsync();
+            
+            var dtoReturn = OperationTypeMapper.toDTO(operationType);
+
+            return dtoReturn;
+        }
+
+        // Método para inativar uma tipo operação
+        public async Task<OperationTypeDto> InactivateAsync(OperationTypeId id)
+        {
+            var operationType = await _repo.GetByIdAsync(id);
+
+            if (operationType == null)
+                return null;
+
+            // Aqui você deve implementar a lógica para inativar a operação
+
+            await _unitOfWork.CommitAsync();
+
+            var dtoReturn = OperationTypeMapper.toDTO(operationType);
+
+            return dtoReturn;
+        }
+
+        // Método para deletar uma operação
+        public async Task<OperationTypeDto> DeleteAsync(OperationTypeId id)
+        {
+            var operationType = await _repo.GetByIdAsync(id);
+
+            if (operationType == null)
+                return null;
+
+            if (operationType.Active)
+                throw new BusinessRuleValidationException("It is not possible to delete an active operation.");
+
+            _repo.Remove(operationType);
+            await _unitOfWork.CommitAsync();
+
+            var dtoReturn = OperationTypeMapper.toDTO(operationType);
+
+            return dtoReturn;
+        }
+
+        public async Task<ActionResult<OperationTypeDto>> GetByIdAsync(OperationTypeId operationTypeId)
+        {
+            var operationType = await _repo.GetByIdAsync(operationTypeId);
+
+            if (operationType == null)
+                return null;
+
+            var dtoReturn = OperationTypeMapper.toDTO(operationType);
+
+            return dtoReturn;
+        }
     }
 }

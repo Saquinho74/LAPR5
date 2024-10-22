@@ -1,32 +1,51 @@
-﻿using DDDNetCore.Domain.OperationType;
+﻿using System;
+using System.Collections.Generic;
+using DDDNetCore.Domain.Operation;
+using DDDNetCore.Domain.OperationType;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Mappers
 {
-    public class OperationTypeMapper : IOperationTypeMapper
+    public class OperationTypeMapper
     {
-        public OperationType toDomain(OperationTypeDto dto)
-        {
-            return new OperationType(dto.Id.ToString(),
-                dto.OperationalTypeName, 
-                dto.RequiredStaffEntry, 
-                dto.EstimatedDuration);
-        }
+        
+            public static OperationTypeDto toDTO(OperationType operationType)
+            {
+                return new OperationTypeDto
+                {
+                    Id = operationType.Id.AsGuid().ToString(),
+                    OperationTypeName = operationType.OperationTypeName.Value, // Convertendo o Guid para string
+                    RequiredStaffEntry = operationType.RequiredStaffEntry.Value,
+                    EstimatedDuration = operationType.EstimatedDuration.Value,
+                };
+            }
 
-        public OperationTypeDto toDto(OperationType entity)
-        {
-            return new OperationTypeDto{Id = entity.Id.AsGuid(), 
-                OperationalTypeName = entity.OperationalTypeName, 
-                RequiredStaffEntry = entity.RequiredStaffEntry, 
-                EstimatedDuration = entity.EstimatedDuration, 
-                Active = entity.Active
-            };
-        }
+            public static List<OperationTypeDto> toDTOList(List<OperationType> operationTypes)
+            {
+                return operationTypes.ConvertAll(operationType => new OperationTypeDto
+                {
+                    Id = operationType.Id.AsGuid().ToString(),
+                    OperationTypeName = operationType.OperationTypeName.Value, // Convertendo o Guid para string
+                    RequiredStaffEntry = operationType.RequiredStaffEntry.Value,
+                    EstimatedDuration = operationType.EstimatedDuration.Value,
+                });
+            }
 
-        public OperationType toDomain(CreatingOperationTypeDto createDto)
-        {
-            return new OperationType(createDto.OperationalTypeName, 
-                createDto.RequiredStaffEntry, 
-                createDto.EstimatedDuration);
+            // Método para converter de OperationDto para Operation
+            public static OperationType toDomain(OperationTypeDto dto)
+            {
+                return new OperationType(
+                    new OperationTypeName(dto.OperationTypeName), // Mapeando a descrição
+                    new RequiredStaffEntry(dto.RequiredStaffEntry), // Mapeando a Deadline
+                    new EstimatedDuration(dto.EstimatedDuration) // Mapeando a Deadline
+                );
+            }
+
+            // Método para converter uma lista de OperationDto para uma lista de Operation
+            public static List<OperationType> toDomainList(List<OperationTypeDto> dtos)
+            {
+                return dtos.ConvertAll(dto => toDomain(dto));
+            }
         }
-    }
+    
 }

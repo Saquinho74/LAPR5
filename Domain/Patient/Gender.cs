@@ -1,4 +1,4 @@
-﻿namespace DDDNetCore.Domain.Families;
+﻿namespace DDDNetCore.Domain.Patient;
 
 public enum Gender
 {
