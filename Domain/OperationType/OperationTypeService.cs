@@ -82,7 +82,7 @@ namespace DDDNetCore.Domain.OperationType
                 return null;
 
             // Aqui você deve implementar a lógica para inativar a operação
-
+            operationType.MarkAsInative();
             await _unitOfWork.CommitAsync();
 
             var dtoReturn = OperationTypeMapper.toDTO(operationType);
