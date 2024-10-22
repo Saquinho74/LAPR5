@@ -42,17 +42,17 @@ namespace DDDNetCore.Controllers
 
         // POST: api/SurgeryRoom
         [HttpPost]
-        public async Task<ActionResult<SurgeryRoomDto>> Create(CreatingSurgeryRoomDto dto)
+        public async Task<ActionResult<SurgeryRoomDto>> Create(SurgeryRoomDto dto)
         {
-            var surgeryRoom = await _service.AddAsync(dto);
+            var surgeryRoom = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = surgeryRoom }, surgeryRoom); // está mal REVER OS CONTROLLERS
         }
 
         // PUT: api/SurgeryRoom/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<SurgeryRoomDto>> Update(Guid id, CreatingSurgeryRoomDto dto)
+        public async Task<ActionResult<SurgeryRoomDto>> Update(Guid id, SurgeryRoomDto dto)
         {
-            if (id != id) // Supondo que o DTO tem um Id (ou modifique conforme a estrutura do DTO)
+            if (id.ToString() != dto.Id) // Supondo que o DTO tem um Id (ou modifique conforme a estrutura do DTO)
             {
                 return BadRequest("IDs do recurso e do DTO não correspondem.");
             }
@@ -82,11 +82,6 @@ namespace DDDNetCore.Controllers
             try
             {
                 var deletedSurgeryRoom = await _service.DeleteAsync(new SurgeryRoomId(id));
-
-                if (deletedSurgeryRoom == null)
-                {
-                    return NotFound();
-                }
 
                 return Ok(deletedSurgeryRoom);
             }

@@ -45,9 +45,7 @@ namespace DDDNetCore.Domain.SurgeryRoom
         // Method to change the current status
         public void ChangeCurrentStatus(CurrentStatus currentStatus)
         {
-            // We assume CurrentStatus is required, so we throw an exception if it's null
-            if (currentStatus == null)
-                throw new ArgumentNullException(nameof(currentStatus), "CurrentStatus cannot be null.");
+            
 
             this.CurrentStatus = currentStatus; // Assign the new current status
         }

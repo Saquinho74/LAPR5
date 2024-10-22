@@ -53,7 +53,7 @@ namespace DDDNetCore.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<OperationDto>> Update(Guid id, OperationDto dto)
         {
-            if (id != id)
+            if (id.ToString() != dto.Id)
             {
                 return BadRequest();
             }
