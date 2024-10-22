@@ -17,6 +17,8 @@ namespace DDDNetCore.Infraestructure
     {
         public DbSet<Category> Categories { get; set; }
         
+        public DbSet<DDDSample1.Domain.Patients.Patient> Patients { get; set; }
+
         public DbSet<Domain.Operation.Operation> Operation { get; set; }
 
         public DbSet<Product> Products { get; set; }

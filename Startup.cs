@@ -12,10 +12,12 @@ using DDDNetCore.Infraestructure.Credential;
 using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Infraestructure.Products;
 using DDDNetCore.Infraestructure.Shared;
 using DDDNetCore.Infraestructure.SurgeryRoom;
 using DDDNetCore.Mappers;
+using DDDNetCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OperationRepository = DDDNetCore.Infraestructure.Operation.OperationRepository;
 
 namespace DDDNetCore
 {
@@ -44,7 +47,6 @@ namespace DDDNetCore
 
             ConfigureMyServices(services);
             
-
             services.AddControllers().AddNewtonsoftJson();
         }
 
@@ -100,6 +102,13 @@ namespace DDDNetCore
 
             services.AddTransient<SurgeryRoomService>();
             services.AddTransient<ISurgeryRoomRepository, SurgeryRoomRepository>();
+
+            services.AddSwaggerGen();
+
+            services.AddTransient<PatientService>();
+            services.AddTransient<IPatientRepository, PatientRepository>();
+            services.AddTransient<PatientMapper>();
+
 
         }
     }
