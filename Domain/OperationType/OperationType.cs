@@ -1,10 +1,11 @@
-﻿using DDDNetCore.Domain.Shared;
+﻿using System;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Domain.OperationType
 {
     public class OperationType : Entity<OperationTypeId>, IAggregateRoot
     {
-        public OperationalTypeName OperationalTypeName { get; private set; }
+        public OperationTypeName OperationTypeName { get; private set; }
         
         public RequiredStaffEntry RequiredStaffEntry { get; private set; }
         
@@ -14,28 +15,20 @@ namespace DDDNetCore.Domain.OperationType
         
         public OperationType() { }
         
-        public OperationType(string code, OperationalTypeName operationalTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
+        public OperationType(OperationTypeName operationTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
         {
-            this.Id = new OperationTypeId(code);
-            this.OperationalTypeName = operationalTypeName;
-            this.RequiredStaffEntry = requiredStaffEntry;
-            this.EstimatedDuration = estimatedDuration;
+            this.Id = new OperationTypeId(Guid.NewGuid()); // Generate a new unique ID
+            this.OperationTypeName =new OperationTypeName(operationTypeName.Value); // Use the OperationalTypeName value object
+            this.RequiredStaffEntry = new RequiredStaffEntry(requiredStaffEntry.Value);
+            this.EstimatedDuration = new EstimatedDuration(estimatedDuration.Value); // Use the EstimatedDuration value object
             this.Active = true;
         }
         
-        public OperationType(OperationalTypeName operationalTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
-        {
-            this.OperationalTypeName = operationalTypeName;
-            this.RequiredStaffEntry = requiredStaffEntry;
-            this.EstimatedDuration = estimatedDuration;
-            this.Active = true;
-        }
-        
-        public void ChangeOperationalTypeName(OperationalTypeName operationalTypeName)
+        public void ChangeOperationalTypeName(OperationTypeName operationTypeName)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the operational type name to an inactive operation type.");
-            this.OperationalTypeName = operationalTypeName;
+            this.OperationTypeName = operationTypeName;
         }
         
         
