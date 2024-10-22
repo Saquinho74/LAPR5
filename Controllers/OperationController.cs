@@ -39,7 +39,7 @@ namespace DDDNetCore.Controllers
             return cat;
         }
 
-        // POST: api/Categories
+        // POST: api/Operation
         [HttpPost]
         public async Task<ActionResult<OperationDto>> Create(CreatingOperationDto dto)
         {
@@ -49,7 +49,7 @@ namespace DDDNetCore.Controllers
         }
 
         
-        // PUT: api/Categories/5
+        // PUT: api/Operation/5
         [HttpPut("{id}")]
         public async Task<ActionResult<OperationDto>> Update(Guid id, OperationDto dto)
         {

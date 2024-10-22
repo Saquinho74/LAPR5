@@ -139,13 +139,21 @@ rectangle Requests #aaaaaa{
     class DeadlineDate<<Value Object>>{
         - date : Date
     }
-    class Priority<<Value Object>><<Comparable>>{
-        - level : Integer
+    enum Priority<<Value Object>><<Enumerable>>{
+        EFFECTIVE
+        URGENT
+        EMERGENCY
+        }
+    enum Status<<Value Object>><<Enumerable>>{
+                PLANNED
+                REQUESTED
+                
     }
 
 
     OperationRequest "1" *--> "1" DeadlineDate : deadline
     OperationRequest "1" *--> "1" Priority : priority
+    OperationRequest "1" *--> "1" Status
     OperationRequest "1" *--> "1" OperationRequestId : id
 
 }
@@ -196,6 +204,24 @@ rectangle Appointments #ccccaa{
     Appointment "1" *--> "1" AppointmentType : type
 }
 
+
+
+rectangle Sessions #ddbacc{
+    class Session<<Aggregrate Root>><<Entity>>
+    class SessionId <<Identity>><<Value Object>>
+    class Token <<Value Object>>
+    
+  
+}
+
+    Session "1" *--> "1" SessionId : id
+    Session "1" *--> "1" Token : token
+    Credential "1" *--> "0..1" Session
+
+
+
+
+
 rectangle Rooms #ddaadd{
     class SurgeryRoom<<Aggregate Root>><<Entity>>
     class RoomId<<Identity>><<Value Object>>{
@@ -225,9 +251,9 @@ rectangle Rooms #ddaadd{
     SurgeryRoom "1" *--> "1" RoomId : id
     SurgeryRoom "1" *--> "1" Type : type
     SurgeryRoom "1" *--> "1" Capacity : capacity
-    SurgeryRoom "1" --> "*" AssignedEquipment : equipment
+    SurgeryRoom "1" *--> "*" AssignedEquipment : equipment
     SurgeryRoom "1" *--> "1" CurrentStatus : status
-    SurgeryRoom "1" --> "*" MaintenanceSlot : maintenance
+    SurgeryRoom "1" *--> "*" MaintenanceSlot : maintenance
 }
 
 Profile "1" *--> "1" Credential : credentials
