@@ -41,7 +41,7 @@ namespace DDDNetCore.Controllers
 
         // POST: api/Operation
         [HttpPost]
-        public async Task<ActionResult<OperationDto>> Create(CreatingOperationDto dto)
+        public async Task<ActionResult<OperationDto>> Create(OperationDto dto)
         {
             var cat = await _service.AddAsync(dto);
 

@@ -55,6 +55,23 @@ O sistema deve garantir que o tipo de operação seja compatível com a especial
 > parece-me que ainda não entraram na fase de application, pelo que ninguém tem “oficialmente” conhecimento dessa oferta
 > de emprego e não devem haver candidaturas para essa oferta.
 
+* PARA TESTAR
+  {
+  "id": "1",
+  "description": "string",
+  "priority": "1",
+  "operationTypeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "deadline": "2025-10-22T15:35:42.660Z"
+  }
+
+
+
+
+
+
+
+
+
 **Acceptance Criteria:**
 * 5.1.16.1 -  Os médicos podem criar uma solicitação de operação selecionando o paciente, tipo de operação, prioridade e prazo sugerido.
 * 5.1.16.2 -  O sistema valida que o tipo de operação corresponde à especialização do médico.

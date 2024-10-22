@@ -1,4 +1,5 @@
 ﻿using System;
+using DDDNetCore.Domain.OperationType;
 using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Domain.Operation
@@ -8,7 +9,7 @@ namespace DDDNetCore.Domain.Operation
         public OperationDescription Description { get; private set; }
         public Priority Priority { get; private set; }
         public Deadline Deadline { get; private set; }
-        public OperationType.OperationType Type { get; private set; }
+        public OperationTypeId Type { get; private set; }
         public bool Active { get; private set; }
 
         // Private constructor for ORM (e.g., EF Core)
@@ -18,13 +19,13 @@ namespace DDDNetCore.Domain.Operation
         }
 
         // Constructor to initialize the Operation entity with required parameters
-        public Operation(OperationDescription description, Priority priorityValue, Deadline deadlineValue, OperationType.OperationType type)
+        public Operation(OperationDescription description, Priority priorityValue, Deadline deadlineValue, OperationTypeId type)
         {
             this.Id = new OperationId(Guid.NewGuid()); // Generate a new unique ID
             this.Description = description;
             this.Priority = new Priority(priorityValue.Value); // Use the Priority value object
             this.Deadline = new Deadline(deadlineValue.Value); // Use the Deadline value object
-            this.Type = type ?? throw new ArgumentNullException(nameof(type)); // Ensure type is not null
+            this.Type = type; // Ensure type is not null
             this.Active = true; // Set operation as active
         }
 

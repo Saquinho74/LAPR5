@@ -97,10 +97,7 @@ namespace DDDNetCore.Domain.OperationType
 
             if (operationType == null)
                 return null;
-
-            if (operationType.Active)
-                throw new BusinessRuleValidationException("It is not possible to delete an active operation.");
-
+            
             _repo.Remove(operationType);
             await _unitOfWork.CommitAsync();
 

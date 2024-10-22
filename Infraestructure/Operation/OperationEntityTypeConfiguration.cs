@@ -10,7 +10,7 @@ namespace DDDNetCore.Infraestructure.Operation
         {
             // cf. https://www.entityframeworktutorial.net/efcore/fluent-api-in-entity-framework-core.aspx
             
-            //builder.ToTable("Operation", SchemaNames.DDDSample1);
+            builder.ToTable("Operation", SchemaNames.DDDSample1);
             builder.HasKey(b => b.Id);
             builder.OwnsOne(b => b.Deadline, nameBuilder =>
             {
@@ -30,7 +30,12 @@ namespace DDDNetCore.Infraestructure.Operation
                     .HasColumnName("Priority");
             });
 
-            
+            builder.OwnsOne(b => b.Type, nameBuilder =>
+            {
+                nameBuilder.Property(p => p.Value)
+                    .HasColumnName("Type");
+            });
+
         }
     }
 }
