@@ -12,7 +12,7 @@ namespace DDDNetCore.Infraestructure.Patient
 
             // Configure the primary key
             builder.HasKey(b => b.Id);
-
+            builder.OwnsOne(b => b.AllergiesMedicalConditions);
             // Configure the properties
             
 
@@ -48,11 +48,7 @@ namespace DDDNetCore.Infraestructure.Patient
                     .HasColumnName("AppointmentHistory");
             });
 
-            builder.OwnsOne(b => b.AllergiesMedicalConditions, nameBuilder =>
-            {
-                nameBuilder.Property(p => p.allergiesMedicalConditions)
-                    .HasColumnName("AllergiesMedicalConditions");
-            });
+            
         }
     }
 }

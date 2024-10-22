@@ -8,7 +8,9 @@ using DDDNetCore.Infraestructure.Credential;
 using DDDNetCore.Infraestructure.Families;
 using DDDNetCore.Infraestructure.Operation;
 using DDDNetCore.Infraestructure.OperationTypes;
+using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Infraestructure.Products;
+using DDDNetCore.Infraestructure.SurgeryRoom;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDDNetCore.Infraestructure
@@ -45,6 +47,8 @@ namespace DDDNetCore.Infraestructure
             modelBuilder.ApplyConfiguration(new OperationTypesEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CredentialEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientConfiguration());
+            modelBuilder.ApplyConfiguration(new SurgeryRoomEntityTypeConfiguration());
         }
     }
 }
