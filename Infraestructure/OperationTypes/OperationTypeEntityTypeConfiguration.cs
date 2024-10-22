@@ -10,10 +10,26 @@ namespace DDDNetCore.Infraestructure.OperationTypes
         {
             builder.ToTable("OperationType", SchemaNames.DDDSample1);
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.OperationalTypeName).HasColumnName("OperationalTypeName");
-            builder.Property(b => b.RequiredStaffEntry).HasColumnName("RequiredStaffEntry");
-            builder.Property(b => b.EstimatedDuration).HasColumnName("EstimatedDuration");
-            builder.Property<bool>("_active").HasColumnName("Active");
+
+            builder.OwnsOne(b => b.OperationalTypeName, owned =>
+                {
+                    owned.Property(d => d.Value).HasColumnName("OperationalTypeName");
+
+                }
+
+            );
+            builder.OwnsOne(b => b.RequiredStaffEntry, owned =>
+                {
+                    owned.Property(d => d.RequiredStaff).HasColumnName("RequiredStaff");
+                    owned.Property(d => d.Speciality).HasColumnName("Speciality");
+
+                }
+            );
+            
+            builder.OwnsOne(b => b.EstimatedDuration, owned =>
+            {
+                owned.Property(d => d.DurationInMinutes).HasColumnName("EstimatedDuration");
+            });            builder.Property<bool>("_active").HasColumnName("Active");
         }
         
     }

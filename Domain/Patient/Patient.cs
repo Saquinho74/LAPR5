@@ -17,6 +17,8 @@ namespace DDDSample1.Domain.Patients
         public EmergencyContact EmergencyContact { get; private set; }
         public AppointmentHistory AppointmentHistory { get; private set; }
         public AllergiesMedicalConditions AllergiesMedicalConditions { get; private set; }
+        
+        public Patient( ) {}
 
         // Constructor
         public Patient(PatientId patientID, DateOfBirth dateOfBirth, Gender gender, 
@@ -34,6 +36,8 @@ namespace DDDSample1.Domain.Patients
             AllergiesMedicalConditions = allergiesMedicalConditions;
         }
     }
+    
+   
 
     // Value Objects and Identity
     

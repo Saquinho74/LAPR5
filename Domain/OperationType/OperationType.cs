@@ -12,6 +12,8 @@ namespace DDDNetCore.Domain.OperationType
         
         public bool Active{ get;  private set; }
         
+        public OperationType() { }
+        
         public OperationType(string code, OperationalTypeName operationalTypeName, RequiredStaffEntry requiredStaffEntry, EstimatedDuration estimatedDuration)
         {
             this.Id = new OperationTypeId(code);

@@ -6,6 +6,8 @@ namespace DDDNetCore.Domain.OperationType
     public class OperationalTypeName : IValueObject
     {
         public string Value { get; private set; }
+        
+        public OperationalTypeName() {}
 
         public OperationalTypeName(string value)
         {
