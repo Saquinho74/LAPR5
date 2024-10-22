@@ -3,44 +3,30 @@ using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Domain.OperationType
 {
-    public class EstimatedDuration : IValueObject
+    public class EstimatedDuration
     {
-        public int DurationInMinutes { get; private set; } // Duração estimada em minutos
+        public string Value { get; private set; }
+        
 
-        // Construtor protegido para uso por frameworks de persistência (ex: EF Core)
-        protected EstimatedDuration() { }
-
-        // Construtor para criar um novo EstimatedDuration
-        public EstimatedDuration(int durationInMinutes)
+        // Constructor to create a valid Priority object
+        public EstimatedDuration(string value)
+        
         {
-            if (durationInMinutes <= 0)
-                throw new ArgumentException("Duration in minutes must be greater than 0.", nameof(durationInMinutes));
-
-            DurationInMinutes = durationInMinutes;
+            if (string.IsNullOrWhiteSpace(value))
+                throw new BusinessRuleValidationException($"Priority must a number.");
+            
+            this.Value = value;
         }
 
-        // Override do método Equals para garantir comparação de Value Objects
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-
-            var other = (EstimatedDuration)obj;
-
-            return DurationInMinutes == other.DurationInMinutes;
-        }
-
-        // Override do método GetHashCode para manter a consistência
         public override int GetHashCode()
         {
-            return HashCode.Combine(DurationInMinutes);
+            return Value.GetHashCode();
         }
 
-        // Override do método ToString para facilitar a depuração
+        // Override the ToString method for easy display
         public override string ToString()
         {
-            return $"{DurationInMinutes} minutes";
+            return Value.ToString();
         }
     }
 }
-

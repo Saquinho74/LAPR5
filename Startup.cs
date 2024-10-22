@@ -89,7 +89,7 @@ namespace DDDNetCore
             services.AddSwaggerGen();
             services.AddTransient<IUnitOfWork,UnitOfWork>();
             
-            services.AddTransient<IOperationTypeMapper, OperationTypeMapper>();
+            services.AddTransient<OperationTypeMapper>();
             
             services.AddTransient<IOperationTypeRepository,OperationTypeRepository>();
             services.AddTransient<OperationTypeService>();
