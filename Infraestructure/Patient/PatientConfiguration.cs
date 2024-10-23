@@ -18,7 +18,7 @@ namespace DDDNetCore.Infraestructure.Patient
 
             builder.OwnsOne(b => b.DateOfBirth, nameBuilder =>
             {
-                nameBuilder.Property(p => p.dateOfBirth).HasColumnName("DateOfBirth");
+                nameBuilder.Property(p => p.DateOfBirthValue).HasColumnName("DateOfBirth");
             });
 
             builder.Property(b => b.Gender)

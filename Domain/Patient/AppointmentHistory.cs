@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
 using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Patient;
+namespace DDDNetCore.Domain.Families;
 
 public class AppointmentHistory : IValueObject
 {
-    public List<string> appointementHistory { get; private set; }
+    public String appointementHistory { get; private set; }
     
     public AppointmentHistory()
     {
     }
 
-    public AppointmentHistory(List<string> dtoAppointmentHistory)
+    public AppointmentHistory(String dtoAppointmentHistory)
     {
         this.appointementHistory = dtoAppointmentHistory;
     }

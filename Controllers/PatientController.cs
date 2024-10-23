@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Patient;
-using DDDSample1.Domain.Patients;
-using Microsoft.AspNetCore.Http.HttpResults;
+using DDDNetCore.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lapr5_2024_25_g5.Controllers
 {
-    [Route("api/patients")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
@@ -18,68 +18,97 @@ namespace lapr5_2024_25_g5.Controllers
             _patientService = patientService;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> RegisterPatient( PatientDTO dto)
-        {
-            try
-            {
-                var patient = await _patientService.RegisterPatient(dto);
-                return Ok(patient);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-        }
-    
 
         [HttpGet]
-        public async Task<IActionResult> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+        {
+            return await _patientService.GetAllAsync();
+        }
+
+        // GET: api/Categories/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PatientDto>> GetGetById(Guid id)
+        {
+            var cat = await _patientService.GetByIdAsync(new PatientId(id));
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return cat;
+        }
+
+        // POST: api/Operation
+        [HttpPost]
+        public async Task<ActionResult<PatientDto>> Create(PatientDto dto)
+        {
+            var cat = await _patientService.AddAsync(dto);
+
+            return CreatedAtAction(nameof(GetGetById), new { id = cat.PatientId }, cat);
+        }
+
+
+
+        // PUT: api/Operation/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PatientDto>> Update(Guid id, PatientDto dto)
+        {
+            if (id.ToString() != dto.PatientId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var cat = await _patientService.UpdateAsync(dto);
+
+                if (cat == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(cat);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
+        // Inactivate: api/Categories/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<PatientDto>> SoftDelete(Guid id)
+        {
+            var cat = await _patientService.InactivateAsync(new PatientId(id));
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cat);
+        }
+
+        // DELETE: api/Categories/5
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<PatientDto>> HardDelete(Guid id)
         {
             try
             {
-                var patients = await _patientService.GetPatients();
-                return Ok(patients);
+                var cat = await _patientService.DeleteAsync(new PatientId(id));
+
+                if (cat == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(cat);
             }
-            catch (Exception e)
+            catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new { ex.Message });
             }
         }
     }
-
-
-//         [HttpPut("update/{id}")]
-//         public async Task<IActionResult> UpdatePatient(Guid id, [FromBody] UpdatePatientDTO dto)
-//         {
-//             try
-//             {
-//                 var updatedPatient = await _patientService.UpdatePatientAsync(id, dto);
-//                 return Ok(updatedPatient);
-//             }
-//             catch (Exception e)
-//             {
-//                 return BadRequest(e.Message);
-//             }
-//         }
-//
-//         [HttpDelete("delete/{email}")]
-//         public async Task<IActionResult> DeletePatient(string email)
-//         {
-//             try
-//             {
-//                 var result = await _patientService.DeletePatientByEmailAsync(email);
-//                 if (result)
-//                 {
-//                     return Ok("Patient and user successfully deleted.");
-//                 }
-//
-//                 return NotFound("Patient or user not found.");
-//             }
-//             catch (Exception e)
-//             {
-//                 return BadRequest(e.Message);
-//             }
-//         }
-//     }
- }
+}

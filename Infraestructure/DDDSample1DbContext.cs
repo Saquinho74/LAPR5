@@ -48,6 +48,7 @@ namespace DDDNetCore.Infraestructure
             modelBuilder.ApplyConfiguration(new CredentialEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new SurgeryRoomEntityTypeConfiguration());
         }
     }

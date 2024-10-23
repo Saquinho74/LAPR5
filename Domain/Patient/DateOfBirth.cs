@@ -4,14 +4,17 @@ namespace DDDNetCore.Domain.Patient;
 
 public class DateOfBirth
 {
-    public DateTime dateOfBirth { get; private set; }
+    public DateTime DateOfBirthValue { get; private set; }
 
     public DateOfBirth(string dateOfBirth)
     {
-        this.dateOfBirth = DateTime.Parse(dateOfBirth);
-        ;
-    }
+        if (!DateTime.TryParse(dateOfBirth, out DateTime parsedDate))
+        {
+            throw new ArgumentException("Invalid date format. Please provide a valid date.");
+        }
 
+        DateOfBirthValue = parsedDate;
+    }
     public DateOfBirth()
     {
         

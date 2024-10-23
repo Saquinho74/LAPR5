@@ -1,18 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
 using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Patient;
+namespace DDDNetCore.Domain.Families;
 
 public class AllergiesMedicalConditions : IValueObject
 {
-    public List<string> allergiesMedicalConditions { get; private set; }
+    public String allergiesMedicalConditions { get; private set; }
 
     public AllergiesMedicalConditions()
     {
     }
 
-    public AllergiesMedicalConditions(List<string> allergiesMedicalConditions)
+    public AllergiesMedicalConditions(String dtoAllergiesMedicalConditions)
     {
-        this.allergiesMedicalConditions = allergiesMedicalConditions;
+        this.allergiesMedicalConditions = dtoAllergiesMedicalConditions;
     }
 }
