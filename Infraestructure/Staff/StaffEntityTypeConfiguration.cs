@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDDNetCore.Infraestructure.Staff;
 
-public class StaffEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Staff.Staff>
+public class StaffEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Staffs.Staff>
 {
-    public void Configure(EntityTypeBuilder<Domain.Staff.Staff> builder)
+    public void Configure(EntityTypeBuilder<Domain.Staffs.Staff> builder)
     {
         builder.ToTable("Staff", SchemaNames.DDDSample1);
         builder.HasKey(b => b.Id);

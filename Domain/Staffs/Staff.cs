@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using DDDNetCore.Domain.Shared;
+using DDDNetCore.Domain.Staff;
 
-namespace DDDNetCore.Domain.Staff;
+namespace DDDNetCore.Domain.Staffs;
 
 public class Staff : Entity<StaffId>, IAggregateRoot
 {

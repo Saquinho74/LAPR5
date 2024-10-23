@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Domain.Staff;
+using DDDNetCore.Domain.Staffs;
 using DDDNetCore.DTO.StaffDto;
 using DDDNetCore.Infraestructure.Staff;
 

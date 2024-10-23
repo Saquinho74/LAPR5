@@ -33,7 +33,7 @@ namespace DDDNetCore.Infraestructure
         
         public DbSet<Domain.SurgeryRoom.SurgeryRoom> SurgeryRooms { get; set; }
         
-        public DbSet<Domain.Staff.Staff> Staff { get; set; }
+        public DbSet<Domain.Staffs.Staff> Staff { get; set; }
         
         public DddSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -48,7 +48,6 @@ namespace DDDNetCore.Infraestructure
             modelBuilder.ApplyConfiguration(new OperationTypesEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CredentialEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new SurgeryRoomEntityTypeConfiguration());
         }
