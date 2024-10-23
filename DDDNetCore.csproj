@@ -23,6 +23,8 @@
     <Compile Remove="Docs\SprintA\global_artifacts\level2\**" />
     <Compile Remove="Docs\SprintA\global_artifacts\level1\**" />
     <Compile Remove="Test\**" />
+    <Compile Remove="Mappers\ISessionMapper.cs" />
+    <Compile Remove="Controllers\SessionController.cs" />
   </ItemGroup>
  
   <ItemGroup>
@@ -58,6 +60,7 @@
   <ItemGroup>
     <Folder Include="Docs\SprintA\global_artifacts\mapping_Between_View\" />
     <Folder Include="Docs\SprintA\global_artifacts\UCD\" />
+    <Folder Include="DTO\" />
   </ItemGroup>
 
 </Project>
