@@ -1,0 +1,32 @@
+﻿@startuml Process View - Level 1
+
+autonumber
+skinparam packageStyle rect
+
+title Delete Resource
+
+participant "System" as RDG <<system (C4)>>
+
+-> RDG: Sends DELETE request for resource
+
+activate RDG
+
+alt resource Deleted
+
+  <-- RDG: sends message of resource deleted successfully
+
+
+
+else unauthorized
+
+  <-- RDG: sends message of unauthorized
+
+else resource not found
+
+  <-- RDG: sends message of necessary resource not found
+
+
+
+end
+
+@enduml

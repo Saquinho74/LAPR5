@@ -35,9 +35,11 @@ namespace DDDNetCore.Mappers
         // Método para converter de OperationDto para Operation
         public static Operation toDomain(OperationDto dto)
         {
-            return new Operation(
-                new OperationDescription(dto.Description),          // Mapeando a descrição
-                new Deadline(DateTime.Parse(dto.Deadline))         // Mapeando a Deadline
+           return new Operation(
+                new OperationDescription(dto.Description), 
+                new Priority(int.Parse(dto.Priority)), 
+                new Deadline(DateTime.Parse(dto.Deadline)), 
+                new OperationTypeId(dto.OperationTypeId)
             );
         }
 
