@@ -7,8 +7,6 @@ namespace DDDNetCore.Domain.Patient;
 public class PatientId : EntityId
 {
     
-    // Property to store the value for EF Core mapping
-    [JsonPropertyName("value")]
     public Guid Value { get; private set; }
     
     [Newtonsoft.Json.JsonConstructor]

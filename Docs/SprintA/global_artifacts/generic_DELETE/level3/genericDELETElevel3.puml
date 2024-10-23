@@ -1,0 +1,57 @@
+﻿@startuml
+autonumber
+skinparam packageStyle rect
+
+title Back-End delete resources - Logical View LV3
+
+participant AspnetRouter as router
+participant ResourceController as ctrl
+participant ResourceService as service
+participant ResourceRepository as repo
+
+
+
+note over router
+This diagram represents a DELETE request to remove a resource from the database.
+end note
+
+
+-> router: DELETE /resource/{id}
+activate router
+router -> ctrl: deleteResource(id)
+activate ctrl
+ctrl -> service: delete(id)
+activate service
+service -> repo: getById(id)
+activate repo
+
+repo --> service: returns domain (resource)
+
+deactivate repo
+
+alt resource exists
+    service -> repo: delete(domain)
+    
+    
+    activate repo
+        repo -> : Remove resource by ID
+        
+        repo <-- : Returns success response (resource deleted)
+
+    repo --> service: returns success message
+    deactivate repo
+    service --> ctrl: returns success message
+else resource does not exist
+    service --> ctrl: returns not found error
+end
+
+deactivate service
+ctrl --> router: returns result (success or error)
+
+deactivate ctrl
+
+ <-- router: returns response to client
+
+deactivate router
+
+@enduml

@@ -1,0 +1,43 @@
+﻿@startuml Process View - Level 3
+
+autonumber
+skinparam packageStyle rect
+
+title DELETE resources - Logical View LV
+
+participant "Front-End" as FE <<C4 Container>>
+participant "Back-End" as BE <<C4 Container>>
+participant "DataBase" as DB <<C4 Container>>
+
+note over FE
+This diagram represents a DELETE request to remove a resource from the database.
+end note
+
+-> FE: User triggers deletion of a resource
+activate FE
+FE -> BE: DELETE /resource/{id}
+activate BE
+alt user authorized
+
+    alt resource exists
+        BE -> DB: Remove resource by ID
+        activate DB
+        DB --> BE: Returns success response (resource deleted)
+        deactivate DB
+
+        BE --> FE: Returns success message (resource deleted)
+        deactivate BE
+        <-- FE: Displays success message to user
+    else resource not found
+         <-- FE: Sends message to client: resource not found
+    end
+
+else user unauthorized
+     <-- FE: Sends message to client: unauthorized access
+
+
+
+deactivate BE
+deactivate FE
+
+@enduml

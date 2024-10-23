@@ -66,11 +66,7 @@ O sistema deve garantir que o tipo de operação seja compatível com a especial
 
 
 
-
-
-
-
-
+  
 
 **Acceptance Criteria:**
 * 5.1.16.1 -  Os médicos podem criar uma solicitação de operação selecionando o paciente, tipo de operação, prioridade e prazo sugerido.
