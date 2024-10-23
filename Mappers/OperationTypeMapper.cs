@@ -32,6 +32,15 @@ namespace DDDNetCore.Mappers
             }
 
             // Método para converter de OperationDto para Operation
+            
+
+            // Método para converter uma lista de OperationDto para uma lista de Operation
+            public static List<OperationType> toDomainList(List<OperationTypeDto> dtos)
+            {
+                return dtos.ConvertAll(dto => toDomain(dto));
+            }
+
+        
             public static OperationType toDomain(OperationTypeDto dto)
             {
                 return new OperationType(
@@ -41,11 +50,14 @@ namespace DDDNetCore.Mappers
                 );
             }
 
-            // Método para converter uma lista de OperationDto para uma lista de Operation
-            public static List<OperationType> toDomainList(List<OperationTypeDto> dtos)
+            public OperationTypeDto toDto(OperationType entity)
             {
-                return dtos.ConvertAll(dto => toDomain(dto));
+                throw new NotImplementedException();
             }
-        }
-    
+
+            public OperationType toDomain(CreatingOperationTypeDto createDto)
+            {
+                throw new NotImplementedException();
+            }
+    }
 }

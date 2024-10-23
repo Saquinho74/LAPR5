@@ -7,6 +7,7 @@ using DDDNetCore.Domain.Patient;
 using DDDNetCore.Domain.Products;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Domain.SurgeryRoom;
+using DDDNetCore.Domain.Staffs;
 using DDDNetCore.Infraestructure;
 using DDDNetCore.Infraestructure.Categories;
 using DDDNetCore.Infraestructure.Credential;
@@ -17,6 +18,7 @@ using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Infraestructure.Products;
 using DDDNetCore.Infraestructure.Shared;
 using DDDNetCore.Infraestructure.SurgeryRoom;
+using DDDNetCore.Infraestructure.Staffs;
 using DDDNetCore.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -90,6 +92,7 @@ namespace DDDNetCore
             services.AddTransient<IUnitOfWork,UnitOfWork>();
             
             services.AddTransient<OperationTypeMapper>();
+
             
             services.AddTransient<IOperationTypeRepository,OperationTypeRepository>();
             services.AddTransient<OperationTypeService>();
@@ -97,6 +100,9 @@ namespace DDDNetCore
             services.AddTransient<OperationService>();
             services.AddTransient<IOperationRepository,OperationRepository>();
 
+            services.AddTransient<StaffService>();
+            services.AddTransient<IStaffRepository, StaffRepository>();
+            
             services.AddTransient<CredentialService>();
             services.AddTransient<ICredentialRepository,CredentialRepository>();
 
@@ -112,6 +118,4 @@ namespace DDDNetCore
 
         }
     }
-
- 
 }

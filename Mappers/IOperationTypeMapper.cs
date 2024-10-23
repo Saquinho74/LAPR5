@@ -2,7 +2,7 @@
 
 namespace DDDNetCore.Mappers
 {
-    public interface IOperationTypeMapper : IMapper<OperationType,OperationTypeDto,CreatingOperationTypeDto> 
+    public interface IOperationTypeMapper : IMapper<OperationType,OperationTypeDto,OperationTypeDto> 
     {
         
     }
