@@ -13,7 +13,7 @@ namespace DDDNetCore.Domain.OperationType
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOperationTypeRepository _repo;
 
-        public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository repo)
+        public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository repo, IOperationTypeMapper mapper)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;

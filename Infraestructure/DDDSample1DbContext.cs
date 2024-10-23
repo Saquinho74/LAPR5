@@ -3,7 +3,6 @@ using DDDNetCore.Domain.Credential;
 using DDDNetCore.Domain.Families;
 using DDDNetCore.Domain.OperationType;
 using DDDNetCore.Domain.Products;
-using DDDNetCore.Domain.Staffs;
 using DDDNetCore.Infraestructure.Categories;
 using DDDNetCore.Infraestructure.Credential;
 using DDDNetCore.Infraestructure.Families;
@@ -12,7 +11,6 @@ using DDDNetCore.Infraestructure.OperationTypes;
 using DDDNetCore.Infraestructure.Patient;
 using DDDNetCore.Infraestructure.Products;
 using DDDNetCore.Infraestructure.SurgeryRoom;
-using DDDNetCore.Infraestructure.Staffs;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDDNetCore.Infraestructure
@@ -35,7 +33,6 @@ namespace DDDNetCore.Infraestructure
         
         public DbSet<Domain.SurgeryRoom.SurgeryRoom> SurgeryRooms { get; set; }
         
-        public DbSet<Staff> Staff { get; set; }
 
         public DddSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -52,8 +49,6 @@ namespace DDDNetCore.Infraestructure
             modelBuilder.ApplyConfiguration(new OperationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new SurgeryRoomEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
-            
         }
     }
 }
