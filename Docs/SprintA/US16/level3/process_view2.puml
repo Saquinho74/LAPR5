@@ -23,15 +23,7 @@ activate ctrl
 ctrl --> sys : returns list of patients
 deactivate ctrl
 
-
 sys -> ctrl : GET /operationTypes
-
-
-
-
-
-
-
 
 activate ctrl
 

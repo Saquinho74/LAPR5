@@ -25,15 +25,7 @@ deactivate ctrl
 
 sys -> ctrl : GET /operationTypes
 
-
-
-
-
-
-
-
 activate ctrl
-
 
 ctrl --> sys : returns list of operation types
 deactivate ctrl

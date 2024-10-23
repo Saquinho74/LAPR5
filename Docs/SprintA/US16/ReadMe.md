@@ -64,10 +64,6 @@ O sistema deve garantir que o tipo de operação seja compatível com a especial
   "deadline": "2025-10-22T15:35:42.660Z"
   }
 
-
-
-  
-
 **Acceptance Criteria:**
 * 5.1.16.1 -  Os médicos podem criar uma solicitação de operação selecionando o paciente, tipo de operação, prioridade e prazo sugerido.
 * 5.1.16.2 -  O sistema valida que o tipo de operação corresponde à especialização do médico.
