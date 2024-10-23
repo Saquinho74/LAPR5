@@ -1,14 +1,18 @@
-﻿namespace DDDNetCore.Domain.Patient;
+﻿using System;
+
+namespace DDDNetCore.Domain.Families;
 
 public class MedicalRecordNumber
 {
-    public MedicalRecordNumber(int dtoMedicalRecordNumber)
+    
+    public MedicalRecordNumber()
+    {
+    }
+    public MedicalRecordNumber(string dtoMedicalRecordNumber)
     {
         this.medicalRecordNumber = medicalRecordNumber;
 
     }
 
-    public int medicalRecordNumber { get; private set; }
-    
-    public MedicalRecordNumber() {  }
+    public String medicalRecordNumber { get; private set; }
 }
