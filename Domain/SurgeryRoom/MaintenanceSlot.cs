@@ -44,4 +44,8 @@ namespace DDDNetCore.Domain.SurgeryRoom
             return $"{Date.ToShortDateString()} from {StartTime} to {EndTime}";
         }
     }
+    
+    
+    
+    
 }

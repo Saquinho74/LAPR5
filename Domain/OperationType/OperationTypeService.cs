@@ -82,7 +82,7 @@ namespace DDDNetCore.Domain.OperationType
                 return null;
 
             // Aqui você deve implementar a lógica para inativar a operação
-
+            operationType.MarkAsInative();
             await _unitOfWork.CommitAsync();
 
             var dtoReturn = OperationTypeMapper.toDTO(operationType);
@@ -97,10 +97,7 @@ namespace DDDNetCore.Domain.OperationType
 
             if (operationType == null)
                 return null;
-
-            if (operationType.Active)
-                throw new BusinessRuleValidationException("It is not possible to delete an active operation.");
-
+            
             _repo.Remove(operationType);
             await _unitOfWork.CommitAsync();
 

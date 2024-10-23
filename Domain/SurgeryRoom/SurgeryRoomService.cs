@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDNetCore.Domain.Operation;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Mappers;
 
@@ -42,25 +42,19 @@ namespace DDDNetCore.Domain.SurgeryRoom
         }
 
         // Método para criar uma nova sala de cirurgia
-        public async Task<SurgeryRoomDto> CreateAsync(CreatingSurgeryRoomDto creatingDto)
+        public async Task<SurgeryRoomDto> CreateAsync(SurgeryRoomDto creatingDto)
+        
         {
-            // Mapear DTO para a entidade
-            var surgeryRoom = new SurgeryRoom(
-                assignedEquipment: creatingDto.AssignedEquipment,
-                currentStatus: creatingDto.CurrentStatus,
-                capacity: creatingDto.Capacity,
-                maintenanceSlot: creatingDto.MaintenanceSlot,
-                type: creatingDto.Type
-            );
-
+            
+            var surgeryRoom = SurgeryRoomMapper.toEntity(creatingDto);
             await _repo.AddAsync(surgeryRoom);
             await _unitOfWork.CommitAsync();
 
             return SurgeryRoomMapper.toDTO(surgeryRoom);
         }
-
-// Método para atualizar uma sala de cirurgia existente
-        public async Task<SurgeryRoomDto> UpdateAsync(SurgeryRoomId id, CreatingSurgeryRoomDto updatingDto)
+        
+        // Método para atualizar uma sala de cirurgia existente
+        public async Task<SurgeryRoomDto> UpdateAsync(SurgeryRoomId id, SurgeryRoomDto updatingDto)
         {
             var surgeryRoom = await _repo.GetByIdAsync(id);
 
@@ -68,17 +62,16 @@ namespace DDDNetCore.Domain.SurgeryRoom
                 return null;
 
             // Atualiza a sala de cirurgia com novos valores
-            surgeryRoom.ChangeAssignedEquipment(updatingDto.AssignedEquipment);
-            surgeryRoom.ChangeCurrentStatus(updatingDto.CurrentStatus);
-            surgeryRoom.ChangeCapacity(updatingDto.Capacity);
-            surgeryRoom.ChangeMaintenanceSlot(updatingDto.MaintenanceSlot);
-            surgeryRoom.ChangeType(updatingDto.Type);
+            surgeryRoom.ChangeAssignedEquipment(new AssignedEquipment(updatingDto.AssignedEquipment));
+            surgeryRoom.ChangeCurrentStatus(Enum.Parse<CurrentStatus>(updatingDto.CurrentStatus, true));
+            surgeryRoom.ChangeCapacity(new Capacity(int.Parse(updatingDto.Capacity)));
+            surgeryRoom.ChangeMaintenanceSlot(SurgeryRoomMapper.ParseMaintenanceSlot(updatingDto.MaintenanceSlot));
+            surgeryRoom.ChangeType(new Type(updatingDto.Type));
 
             await _unitOfWork.CommitAsync();
 
             return SurgeryRoomMapper.toDTO(surgeryRoom);
         }
-
 
         // Método para remover uma sala de cirurgia
         public async Task<bool> DeleteAsync(SurgeryRoomId id)
@@ -93,25 +86,5 @@ namespace DDDNetCore.Domain.SurgeryRoom
 
             return true;
         }
-
-        public async Task<object> AddAsync(CreatingSurgeryRoomDto dto)
-        {
-
-            // Mapeando o DTO para a entidade, convertendo CurrentStatus corretamente
-            var surgeryRoom = new SurgeryRoom(
-                assignedEquipment: dto.AssignedEquipment,
-                currentStatus: dto.CurrentStatus, // Passa o enum diretamente
-                capacity: new Capacity(dto.Capacity.Value), // Supondo que Capacity é um Value Object
-                maintenanceSlot: new MaintenanceSlot(dto.MaintenanceSlot.Date, dto.MaintenanceSlot.StartTime,
-                    dto.MaintenanceSlot.EndTime), // Mapeando MaintenanceSlot
-                type: new Type(dto.Type.Value) // Supondo que Type é um Value Object
-            );
-
-            await _repo.AddAsync(surgeryRoom);
-            await _unitOfWork.CommitAsync();
-
-            return SurgeryRoomMapper.toDTO(surgeryRoom);
-        }
     }
-    
 }

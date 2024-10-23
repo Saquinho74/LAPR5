@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDNetCore.Domain.OperationType;
 using DDDNetCore.Domain.Shared;
 using DDDNetCore.Mappers;
 
@@ -41,13 +43,14 @@ namespace DDDNetCore.Domain.Operation
         }
 
         // Método para adicionar uma nova operação
-        public async Task<OperationDto> AddAsync(CreatingOperationDto dto)
+        public async Task<OperationDto> AddAsync(OperationDto dto)
+        
         {
             var operation = new Operation(
-                new OperationDescription(dto.Description.Value), // Supondo que Description é um Value Object
-                new Priority(dto.Priority.Value), // Supondo que Priority é um Value Object
-                new Deadline(dto.Deadline.Value), // Deadline como um Value Object
-                dto.OperationType
+                new OperationDescription(dto.Description), 
+                new Priority(int.Parse(dto.Priority)), 
+                new Deadline(DateTime.Parse(dto.Deadline)), 
+                new OperationTypeId(dto.OperationTypeId)
             );
 
             await _repo.AddAsync(operation);
@@ -69,7 +72,9 @@ namespace DDDNetCore.Domain.Operation
                 return null;
 
             // Atualiza as informações da operação
-            operation.ChangeDescription(new OperationDescription(dto.Description)); // Atualizando a descrição da operação
+            operation.ChangeDescription(new OperationDescription(dto.Description));
+            operation.ChangeDeadline(DateTime.Parse(dto.Deadline));
+            operation.ChangePriority(int.Parse(dto.Priority));
 
             await _unitOfWork.CommitAsync();
             
@@ -102,10 +107,7 @@ namespace DDDNetCore.Domain.Operation
 
             if (operation == null)
                 return null;
-
-            if (operation.Active)
-                throw new BusinessRuleValidationException("It is not possible to delete an active operation.");
-
+            
             _repo.Remove(operation);
             await _unitOfWork.CommitAsync();
 

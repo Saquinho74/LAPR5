@@ -15,7 +15,7 @@ namespace DDDNetCore.Mappers
                 Id = operation.Id.AsGuid().ToString(), 
                 Priority = operation.Priority.Value.ToString(),// Convertendo o Guid para string
                 Description = operation.Description.Value,  
-                OperationType = operation.Type.ToString(),           // Convertendo o tipo de operação para string
+                OperationTypeId = operation.Type.AsString(),           // Convertendo o tipo de operação para string
                 Deadline = operation.Deadline.Value.ToString("yyyy-MM-dd") // Formatando a data de deadline como string
             };
         }
@@ -27,7 +27,7 @@ namespace DDDNetCore.Mappers
                 Id = operation.Id.AsGuid().ToString(), 
                 Priority = operation.Priority.Value.ToString(),// Convertendo o Guid para string
                 Description = operation.Description.Value,           // Acessando a propriedade 'Value' do Value Object 'Description'
-                OperationType = operation.Type.ToString(),           // Convertendo o tipo de operação para string
+                OperationTypeId = operation.Type.AsString(),           // Convertendo o tipo de operação para string
                 Deadline = operation.Deadline.Value.ToString("yyyy-MM-dd") // Formatando a data de deadline como string
             });
         }

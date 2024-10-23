@@ -41,7 +41,7 @@ namespace DDDNetCore.Controllers
 
         // POST: api/Operation
         [HttpPost]
-        public async Task<ActionResult<OperationDto>> Create(CreatingOperationDto dto)
+        public async Task<ActionResult<OperationDto>> Create(OperationDto dto)
         {
             var cat = await _service.AddAsync(dto);
 
@@ -53,7 +53,7 @@ namespace DDDNetCore.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<OperationDto>> Update(Guid id, OperationDto dto)
         {
-            if (id != id)
+            if (id.ToString() != dto.Id)
             {
                 return BadRequest();
             }
