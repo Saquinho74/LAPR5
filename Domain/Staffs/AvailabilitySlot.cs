@@ -1,15 +1,33 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using DDDNetCore.Domain.Shared;
+﻿using DDDNetCore.Domain.Shared;
 
-namespace DDDNetCore.Domain.Staff;
-
-public class AvailabilitySlot : IValueObject
+namespace DDDNetCore.Domain.Staffs
 {
-    public string slot { get; set; }
-        
-        
-    public AvailabilitySlot(string slot)
+
+    public class AvailabilitySlot : IValueObject
     {
-        this.slot = slot;
+        public string slot { get; set; }
+
+
+        public AvailabilitySlot(string slot)
+        {
+            this.slot = slot;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType())
+                return false;
+
+            var other = (AvailabilitySlot)obj;
+            return this.slot == other.slot;
+        }
+        public override int GetHashCode()
+        {
+            return this.slot.GetHashCode();
+        }
+        public override string ToString()
+        {
+            return slot;
+        }
+
     }
 }

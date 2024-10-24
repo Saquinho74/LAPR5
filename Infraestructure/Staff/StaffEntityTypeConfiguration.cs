@@ -18,9 +18,12 @@ public class StaffEntityTypeConfiguration : IEntityTypeConfiguration<Domain.Staf
             ln.Property(l => l.Value).HasColumnName("LicenseNumber"); // Ensure proper mapping
         });
 
-        builder.HasMany(b => b.Slot)
-            .WithOne()
-            .HasForeignKey("Id")
-            .IsRequired();
+        builder.OwnsMany(b => b.Slot, slot =>
+        {
+            slot.ToTable("AvailabilitySlots"); // Specify table for the value object if needed
+            slot.Property(s => s.slot) // Maps the "slot" property of AvailabilitySlot
+                .HasColumnName("Slot");
+        });
+        
     }
 }
