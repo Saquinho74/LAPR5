@@ -50,8 +50,8 @@ namespace DDDNetCore
             services.AddSwaggerGen();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IStaffService, StaffService>();
-            services.AddTransient<OperationTypeMapper>();
-
+            services.AddTransient<IOperationTypeMapper, OperationTypeMapper>();
+            
             services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
             services.AddTransient<OperationTypeService>();
 

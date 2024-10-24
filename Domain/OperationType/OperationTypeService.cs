@@ -12,11 +12,13 @@ namespace DDDNetCore.Domain.OperationType
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOperationTypeRepository _repo;
+        private readonly IOperationTypeMapper _mapper;
 
         public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository repo, IOperationTypeMapper mapper)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
+            this._mapper = mapper;
         }
 
         
@@ -34,12 +36,7 @@ namespace DDDNetCore.Domain.OperationType
         // Método para obter uma operação por ID
         public async Task<OperationTypeDto> AddAsync(CreatingOperationTypeDto dto)
         {
-            var operationType = new OperationType(
-                new OperationTypeName(dto.OperationTypeName.Value), // Use the OperationalTypeName value object
-                new RequiredStaffEntry(dto.RequiredStaffEntry.Value), // Use the RequiredStaffEntry value object
-                new EstimatedDuration(dto.EstimatedDuration.Value)
-                ); // Use the EstimatedDuration value object
-            
+            var operationType = _mapper.toDomain(dto);
 
             await _repo.AddAsync(operationType);
             await _unitOfWork.CommitAsync();

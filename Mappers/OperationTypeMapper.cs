@@ -6,7 +6,7 @@ using DDDNetCore.Domain.Shared;
 
 namespace DDDNetCore.Mappers
 {
-    public class OperationTypeMapper
+    public class  OperationTypeMapper : IOperationTypeMapper
     {
         
             public static OperationTypeDto toDTO(OperationType operationType)
@@ -31,8 +31,15 @@ namespace DDDNetCore.Mappers
                 });
             }
 
-            // Método para converter de OperationDto para Operation
-            public static OperationType toDomain(OperationTypeDto dto)
+        
+            // Método para converter uma lista de OperationDto para uma lista de Operation
+            public List<OperationType> toDomainList(List<OperationTypeDto> dtos)
+            {
+                return dtos.ConvertAll(dto => toDomain(dto));
+            }
+
+
+            public OperationType toDomain(OperationTypeDto dto)
             {
                 return new OperationType(
                     new OperationTypeName(dto.OperationTypeName), // Mapeando a descrição
@@ -41,11 +48,19 @@ namespace DDDNetCore.Mappers
                 );
             }
 
-            // Método para converter uma lista de OperationDto para uma lista de Operation
-            public static List<OperationType> toDomainList(List<OperationTypeDto> dtos)
+            public OperationTypeDto toDto(OperationType entity)
             {
-                return dtos.ConvertAll(dto => toDomain(dto));
+                return OperationTypeMapper.toDTO(entity);
             }
-        }
+
+            public OperationType toDomain(CreatingOperationTypeDto dto)
+            {
+                return new OperationType(
+                    new OperationTypeName(dto.OperationTypeName), // Mapeando a descrição
+                    new RequiredStaffEntry(dto.RequiredStaffEntry), // Mapeando a Deadline
+                    new EstimatedDuration(dto.EstimatedDuration) // Mapeando a Deadline
+                );
+            }
+    }
     
 }
