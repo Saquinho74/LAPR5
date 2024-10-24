@@ -65,4 +65,5 @@ public class Staff : Entity<StaffId>, IAggregateRoot
 
         return list;
     }
+
 }
