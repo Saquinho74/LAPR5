@@ -28,6 +28,11 @@ namespace DDDNetCore.Domain.Staffs
         {
             return slot;
         }
+        
+        public string AsString()
+        {
+            return slot;
+        }
 
     }
 }
